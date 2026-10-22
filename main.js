@@ -302,6 +302,8 @@ end`;
     const game = new CpuGame(canvas, {
       fps: document.getElementById("hud-fps"),
       pos: document.getElementById("hud-pos"),
+      kills: document.getElementById("hud-kills"),
+      pixels: document.getElementById("hud-pixels"),
     });
     game.attach();
     game.start();

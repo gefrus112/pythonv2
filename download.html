@@ -17,7 +17,7 @@
       <a href="index.html#community">PSF</a>
       <a href="docs.html">Docs</a>
       <a class="active" href="download.html">PyPI</a>
-      <a href="index.html#news">Jobs</a>
+      <a href="games.html">Games</a>
       <a href="index.html#community">Community</a>
     </nav>
   </div>
@@ -30,7 +30,7 @@
         <span class="brand-word">python<sup>™</sup><em>v2</em></span>
       </a>
       <div class="masthead-tools">
-        <a class="btn-donate" href="index.html#community">Donate</a>
+        <a class="btn-youtube" href="https://www.youtube.com/@CubeCometYT" target="_blank" rel="noopener">▶ Subscribe</a>
         <form class="searchbox" id="search-form" role="search">
           <span class="search-mag" aria-hidden="true">⌕</span>
           <label class="sr-only" for="search-input">Search</label>
@@ -48,10 +48,9 @@
       <a href="index.html#about">About</a>
       <a href="download.html">Downloads</a>
       <a href="docs.html">Documentation</a>
+      <a href="tutorial.html">Tutorial</a>
+      <a href="games.html">Games</a>
       <a href="index.html#community">Community</a>
-      <a href="index.html#game">Success Stories</a>
-      <a href="index.html#news">News</a>
-      <a href="index.html#news">Events</a>
     </div>
   </nav>
 
@@ -60,16 +59,51 @@
     <div class="page-head-inner">
       <h1>Downloads &amp; Installation</h1>
       <p>Get the Python v2 language on your machine. It is <strong>free</strong>,
-        <strong>open source</strong>, and needs nothing but Python&nbsp;3.10+ —
-        no installer, no dependencies, no drama.</p>
+        <strong>open source</strong>, and needs nothing but Python&nbsp;3.10+.
+        Version 0.3 also includes the dependency-free <strong>PyHope game engine</strong>—
+        no pygame required.</p>
     </div>
   </section>
 
   <main class="doc-section">
     <div class="doc-section-inner">
 
+      <!-- ==================== INSTALLERS ==================== -->
+      <h2 id="pyhope"><span class="badge">01</span> One-click Python v2 + PyHope Installers</h2>
+      <p>Install both the language and the new PyHope game engine. The scripts
+        download the latest stable release, install the <code>pyv2</code> and
+        <code>pyhope</code> commands for your user, and run a self-check. Readable
+        source—no mystery executable.</p>
+      <div class="install-downloads">
+        <article class="install-download">
+          <h3>Windows</h3>
+          <p>Download, double-click, and follow the terminal. Requires Python 3.10+.</p>
+          <a class="btn btn-blue" href="install.bat" download>Download install.bat</a>
+        </article>
+        <article class="install-download">
+          <h3>macOS / Linux</h3>
+          <p>Download, then run <code>sh install.sh</code>. Uses curl or wget.</p>
+          <a class="btn btn-blue" href="install.sh" download>Download install.sh</a>
+        </article>
+        <article class="install-download">
+          <h3>Manual / portable</h3>
+          <p>Download the source ZIP. No install is required to run from its folder.</p>
+          <a class="btn btn-blue" href="https://github.com/gefrus112/pythonv2/archive/refs/heads/main.zip">Download ZIP</a>
+        </article>
+      </div>
+      <div class="steps">
+        <strong>What gets installed?</strong>
+        <code>pyv2</code> is the language. <code>pyhope</code> is our own
+        dependency-free game engine with vectors, sprites, tile maps, fixed-step
+        scenes, DDA ray casting, terminal preview, and web Canvas/WebGL renderers.
+        It does <strong>not</strong> install pygame.
+      </div>
+      <p><a href="docs.html#pyhope">Read the PyHope engine guide</a> ·
+         <a href="games.html">Play the games</a> ·
+         <a href="games.html#sprites">Get free CC0 sprites</a></p>
+
       <!-- ==================== GET IT ==================== -->
-      <h2 id="get"><span class="badge">01</span> Get the Language</h2>
+      <h2 id="get"><span class="badge">02</span> Get the Language Manually</h2>
       <p>Pick your favorite flavor:</p>
 
       <div class="start-grid">
@@ -94,16 +128,17 @@ cd pythonv2-main</code></pre>
         <thead><tr><th>Component</th><th>Where</th><th>What it is</th></tr></thead>
         <tbody>
           <tr><td>Interpreter + CLI</td><td><code>pyv2/</code></td><td>The language runtime: <code>python3 -m pyv2</code></td></tr>
+          <tr><td>PyHope engine</td><td><code>pyhope/</code></td><td>Dependency-free sprites, scenes, tile maps and ray casting</td></tr>
           <tr><td>Browser runtime</td><td><code>pyv2.js</code></td><td>The same language in JavaScript (this website's playground)</td></tr>
           <tr><td>Examples</td><td><code>examples/</code></td><td>hello, fib, fizzbuzz, terminal_raycast</td></tr>
           <tr><td>VS Code extension</td><td><code>editors/vscode/</code></td><td>Syntax highlighting + snippets</td></tr>
           <tr><td>Dev container</td><td><code>.devcontainer/</code></td><td>Ready environment for VS Code / Codespaces</td></tr>
-          <tr><td>Tests</td><td><code>tests/</code></td><td>64 tests incl. cross-runtime parity</td></tr>
+          <tr><td>Tests</td><td><code>tests/</code></td><td>73 tests: language parity + PyHope engine</td></tr>
         </tbody>
       </table>
 
       <!-- ==================== INSTALL ==================== -->
-      <h2 id="install"><span class="badge">02</span> Install on Your Machine</h2>
+      <h2 id="install"><span class="badge">03</span> Install on Your Machine</h2>
       <p>One requirement: <strong>Python 3.10 or newer</strong>
         (<a href="https://www.python.org/downloads/">python.org/downloads</a>).
         Python v2 itself has zero dependencies.</p>
@@ -119,7 +154,7 @@ cd pythonv2
 
 # 3. verify the install
 python3 -m pyv2 --version
-# Python v2 0.2.0
+# Python v2 0.3.0
 
 # 4. run your first program
 python3 -m pyv2 examples/hello.pyv2
@@ -151,7 +186,7 @@ pyv2                      # REPL!</code></pre>
       </div>
 
       <!-- ==================== EDITORS ==================== -->
-      <h2 id="editors"><span class="badge">03</span> Install in Your Editor</h2>
+      <h2 id="editors"><span class="badge">04</span> Install in Your Editor</h2>
       <p>Full step-by-step guides live in the
         <a href="docs.html#install">documentation</a>. The quick tour:</p>
 
@@ -185,15 +220,17 @@ pyv2                      # REPL!</code></pre>
       </table>
 
       <!-- ==================== NEXT ==================== -->
-      <h2 id="next"><span class="badge">04</span> Learn the Language</h2>
+      <h2 id="next"><span class="badge">05</span> Learn the Language</h2>
       <p>Installed? Nice. Next stop:</p>
       <ul class="checklist">
         <li><strong><a href="tutorial.html">The tutorial</a></strong> — 10 short
           lessons, every example runnable right here in your browser.</li>
         <li><strong><a href="docs.html">The documentation</a></strong> —
           language reference, editor setup, and a try-it sandbox.</li>
-        <li><strong><a href="index.html#game">The CPU raycaster</a></strong> —
-          proof that Python v2 people have too much fun.</li>
+        <li><strong><a href="games.html">The Games tab</a></strong> — monster
+          raycaster, platformer, GPU lab, and free sprites.</li>
+        <li><strong><a href="https://www.youtube.com/@CubeCometYT">Subscribe to Cube Comet</a></strong> —
+          the complete video install tutorial releases at 1,000 subscribers.</li>
       </ul>
 
       <h3>FAQ</h3>
@@ -226,11 +263,11 @@ pyv2                      # REPL!</code></pre>
         <a href="download.html">Downloads</a>
         <a href="docs.html">Documentation</a>
         <a href="index.html#community">Community</a>
-        <a href="index.html#game">Success Stories</a>
+        <a href="games.html">Games</a>
       </div>
       <div class="footer-col">
         <h4>Downloads</h4>
-        <a href="download.html#get">Get the language</a>
+        <a href="download.html#pyhope">Install Python v2 + PyHope</a>
         <a href="https://github.com/gefrus112/pythonv2/archive/refs/heads/main.zip">Download ZIP</a>
         <a href="https://github.com/gefrus112/pythonv2">GitHub repo</a>
         <a href="download.html#install">Install steps</a>
@@ -238,6 +275,7 @@ pyv2                      # REPL!</code></pre>
       <div class="footer-col">
         <h4>Documentation</h4>
         <a href="tutorial.html">Tutorial</a>
+        <a href="docs.html#pyhope">PyHope guide</a>
         <a href="docs.html#install">Installation</a>
         <a href="docs.html#vscode">VS Code setup</a>
         <a href="docs.html#any-editor">Any editor</a>
@@ -270,6 +308,7 @@ pyv2                      # REPL!</code></pre>
     </div>
   </footer>
 
+  <script src="site.js"></script>
   <script>
     (function () {
       "use strict";

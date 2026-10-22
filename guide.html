@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>50 Things to Learn — Python v2 + PyHope</title>
+  <meta name="description" content="A 50-topic field guide to Python v2 and the PyHope game engine: values, control flow, data, functions, tools, sprites, ray casting and GPU rendering.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar"><nav class="topbar-inner" aria-label="Site"><a href="index.html">Python</a><a href="docs.html">Docs</a><a href="download.html">Downloads</a><a href="tutorial.html">Tutorial</a><a href="games.html">Games</a><a class="active" href="guide.html">50 Guides</a></nav></div>
+  <header class="masthead"><div class="masthead-inner">
+    <a class="brand" href="index.html"><img src="logo.svg" alt="Python v2 red and blue snakes" width="64" height="64"><span class="brand-word">python<sup>™</sup><em>v2</em></span></a>
+    <div class="masthead-tools"><a class="btn-youtube" href="https://www.youtube.com/@CubeCometYT" target="_blank" rel="noopener">▶ Subscribe @CubeCometYT</a><a class="btn-social" href="download.html#pyhope">Install v0.3</a></div>
+  </div></header>
+  <nav class="mainnav" aria-label="Main"><div class="mainnav-inner"><a href="index.html">Home</a><a href="download.html">Downloads</a><a href="docs.html">Reference</a><a href="tutorial.html">Tutorial</a><a href="games.html">Games</a><a class="nav-current" href="guide.html">50 Guides</a></div></nav>
+
+  <section class="page-head guide-head"><div class="page-head-inner">
+    <p class="eyebrow">THE PYTHON V2 + PYHOPE FIELD GUIDE</p>
+    <h1>50 things worth knowing</h1>
+    <p>Not marketing fluff—50 compact, useful topics from your first print to
+      closures, editor setup, CC0 sprites, DDA ray casting and a 9.4-million-pixel GPU frame.</p>
+  </div></section>
+
+  <main class="guide-main">
+    <div class="guide-toolbar">
+      <label for="guide-search">Search all 50 topics</label>
+      <input id="guide-search" type="search" placeholder="Try: closures, sprites, VS Code, raycast…" autocomplete="off">
+      <div class="guide-filters" role="group" aria-label="Filter by category">
+        <button class="active" data-filter="all" type="button">All 50</button>
+        <button data-filter="start" type="button">Start</button><button data-filter="values" type="button">Values</button><button data-filter="flow" type="button">Flow</button><button data-filter="data" type="button">Data</button><button data-filter="functions" type="button">Functions</button><button data-filter="tools" type="button">Tools</button><button data-filter="pyhope" type="button">PyHope</button><button data-filter="ship" type="button">Ship</button>
+      </div>
+      <p id="guide-count" aria-live="polite">Showing 50 of 50</p>
+    </div>
+    <div class="guide-grid">
+      <article class="guide-card" data-category="start" data-search="hello, python v2 programs are plain .pyv2 files. print() accepts any number of values. print(&quot;hello, world!&quot;, 2 + 2)">
+  <div class="guide-number">01</div>
+  <div class="guide-category">Start</div>
+  <h3>Hello, Python v2</h3>
+  <p>Programs are plain .pyv2 files. print() accepts any number of values.</p>
+  <pre><code>print(&quot;Hello, World!&quot;, 2 + 2)</code></pre>
+</article><article class="guide-card" data-category="start" data-search="run a file use the module command from the repository, or the pyv2 command after installing. python3 -m pyv2 hello.pyv2">
+  <div class="guide-number">02</div>
+  <div class="guide-category">Start</div>
+  <h3>Run a file</h3>
+  <p>Use the module command from the repository, or the pyv2 command after installing.</p>
+  <pre><code>python3 -m pyv2 hello.pyv2</code></pre>
+</article><article class="guide-card" data-category="start" data-search="comments a # comment runs to the end of the line and is ignored by the interpreter. # explain why, not what
+answer = 42">
+  <div class="guide-number">03</div>
+  <div class="guide-category">Start</div>
+  <h3>Comments</h3>
+  <p>A # comment runs to the end of the line and is ignored by the interpreter.</p>
+  <pre><code># explain why, not what
+answer = 42</code></pre>
+</article><article class="guide-card" data-category="values" data-search="variables assignment creates a binding in the nearest function scope. no var keyword needed. name = &quot;comet&quot;
+score = 10">
+  <div class="guide-number">04</div>
+  <div class="guide-category">Values</div>
+  <h3>Variables</h3>
+  <p>Assignment creates a binding in the nearest function scope. No var keyword needed.</p>
+  <pre><code>name = &quot;Comet&quot;
+score = 10</code></pre>
+</article><article class="guide-card" data-category="values" data-search="numbers integers and decimals share one number type and print cleanly. print(1, 2.5, 1e-3)">
+  <div class="guide-number">05</div>
+  <div class="guide-category">Values</div>
+  <h3>Numbers</h3>
+  <p>Integers and decimals share one number type and print cleanly.</p>
+  <pre><code>print(1, 2.5, 1e-3)</code></pre>
+</article><article class="guide-card" data-category="values" data-search="math operators use + - * / // % and **. floor division and modulo follow python rules. print(10 / 4, 10 // 4, 7 % 3, 2 ** 8)">
+  <div class="guide-number">06</div>
+  <div class="guide-category">Values</div>
+  <h3>Math operators</h3>
+  <p>Use + - * / // % and **. Floor division and modulo follow Python rules.</p>
+  <pre><code>print(10 / 4, 10 // 4, 7 % 3, 2 ** 8)</code></pre>
+</article><article class="guide-card" data-category="values" data-search="strings single or double quotes work. escape special characters with a backslash. title = &quot;python v2&quot;
+print(title.upper())">
+  <div class="guide-number">07</div>
+  <div class="guide-category">Values</div>
+  <h3>Strings</h3>
+  <p>Single or double quotes work. Escape special characters with a backslash.</p>
+  <pre><code>title = &quot;Python v2&quot;
+print(title.upper())</code></pre>
+</article><article class="guide-card" data-category="values" data-search="f-strings prefix a string with f and place any expression inside braces. name = &quot;ada&quot;
+print(f&quot;hello, {name}: {2 ** 8}&quot;)">
+  <div class="guide-number">08</div>
+  <div class="guide-category">Values</div>
+  <h3>F-strings</h3>
+  <p>Prefix a string with f and place any expression inside braces.</p>
+  <pre><code>name = &quot;Ada&quot;
+print(f&quot;Hello, {name}: {2 ** 8}&quot;)</code></pre>
+</article><article class="guide-card" data-category="values" data-search="booleans the boolean literals are true and false, always lowercase. ready = true
+print(ready and not false)">
+  <div class="guide-number">09</div>
+  <div class="guide-category">Values</div>
+  <h3>Booleans</h3>
+  <p>The boolean literals are true and false, always lowercase.</p>
+  <pre><code>ready = true
+print(ready and not false)</code></pre>
+</article><article class="guide-card" data-category="values" data-search="nil nil is the deliberate nothing value. safe map lookups return it when no default is given. missing = nil
+print(type(missing))">
+  <div class="guide-number">10</div>
+  <div class="guide-category">Values</div>
+  <h3>nil</h3>
+  <p>nil is the deliberate nothing value. Safe map lookups return it when no default is given.</p>
+  <pre><code>missing = nil
+print(type(missing))</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="truthiness zero, empty strings, empty lists, empty maps, false and nil are falsey. if []: print(&quot;no&quot;) else: print(&quot;empty&quot;) end">
+  <div class="guide-number">11</div>
+  <div class="guide-category">Flow</div>
+  <h3>Truthiness</h3>
+  <p>Zero, empty strings, empty lists, empty maps, false and nil are falsey.</p>
+  <pre><code>if []: print(&quot;no&quot;) else: print(&quot;empty&quot;) end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="if blocks open a block with a colon and close it with end. indentation is for humans. if score &gt; 5:
+    print(&quot;high&quot;)
+end">
+  <div class="guide-number">12</div>
+  <div class="guide-category">Flow</div>
+  <h3>if blocks</h3>
+  <p>Open a block with a colon and close it with end. Indentation is for humans.</p>
+  <pre><code>if score &gt; 5:
+    print(&quot;high&quot;)
+end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="elif and else chain choices without nesting another if. if n &lt; 0: print(&quot;negative&quot;)
+elif n == 0: print(&quot;zero&quot;)
+else: print(&quot;positive&quot;) end">
+  <div class="guide-number">13</div>
+  <div class="guide-category">Flow</div>
+  <h3>elif and else</h3>
+  <p>Chain choices without nesting another if.</p>
+  <pre><code>if n &lt; 0: print(&quot;negative&quot;)
+elif n == 0: print(&quot;zero&quot;)
+else: print(&quot;positive&quot;) end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="forward ternary python v2 puts the question first: condition ? yes : no. label = score &gt;= 60 ? &quot;pass&quot; : &quot;retry&quot;">
+  <div class="guide-number">14</div>
+  <div class="guide-category">Flow</div>
+  <h3>Forward ternary</h3>
+  <p>Python v2 puts the question first: condition ? yes : no.</p>
+  <pre><code>label = score &gt;= 60 ? &quot;pass&quot; : &quot;retry&quot;</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="while loops repeat while a condition remains truthy. n = 3
+while n &gt; 0: print(n) n -= 1 end">
+  <div class="guide-number">15</div>
+  <div class="guide-category">Flow</div>
+  <h3>while loops</h3>
+  <p>Repeat while a condition remains truthy.</p>
+  <pre><code>n = 3
+while n &gt; 0: print(n) n -= 1 end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="break break exits the nearest loop immediately. while true:
+    break
+end">
+  <div class="guide-number">16</div>
+  <div class="guide-category">Flow</div>
+  <h3>break</h3>
+  <p>break exits the nearest loop immediately.</p>
+  <pre><code>while true:
+    break
+end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="continue continue skips the rest of this iteration and moves to the next. for n in range(5):
+    if n % 2 == 0: continue end
+    print(n)
+end">
+  <div class="guide-number">17</div>
+  <div class="guide-category">Flow</div>
+  <h3>continue</h3>
+  <p>continue skips the rest of this iteration and moves to the next.</p>
+  <pre><code>for n in range(5):
+    if n % 2 == 0: continue end
+    print(n)
+end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="loop over lists for works with lists, strings, maps, and lazy ranges. for name in [&quot;ada&quot;, &quot;grace&quot;]: print(name) end">
+  <div class="guide-number">18</div>
+  <div class="guide-category">Flow</div>
+  <h3>Loop over lists</h3>
+  <p>for works with lists, strings, maps, and lazy ranges.</p>
+  <pre><code>for name in [&quot;Ada&quot;, &quot;Grace&quot;]: print(name) end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="range range(stop), range(start, stop), and range(start, stop, step) are lazy. for i in range(10, 0, -2): print(i) end">
+  <div class="guide-number">19</div>
+  <div class="guide-category">Flow</div>
+  <h3>range</h3>
+  <p>range(stop), range(start, stop), and range(start, stop, step) are lazy.</p>
+  <pre><code>for i in range(10, 0, -2): print(i) end</code></pre>
+</article><article class="guide-card" data-category="flow" data-search="loop over text strings iterate unicode characters instead of bytes. for ch in &quot;snake&quot;: print(ch) end">
+  <div class="guide-number">20</div>
+  <div class="guide-category">Flow</div>
+  <h3>Loop over text</h3>
+  <p>Strings iterate Unicode characters instead of bytes.</p>
+  <pre><code>for ch in &quot;snake&quot;: print(ch) end</code></pre>
+</article><article class="guide-card" data-category="data" data-search="list literals lists can contain any mixture of values and allow negative indexing. items = [1, &quot;two&quot;, true]
+print(items[-1])">
+  <div class="guide-number">21</div>
+  <div class="guide-category">Data</div>
+  <h3>List literals</h3>
+  <p>Lists can contain any mixture of values and allow negative indexing.</p>
+  <pre><code>items = [1, &quot;two&quot;, true]
+print(items[-1])</code></pre>
+</article><article class="guide-card" data-category="data" data-search="push and pop push appends and returns the list; pop removes and returns the last value. xs = [1, 2]
+xs.push(3)
+print(xs.pop(), xs)">
+  <div class="guide-number">22</div>
+  <div class="guide-category">Data</div>
+  <h3>push and pop</h3>
+  <p>push appends and returns the list; pop removes and returns the last value.</p>
+  <pre><code>xs = [1, 2]
+xs.push(3)
+print(xs.pop(), xs)</code></pre>
+</article><article class="guide-card" data-category="data" data-search="slices slice(start, end) makes a new string or list and supports negative positions. print([0, 1, 2, 3].slice(1, 3))">
+  <div class="guide-number">23</div>
+  <div class="guide-category">Data</div>
+  <h3>Slices</h3>
+  <p>slice(start, end) makes a new string or list and supports negative positions.</p>
+  <pre><code>print([0, 1, 2, 3].slice(1, 3))</code></pre>
+</article><article class="guide-card" data-category="data" data-search="sorting lists sort returns a new list, while sort_by accepts a key function. print([3, 1, 2].sort())">
+  <div class="guide-number">24</div>
+  <div class="guide-category">Data</div>
+  <h3>Sorting lists</h3>
+  <p>sort returns a new list, while sort_by accepts a key function.</p>
+  <pre><code>print([3, 1, 2].sort())</code></pre>
+</article><article class="guide-card" data-category="data" data-search="map literals bare identifier keys become strings; quoted and computed keys work too. hero = {name: &quot;ada&quot;, hp: 100}">
+  <div class="guide-number">25</div>
+  <div class="guide-category">Data</div>
+  <h3>Map literals</h3>
+  <p>Bare identifier keys become strings; quoted and computed keys work too.</p>
+  <pre><code>hero = {name: &quot;Ada&quot;, hp: 100}</code></pre>
+</article><article class="guide-card" data-category="data" data-search="map dot access read and write map keys with dots when the key is a valid identifier. hero.city = &quot;london&quot;
+print(hero.name, hero.city)">
+  <div class="guide-number">26</div>
+  <div class="guide-category">Data</div>
+  <h3>Map dot access</h3>
+  <p>Read and write map keys with dots when the key is a valid identifier.</p>
+  <pre><code>hero.city = &quot;London&quot;
+print(hero.name, hero.city)</code></pre>
+</article><article class="guide-card" data-category="data" data-search="safe map get get(key, default) avoids an error when optional data is absent. print(hero.get(&quot;armor&quot;, 0))">
+  <div class="guide-number">27</div>
+  <div class="guide-category">Data</div>
+  <h3>Safe map get</h3>
+  <p>get(key, default) avoids an error when optional data is absent.</p>
+  <pre><code>print(hero.get(&quot;armor&quot;, 0))</code></pre>
+</article><article class="guide-card" data-category="functions" data-search="define functions use fn, parameters in parentheses, a colon, and end. fn add(a, b):
+    return a + b
+end">
+  <div class="guide-number">28</div>
+  <div class="guide-category">Functions</div>
+  <h3>Define functions</h3>
+  <p>Use fn, parameters in parentheses, a colon, and end.</p>
+  <pre><code>fn add(a, b):
+    return a + b
+end</code></pre>
+</article><article class="guide-card" data-category="functions" data-search="return values return leaves the function immediately; no value means nil. fn sign(n):
+    if n &lt; 0: return -1 end
+    return 1
+end">
+  <div class="guide-number">29</div>
+  <div class="guide-category">Functions</div>
+  <h3>Return values</h3>
+  <p>return leaves the function immediately; no value means nil.</p>
+  <pre><code>fn sign(n):
+    if n &lt; 0: return -1 end
+    return 1
+end</code></pre>
+</article><article class="guide-card" data-category="functions" data-search="real closures inner functions remember outer variables and assignment updates the existing binding. fn counter():
+ n = 0
+ fn bump(): n += 1 return n end
+ return bump
+end">
+  <div class="guide-number">30</div>
+  <div class="guide-category">Functions</div>
+  <h3>Real closures</h3>
+  <p>Inner functions remember outer variables and assignment updates the existing binding.</p>
+  <pre><code>fn counter():
+ n = 0
+ fn bump(): n += 1 return n end
+ return bump
+end</code></pre>
+</article><article class="guide-card" data-category="functions" data-search="recursion a function can call itself. base cases prevent infinite recursion. fn fib(n):
+ if n &lt; 2: return n end
+ return fib(n-1) + fib(n-2)
+end">
+  <div class="guide-number">31</div>
+  <div class="guide-category">Functions</div>
+  <h3>Recursion</h3>
+  <p>A function can call itself. Base cases prevent infinite recursion.</p>
+  <pre><code>fn fib(n):
+ if n &lt; 2: return n end
+ return fib(n-1) + fib(n-2)
+end</code></pre>
+</article><article class="guide-card" data-category="functions" data-search="anonymous functions fn can be an expression, so callbacks stay compact. square = fn(x): return x * x end
+print(square(7))">
+  <div class="guide-number">32</div>
+  <div class="guide-category">Functions</div>
+  <h3>Anonymous functions</h3>
+  <p>fn can be an expression, so callbacks stay compact.</p>
+  <pre><code>square = fn(x): return x * x end
+print(square(7))</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="string methods strings include upper, lower, title, trim, replace, contains, slice, and more. print(&quot;  comet  &quot;.trim().title())">
+  <div class="guide-number">33</div>
+  <div class="guide-category">Tools</div>
+  <h3>String methods</h3>
+  <p>Strings include upper, lower, title, trim, replace, contains, slice, and more.</p>
+  <pre><code>print(&quot;  comet  &quot;.trim().title())</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="split and join turn text into a list with split, then assemble it with list.join. print(&quot;a,b,c&quot;.split(&quot;,&quot;).join(&quot; - &quot;))">
+  <div class="guide-number">34</div>
+  <div class="guide-category">Tools</div>
+  <h3>split and join</h3>
+  <p>Turn text into a list with split, then assemble it with list.join.</p>
+  <pre><code>print(&quot;a,b,c&quot;.split(&quot;,&quot;).join(&quot; - &quot;))</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="conversions use str, int, float, bool, repr, and type. invalid numeric text raises valueerror. print(int(&quot;42&quot;), float(&quot;2.5&quot;), type(true))">
+  <div class="guide-number">35</div>
+  <div class="guide-category">Tools</div>
+  <h3>Conversions</h3>
+  <p>Use str, int, float, bool, repr, and type. Invalid numeric text raises ValueError.</p>
+  <pre><code>print(int(&quot;42&quot;), float(&quot;2.5&quot;), type(true))</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="assertions assert is a normal function and accepts your own message. assert(len([1, 2]) == 2, &quot;list size changed&quot;)">
+  <div class="guide-number">36</div>
+  <div class="guide-category">Tools</div>
+  <h3>Assertions</h3>
+  <p>assert is a normal function and accepts your own message.</p>
+  <pre><code>assert(len([1, 2]) == 2, &quot;list size changed&quot;)</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="read errors errors include a kind, message, source line, and function stack frames. fn boom(): return missing end
+boom()">
+  <div class="guide-number">37</div>
+  <div class="guide-category">Tools</div>
+  <h3>Read errors</h3>
+  <p>Errors include a kind, message, source line, and function stack frames.</p>
+  <pre><code>fn boom(): return missing end
+boom()</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="use the repl run pyv2 with no file for an interactive prompt; ctrl-d exits. python3 -m pyv2">
+  <div class="guide-number">38</div>
+  <div class="guide-category">Tools</div>
+  <h3>Use the REPL</h3>
+  <p>Run pyv2 with no file for an interactive prompt; Ctrl-D exits.</p>
+  <pre><code>python3 -m pyv2</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="cli flags check the version or run a source file. output and errors are terminal friendly. pyv2 --version
+pyv2 examples/fizzbuzz.pyv2">
+  <div class="guide-number">39</div>
+  <div class="guide-category">Tools</div>
+  <h3>CLI flags</h3>
+  <p>Check the version or run a source file. Output and errors are terminal friendly.</p>
+  <pre><code>pyv2 --version
+pyv2 examples/fizzbuzz.pyv2</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="vs code the repository includes run/test tasks, file association, highlighting, and snippets. ctrl+shift+b  # run current .pyv2 file">
+  <div class="guide-number">40</div>
+  <div class="guide-category">Tools</div>
+  <h3>VS Code</h3>
+  <p>The repository includes run/test tasks, file association, highlighting, and snippets.</p>
+  <pre><code>Ctrl+Shift+B  # run current .pyv2 file</code></pre>
+</article><article class="guide-card" data-category="tools" data-search="dev containers choose reopen in container or create a codespace; tests run after creation. .devcontainer/devcontainer.json">
+  <div class="guide-number">41</div>
+  <div class="guide-category">Tools</div>
+  <h3>Dev containers</h3>
+  <p>Choose Reopen in Container or create a Codespace; tests run after creation.</p>
+  <pre><code>.devcontainer/devcontainer.json</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="install pyhope the one-click scripts install pyv2 and pyhope together with no pygame. install.bat  # windows
+sh install.sh # macos/linux">
+  <div class="guide-number">42</div>
+  <div class="guide-category">PyHope</div>
+  <h3>Install PyHope</h3>
+  <p>The one-click scripts install pyv2 and PyHope together with no pygame.</p>
+  <pre><code>install.bat  # Windows
+sh install.sh # macOS/Linux</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="vec2 immutable vectors provide addition, scaling, length, normalization, and dot products. direction = vec2(3, 4).normalized()">
+  <div class="guide-number">43</div>
+  <div class="guide-category">PyHope</div>
+  <h3>Vec2</h3>
+  <p>Immutable vectors provide addition, scaling, length, normalization, and dot products.</p>
+  <pre><code>direction = Vec2(3, 4).normalized()</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="tilemap text rows become collision worlds. dots and spaces are open; other tiles are solid. world = tilemap.from_text(&quot;###\n#.#\n###&quot;)">
+  <div class="guide-number">44</div>
+  <div class="guide-category">PyHope</div>
+  <h3>TileMap</h3>
+  <p>Text rows become collision worlds. Dots and spaces are open; other tiles are solid.</p>
+  <pre><code>world = TileMap.from_text(&quot;###\n#.#\n###&quot;)</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="sprite a sprite has a name, position, glyph, velocity, tags, and alive state. hero = sprite(&quot;hero&quot;, vec2(1.5, 1.5), &quot;@&quot;)">
+  <div class="guide-number">45</div>
+  <div class="guide-category">PyHope</div>
+  <h3>Sprite</h3>
+  <p>A sprite has a name, position, glyph, velocity, tags, and alive state.</p>
+  <pre><code>hero = Sprite(&quot;hero&quot;, Vec2(1.5, 1.5), &quot;@&quot;)</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="fixed-step engine systems run before sprite movement each tick, making logic deterministic and testable. @engine.system
+def gravity(scene, dt): ...">
+  <div class="guide-number">46</div>
+  <div class="guide-category">PyHope</div>
+  <h3>Fixed-step Engine</h3>
+  <p>Systems run before sprite movement each tick, making logic deterministic and testable.</p>
+  <pre><code>@engine.system
+def gravity(scene, dt): ...</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="dda ray casting raycast walks the grid and reports the tile, distance, hit side, point, and step count. hit = raycast(world, origin, direction)">
+  <div class="guide-number">47</div>
+  <div class="guide-category">PyHope</div>
+  <h3>DDA ray casting</h3>
+  <p>raycast walks the grid and reports the tile, distance, hit side, point, and step count.</p>
+  <pre><code>hit = raycast(world, origin, direction)</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="free cc0 sprites the original comet kid, byte beast, null slime, blaster, and coin are public domain. assets/sprites/license.md">
+  <div class="guide-number">48</div>
+  <div class="guide-category">PyHope</div>
+  <h3>Free CC0 sprites</h3>
+  <p>The original Comet Kid, Byte Beast, Null Slime, blaster, and coin are public domain.</p>
+  <pre><code>assets/sprites/LICENSE.md</code></pre>
+</article><article class="guide-card" data-category="pyhope" data-search="9m gpu renderer webgl2 live mode is 720p; benchmark mode ray-casts 4096×2304 = 9,437,184 pixels. games.html#gpu">
+  <div class="guide-number">49</div>
+  <div class="guide-category">PyHope</div>
+  <h3>9M GPU renderer</h3>
+  <p>WebGL2 live mode is 720p; benchmark mode ray-casts 4096×2304 = 9,437,184 pixels.</p>
+  <pre><code>games.html#gpu</code></pre>
+</article><article class="guide-card" data-category="ship" data-search="release your game keep assets licensed, test on keyboard and touch-sized screens, then publish with github pages. python3 -m unittest discover -s tests -t .">
+  <div class="guide-number">50</div>
+  <div class="guide-category">Ship</div>
+  <h3>Release your game</h3>
+  <p>Keep assets licensed, test on keyboard and touch-sized screens, then publish with GitHub Pages.</p>
+  <pre><code>python3 -m unittest discover -s tests -t .</code></pre>
+</article>
+    </div>
+  </main>
+
+  <section class="youtube-bottom"><div><p class="eyebrow">VIDEO TUTORIAL AT 1,000 SUBSCRIBERS</p><h2>Prefer to learn by watching?</h2><p>Subscribe to Cube Comet. The complete Python v2 + PyHope install video releases when the channel reaches 1K.</p></div><a class="btn-youtube btn-youtube-big" href="https://www.youtube.com/@CubeCometYT" target="_blank" rel="noopener">▶ Subscribe @CubeCometYT</a></section>
+
+  <footer class="footer"><div class="footer-inner"><div class="footer-col"><h4>Learn</h4><a href="tutorial.html">Tutorial</a><a href="guide.html">50 guides</a><a href="docs.html">Reference</a></div><div class="footer-col"><h4>Build</h4><a href="games.html">Games</a><a href="docs.html#pyhope">PyHope API</a><a href="games.html#sprites">Free sprites</a></div><div class="footer-col"><h4>Install</h4><a href="download.html#pyhope">One-click installers</a><a href="download.html#editors">Editors</a></div><div class="footer-col"><h4>Community</h4><a href="https://www.youtube.com/@CubeCometYT">YouTube</a><a href="https://github.com/gefrus112/pythonv2">GitHub</a></div><div class="footer-col"><h4>Play</h4><a href="games.html#play">Comet Hopper</a><a href="games.html#gpu">9M GPU Lab</a></div></div><div class="footer-legal"><p><img src="favicon.svg" alt="" width="22" height="22">© <span id="year">2026</span> Python v2 + PyHope.</p></div></footer>
+  <script src="site.js"></script>
+  <script>
+    (function () {
+      const search = document.getElementById("guide-search");
+      const cards = [...document.querySelectorAll(".guide-card")];
+      const buttons = [...document.querySelectorAll("[data-filter]")];
+      const count = document.getElementById("guide-count");
+      let category = "all";
+      function apply() {
+        const query = search.value.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const matchCategory = category === "all" || card.dataset.category === category;
+          const matchQuery = !query || card.dataset.search.includes(query) || card.textContent.toLowerCase().includes(query);
+          card.hidden = !(matchCategory && matchQuery);
+          if (!card.hidden) visible++;
+        });
+        count.textContent = "Showing " + visible + " of 50";
+      }
+      buttons.forEach((button) => button.addEventListener("click", () => {
+        category = button.dataset.filter;
+        buttons.forEach((item) => item.classList.toggle("active", item === button));
+        apply();
+      }));
+      search.addEventListener("input", apply);
+    })();
+  </script>
+</body>
+</html>

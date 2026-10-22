@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pythonv2-pyhope"
+version = "0.3.0"
+description = "Python v2 language and the dependency-free PyHope game engine"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Python v2 community" }]
+keywords = ["language", "interpreter", "game-engine", "raycaster", "pyhope"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.scripts]
+pyv2 = "pyv2.cli:main"
+pyhope = "pyhope.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["pyv2*", "pyhope*"]
