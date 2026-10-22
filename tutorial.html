@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
   <!-- ============ top utility bar ============ -->
   <div class="topbar">
@@ -98,7 +99,7 @@
   </section>
 
   <!-- ============ lessons ============ -->
-  <main class="doc-section">
+  <main id="main-content" class="doc-section">
     <div class="doc-section-inner">
 
       <!-- LESSON 1 -->
@@ -185,7 +186,9 @@ print(xs, xs.sort(), xs[-1])
 names = ["Ada", "Grace"]
 names.insert(0, "Edsger")
 print(names, names.join(", "), len(names))
-print([1, 2] + [3], [1, 2] * 2)</code></pre>
+print([1, 2] + [3], [1, 2] * 2)
+print("sum:", sum(xs), "numbered:", enumerate(names, 1))
+print("paired:", zip(names, [36, 85, 92]))</code></pre>
       <p><button class="btn btn-blue btn-inline load-run" data-code='xs = [3, 1, 2]
 xs.push(4)
 print(xs, xs.sort(), xs[-1])
@@ -193,7 +196,9 @@ print(xs, xs.sort(), xs[-1])
 names = ["Ada", "Grace"]
 names.insert(0, "Edsger")
 print(names, names.join(", "), len(names))
-print([1, 2] + [3], [1, 2] * 2)'>Load &amp; run ▶</button></p>
+print([1, 2] + [3], [1, 2] * 2)
+print("sum:", sum(xs), "numbered:", enumerate(names, 1))
+print("paired:", zip(names, [36, 85, 92]))'>Load &amp; run ▶</button></p>
 
       <!-- LESSON 6 -->
       <h2 id="lesson-6"><span class="badge">06</span> Maps</h2>
@@ -343,24 +348,45 @@ sq = fn(x): return x * x end
 print("7^2 =", sq(7))'>Load &amp; run ▶</button></p>
 
       <!-- LESSON 10 -->
-      <h2 id="lesson-10"><span class="badge">10</span> Errors &amp; Checks</h2>
-      <p>When something goes wrong you get a clear message with the line
-        number. Use <code>assert</code> to check things you care about —
-        it's just a normal function.</p>
+      <h2 id="lesson-10"><span class="badge">10</span> Errors, Recovery &amp; Cleanup</h2>
+      <p>Failures carry a kind, message, source line, and call trace. Protect work
+        with <code>try</code>, recover in <code>catch error</code>, and put cleanup
+        in <code>finally</code> so it runs even during a return or loop jump.
+        Use <code>raise</code> for your own application errors.</p>
       <pre class="terminal"><code>fn divide(a, b):
     assert(b != 0, "b must not be zero")
     return a / b
 end
 
-print(divide(10, 2))
-print(divide(1, 0))      # boom — read the error message!</code></pre>
+try:
+    print(divide(10, 0))
+catch error:
+    print(error.kind + ":", error.message)
+    print("line:", error.line)
+finally:
+    print("calculation finished")
+end
+
+try: raise {kind: "ConfigError", message: "port required"}
+catch error: print(error.kind, error.message)
+end</code></pre>
       <p><button class="btn btn-blue btn-inline load-run" data-code='fn divide(a, b):
     assert(b != 0, "b must not be zero")
     return a / b
 end
 
-print(divide(10, 2))
-print(divide(1, 0))'>Load &amp; run ▶</button></p>
+try:
+    print(divide(10, 0))
+catch error:
+    print(error.kind + ":", error.message)
+    print("line:", error.line)
+finally:
+    print("calculation finished")
+end
+
+try: raise {kind: "ConfigError", message: "port required"}
+catch error: print(error.kind, error.message)
+end'>Load &amp; run ▶</button></p>
 
       <!-- FINAL -->
       <h2 id="next"><span class="badge">★</span> What's Next</h2>
@@ -439,7 +465,7 @@ end'>Load &amp; run ▶</button></p>
         <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
         <a href="https://github.com/gefrus112/pythonv2/issues">Issues</a>
         <a href="index.html#news">News</a>
-        <a href="index.html#news">Events</a>
+        <a href="index.html#events">Events</a>
       </div>
       <div class="footer-col">
         <h4>Success Stories</h4>

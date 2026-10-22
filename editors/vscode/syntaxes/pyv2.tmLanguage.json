@@ -112,7 +112,7 @@
       "patterns": [
         {
           "name": "keyword.control.pyv2",
-          "match": "\\b(if|elif|else|while|for|in|return|break|continue)\\b"
+          "match": "\\b(if|elif|else|while|for|in|return|raise|try|catch|finally|break|continue)\\b"
         },
         {
           "name": "storage.type.function.pyv2",

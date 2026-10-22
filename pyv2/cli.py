@@ -310,7 +310,7 @@ def _open_blocks(source: str) -> int:
         return 0
     depth = 0
     for tok in tokens:
-        if tok.type == "KEYWORD" and tok.value in ("if", "while", "for", "fn"):
+        if tok.type == "KEYWORD" and tok.value in ("if", "while", "for", "fn", "try"):
             depth += 1
         elif tok.type == "KEYWORD" and tok.value == "end":
             depth -= 1

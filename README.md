@@ -9,7 +9,8 @@
 Python v2 is a programming language that lets you work quickly and integrate
 systems more effectively — same energy as the original snake, without the
 paper cuts. No indentation errors. Real closures. F-strings that just work.
-A ternary that reads left to right. And it runs **right in your browser**.
+Structured errors you can actually recover from. A ternary that reads left to
+right. And it runs **right in your browser**.
 
 ```python
 # hello.pyv2
@@ -45,6 +46,7 @@ The product is: 384
 | `nonlocal` scavenger hunts | closures just work |
 | `"n=" + str(n)` | `"n=" + n` |
 | `x if ok else y` (backwards) | `ok ? x : y` |
+| exception classes for routine app errors | `catch error` gives a useful map; `finally` always runs |
 | `assert` is a keyword with moods | `assert(cond, msg)` is a function |
 | trailing commas *sometimes* | trailing commas & multi-line everything |
 | one runtime | two parity-tested runtimes — CLI **and** browser |
@@ -206,8 +208,8 @@ The short version:
 $ python3 -m unittest discover -s tests -t .
 ```
 
-**108 tests pass:** 63 language tests, 9 PyHope engine tests, 14 production-app/build tests,
-13 workspace/Launcher tests, 8 arcade/Playground site tests, plus a parity harness that runs 25 programs (including error paths) through both the
+**112 tests pass:** 67 language tests, 9 PyHope engine tests, 14 production-app/build tests,
+13 workspace/Launcher tests, 8 arcade/Playground site tests, plus a parity harness that runs 28 programs (including error paths) through both the
 Python and JavaScript runtimes and demands byte-identical output.
 
 ## 📦 Repo layout

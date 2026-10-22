@@ -3,13 +3,14 @@
 Grammar (informal):
     program    := stmt*
     stmt       := simple | compound
-    simple     := 'return' expr? | 'break' | 'continue' | assign | expr
-    compound   := if | while | for | fn
+    simple     := 'return' expr? | 'raise' expr | 'break' | 'continue' | assign | expr
+    compound   := if | while | for | fn | try
     if         := 'if' expr ':' block ('elif' expr ':' block)* ('else' ':' block)? 'end'
     while      := 'while' expr ':' block 'end'
     for        := 'for' IDENT 'in' expr ':' block 'end'
     fn         := 'fn' IDENT '(' params ')' ':' block 'end'
-    block      := stmt* until 'end' / 'elif' / 'else'
+    try        := 'try' ':' block ('catch' IDENT? ':' block)? ('finally' ':' block)? 'end'
+    block      := stmt* until its compound terminator
     assign     := target ('=' | '+=' | '-=' | '*=' | '/=' | '%=') expr
     ternary    := or ('?' ternary ':' ternary)?
     or         := and ('or' and)*
@@ -107,6 +108,8 @@ class Parser:
                 return self.parse_while()
             if tok.value == "for":
                 return self.parse_for()
+            if tok.value == "try":
+                return self.parse_try()
             if tok.value == "fn":
                 # fn name(...) is a statement; bare fn(...) is an expression.
                 if self.peek(1).type == "IDENT":
@@ -116,10 +119,18 @@ class Parser:
                 value = None
                 if not (self.check("NEWLINE") or self.check("KEYWORD", "end")
                         or self.check("KEYWORD", "elif") or self.check("KEYWORD", "else")
+                        or self.check("KEYWORD", "catch") or self.check("KEYWORD", "finally")
                         or self.check("EOF")):
                     value = self.parse_ternary()
                 self.end_simple()
                 return {"t": "return", "value": value, "line": tok.line}
+            if tok.value == "raise":
+                self.advance()
+                if self.check("NEWLINE") or self.check("EOF"):
+                    raise ParseError("raise needs an error value", tok.line)
+                value = self.parse_ternary()
+                self.end_simple()
+                return {"t": "raise", "value": value, "line": tok.line}
             if tok.value == "break":
                 self.advance()
                 self.end_simple()
@@ -147,7 +158,8 @@ class Parser:
         if self.check("NEWLINE"):
             self.advance()
         elif self.check("EOF") or self.check("KEYWORD", "end") \
-                or self.check("KEYWORD", "elif") or self.check("KEYWORD", "else"):
+                or self.check("KEYWORD", "elif") or self.check("KEYWORD", "else") \
+                or self.check("KEYWORD", "catch") or self.check("KEYWORD", "finally"):
             return
         else:
             tok = self.peek()
@@ -201,6 +213,27 @@ class Parser:
         self.expect("KEYWORD", "end")
         self.end_compound()
         return {"t": "for", "name": name, "iter": iterable, "body": body, "line": line}
+
+    def parse_try(self) -> dict:
+        line = self.advance().line  # 'try'
+        body = self.parse_block({"catch", "finally"})
+        catch_name = None
+        catch_body = None
+        finally_body = None
+        if self.check("KEYWORD", "catch"):
+            self.advance()
+            if self.check("IDENT"):
+                catch_name = self.advance().value
+            catch_body = self.parse_block({"finally"})
+        if self.check("KEYWORD", "finally"):
+            self.advance()
+            finally_body = self.parse_block(set())
+        if catch_body is None and finally_body is None:
+            raise ParseError("try needs a catch or finally block", line)
+        self.expect("KEYWORD", "end")
+        self.end_compound()
+        return {"t": "try", "body": body, "catch_name": catch_name,
+                "catch": catch_body, "finally": finally_body, "line": line}
 
     def parse_fn(self) -> dict:
         line = self.advance().line  # 'fn'

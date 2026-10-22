@@ -83,6 +83,16 @@ class TestParser(unittest.TestCase):
         self.assertEqual(len(node["arms"]), 2)
         self.assertIsNotNone(node["else"])
 
+    def test_try_catch_finally_and_raise_ast(self):
+        ast = parse('try: raise "stop" catch error: print(error.kind) finally: print("done") end')
+        node = ast["body"][0]
+        self.assertEqual(node["t"], "try")
+        self.assertEqual(node["catch_name"], "error")
+        self.assertEqual(node["body"][0]["t"], "raise")
+        self.assertIsNotNone(node["finally"])
+        with self.assertRaisesRegex(ParseError, "catch or finally"):
+            parse("try: print(1) end")
+
     def test_syntax_error_line(self):
         with self.assertRaises(ParseError) as cm:
             parse("x = = 3\n")
@@ -369,6 +379,42 @@ class TestErrors(unittest.TestCase):
         self.assertIn("inner", text)
         self.assertIn("outer", text)
 
+    def test_try_catch_finally_and_custom_raise(self):
+        source = '''try:
+    print(1 / 0)
+catch error:
+    print(error.kind, error.message, error.line)
+finally:
+    print("cleaned")
+end
+try: raise {kind: "ConfigError", message: "missing port"} catch issue: print(issue.kind, issue.message) end'''
+        self.assertEqual(
+            run(source),
+            "ZeroDivisionError Division by zero 2\ncleaned\nConfigError missing port",
+        )
+        self.assertEqual(run('try: raise "ignored" catch: print("recovered") end'), "recovered")
+        with self.assertRaises(AssertionError) as raised:
+            run('raise "stop now"')
+        self.assertIn("UserError: stop now", str(raised.exception))
+
+    def test_finally_runs_for_return_and_break(self):
+        source = '''fn guarded():
+    try:
+        return 7
+    finally:
+        print("return cleanup")
+    end
+end
+print(guarded())
+for i in range(3):
+    try:
+        break
+    finally:
+        print("loop cleanup")
+    end
+end'''
+        self.assertEqual(run(source), "return cleanup\n7\nloop cleanup")
+
     def test_break_outside_loop_is_error(self):
         with self.assertRaises(AssertionError) as cm:
             run("break")
@@ -407,6 +453,16 @@ class TestBuiltins(unittest.TestCase):
 
     def test_range_len(self):
         self.assertEqual(run("print(len(range(10)), len(range(2, 10, 3)))"), "10 3")
+
+    def test_sequence_helpers(self):
+        source = '''print(sum(range(5)), sum([1, 2], 10))
+print(enumerate(["a", "b"], 3))
+print(zip([1, 2, 3], ["a", "b"]))
+print(all([true, 1, "x"]), all([true, 0]), any([false, nil, 4]))'''
+        self.assertEqual(
+            run(source),
+            '10 13\n[[3, "a"], [4, "b"]]\n[[1, "a"], [2, "b"]]\ntrue false true',
+        )
 
     def test_chr_ord(self):
         self.assertEqual(run('print(chr(65), ord("A"))'), "A 65")

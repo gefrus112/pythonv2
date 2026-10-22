@@ -6,8 +6,8 @@ from dataclasses import dataclass
 
 KEYWORDS = {
     "fn", "if", "elif", "else", "while", "for", "in",
-    "return", "break", "continue", "and", "or", "not",
-    "true", "false", "nil", "end",
+    "return", "break", "continue", "raise", "try", "catch", "finally",
+    "and", "or", "not", "true", "false", "nil", "end",
 }
 
 # Longest-first so "**" beats "*", "//" beats "/", etc.

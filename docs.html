@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
   <!-- ============ top utility bar ============ -->
   <div class="topbar">
@@ -69,7 +70,7 @@
     </div>
   </section>
 
-  <main class="doc-section">
+  <main id="main-content" class="doc-section">
     <div class="doc-section-inner">
 
       <!-- ==================== INSTALL ==================== -->
@@ -508,9 +509,28 @@ print(engine.render_ascii())</code></pre>
           <tr><td>while</td><td><code>while running: step() end</code></td></tr>
           <tr><td>for</td><td><code>for item in [1, 2, 3]: print(item) end</code></td></tr>
           <tr><td>range loop</td><td><code>for i in range(1, 10, 2): print(i) end</code></td></tr>
+          <tr><td>recover</td><td><code>try: risky() catch error: print(error.kind) finally: cleanup() end</code></td></tr>
+          <tr><td>raise</td><td><code>raise {kind: "ConfigError", message: "port required"}</code></td></tr>
           <tr><td>jump</td><td><code>return</code>, <code>break</code>, <code>continue</code></td></tr>
         </tbody>
       </table>
+
+      <h3>Structured error recovery</h3>
+      <p>Runtime errors are catchable values. A named <code>catch</code> receives a map with
+        <code>kind</code>, <code>message</code>, <code>line</code>, and <code>trace</code>.
+        The optional <code>finally</code> block always runs, including during
+        <code>return</code>, <code>break</code>, and <code>continue</code>.</p>
+      <pre class="terminal"><code>try:
+    result = 100 / divisor
+catch error:
+    print(error.kind + ":", error.message)
+    result = 0
+finally:
+    print("calculation complete")
+end</code></pre>
+      <p><code>raise "message"</code> creates a <code>UserError</code>. Raise a map with string
+        <code>kind</code> and <code>message</code> fields to create a named application error.
+        Syntax errors are detected before execution and are not catchable.</p>
 
       <h3>Builtins</h3>
       <table class="ref-table">
@@ -519,6 +539,8 @@ print(engine.render_ascii())</code></pre>
           <tr><td><code>print(...)</code></td><td>Print values, space-separated</td></tr>
           <tr><td><code>len(x)</code></td><td>Length of string / list / map / range</td></tr>
           <tr><td><code>range(stop)</code> · <code>range(a, b, step)</code></td><td>Integer range</td></tr>
+          <tr><td><code>sum</code> · <code>enumerate</code> · <code>zip</code></td><td>Iterable aggregation and pairing</td></tr>
+          <tr><td><code>all</code> · <code>any</code></td><td>Truth tests across an iterable</td></tr>
           <tr><td><code>str</code> <code>int</code> <code>float</code> <code>bool</code> <code>repr</code></td><td>Conversions</td></tr>
           <tr><td><code>abs floor ceil round sqrt pow</code></td><td>Math</td></tr>
           <tr><td><code>min</code> · <code>max</code></td><td>Over arguments or one list</td></tr>
@@ -596,7 +618,7 @@ end</textarea>
         <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
         <a href="https://github.com/gefrus112/pythonv2/issues">Issues</a>
         <a href="index.html#news">News</a>
-        <a href="index.html#news">Events</a>
+        <a href="index.html#events">Events</a>
       </div>
       <div class="footer-col">
         <h4>Success Stories</h4>

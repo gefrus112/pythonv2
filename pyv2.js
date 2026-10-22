@@ -44,8 +44,8 @@
   // ------------------------------------------------------------------
   const KEYWORDS = new Set([
     "fn", "if", "elif", "else", "while", "for", "in",
-    "return", "break", "continue", "and", "or", "not",
-    "true", "false", "nil", "end",
+    "return", "break", "continue", "raise", "try", "catch", "finally",
+    "and", "or", "not", "true", "false", "nil", "end",
   ]);
   const OPERATORS = [
     "**", "//", "==", "!=", "<=", ">=", "+=", "-=", "*=", "/=", "%=",
@@ -210,16 +210,25 @@
         if (tok.value === "if") return parseIf();
         if (tok.value === "while") return parseWhile();
         if (tok.value === "for") return parseFor();
+        if (tok.value === "try") return parseTry();
         if (tok.value === "fn" && peek(1).type === "IDENT") return parseFn();
         if (tok.value === "return") {
           advance();
           let value = null;
           if (!(check("NEWLINE") || check("KEYWORD", "end") || check("KEYWORD", "elif") ||
-                check("KEYWORD", "else") || check("EOF"))) {
+                check("KEYWORD", "else") || check("KEYWORD", "catch") ||
+                check("KEYWORD", "finally") || check("EOF"))) {
             value = parseTernary();
           }
           endSimple();
           return { t: "return", value, line: tok.line };
+        }
+        if (tok.value === "raise") {
+          advance();
+          if (check("NEWLINE") || check("EOF")) throw new ParseError("raise needs an error value", tok.line);
+          const value = parseTernary();
+          endSimple();
+          return { t: "raise", value, line: tok.line };
         }
         if (tok.value === "break") { advance(); endSimple(); return { t: "break", line: tok.line }; }
         if (tok.value === "continue") { advance(); endSimple(); return { t: "continue", line: tok.line }; }
@@ -243,7 +252,8 @@
 
     function endSimple() {
       if (check("NEWLINE")) advance();
-      else if (check("EOF") || check("KEYWORD", "end") || check("KEYWORD", "elif") || check("KEYWORD", "else")) return;
+      else if (check("EOF") || check("KEYWORD", "end") || check("KEYWORD", "elif") ||
+               check("KEYWORD", "else") || check("KEYWORD", "catch") || check("KEYWORD", "finally")) return;
       else {
         const tok = peek();
         throw new ParseError("Unexpected " + JSON.stringify(tok.value) + " after statement", tok.line);
@@ -303,6 +313,27 @@
       expect("KEYWORD", "end");
       endCompound();
       return { t: "for", name, iter, body, line };
+    }
+
+    function parseTry() {
+      const line = advance().line;
+      const body = parseBlock(new Set(["catch", "finally"]));
+      let catchName = null, catchBody = null, finallyBody = null;
+      if (check("KEYWORD", "catch")) {
+        advance();
+        if (check("IDENT")) catchName = advance().value;
+        catchBody = parseBlock(new Set(["finally"]));
+      }
+      if (check("KEYWORD", "finally")) {
+        advance();
+        finallyBody = parseBlock(new Set());
+      }
+      if (catchBody === null && finallyBody === null) {
+        throw new ParseError("try needs a catch or finally block", line);
+      }
+      expect("KEYWORD", "end");
+      endCompound();
+      return { t: "try", body, catch_name: catchName, catch: catchBody, finally: finallyBody, line };
     }
 
     function parseFn() {
@@ -848,6 +879,30 @@
       return new Pyv2Error(kind, message, line, this.trace.slice());
     }
 
+    errorValue(error) {
+      const value = new PyMap();
+      value.set("kind", error.kind);
+      value.set("message", error.message2);
+      value.set("line", error.line === undefined ? null : error.line);
+      value.set("trace", new PyList(error.trace.slice()));
+      return value;
+    }
+
+    userError(value, line) {
+      if (value instanceof PyMap) {
+        const kind = value.get("kind", "UserError");
+        const message = value.get("message", display(value));
+        if (typeof kind !== "string" || !kind) {
+          throw this.error("TypeError", "raised error kind must be a non-empty string", line);
+        }
+        if (typeof message !== "string") {
+          throw this.error("TypeError", "raised error message must be a string", line);
+        }
+        return this.error(kind, message, line);
+      }
+      return this.error("UserError", display(value), line);
+    }
+
     run(source) {
       const program = parse(source);
       try {
@@ -878,6 +933,21 @@
           if (node.else) this.execBlock(node.else, new Env(env));
           break;
         }
+        case "try": {
+          try {
+            try {
+              this.execBlock(node.body, new Env(env));
+            } catch (error) {
+              if (!(error instanceof Pyv2Error) || node.catch === null) throw error;
+              const catchEnv = new Env(env);
+              if (node.catch_name !== null) catchEnv.define(node.catch_name, this.errorValue(error));
+              this.execBlock(node.catch, catchEnv);
+            }
+          } finally {
+            if (node.finally !== null) this.execBlock(node.finally, new Env(env));
+          }
+          break;
+        }
         case "while": {
           while (isTruthy(this.evalExpr(node.cond, env))) {
             try { this.execBlock(node.body, new Env(env)); }
@@ -893,6 +963,7 @@
         }
         case "return":
           throw new ReturnSignal(node.value ? this.evalExpr(node.value, env) : null);
+        case "raise": throw this.userError(this.evalExpr(node.value, env), node.line);
         case "break": throw new BreakSignal();
         case "continue": throw new ContinueSignal();
         default:
@@ -1201,6 +1272,44 @@
         }
         throw interp.error("TypeError", "range() takes 1 to 3 arguments", line);
       }, null);
+      const sequence = (interp, value, who, line) => {
+        if (value instanceof PyList) return value.items.slice();
+        if (typeof value === "string") return Array.from(value);
+        if (value instanceof PyMap) return value.keys();
+        if (value instanceof RangeVal) return value.values();
+        throw interp.error("TypeError", who + " needs an iterable", line);
+      };
+      def("sum", (interp, args, line) => {
+        if (![1, 2].includes(args.length)) throw interp.error("TypeError", "sum() takes one or two arguments", line);
+        let total = args.length === 2 ? args[1] : 0;
+        if (typeof total !== "number") throw interp.error("TypeError", "sum() start must be a number", line);
+        for (const item of sequence(interp, args[0], "sum()", line)) {
+          if (typeof item !== "number") throw interp.error("TypeError", "sum() items must be numbers", line);
+          total = interp.numOp("+", total, item, line);
+        }
+        return total;
+      }, null);
+      def("enumerate", (interp, args, line) => {
+        if (![1, 2].includes(args.length)) throw interp.error("TypeError", "enumerate() takes one or two arguments", line);
+        let start = 0;
+        if (args.length === 2) {
+          if (typeof args[1] !== "number" || !Number.isInteger(args[1])) {
+            throw interp.error("TypeError", "enumerate() start must be an integer", line);
+          }
+          start = args[1];
+        }
+        return new PyList(sequence(interp, args[0], "enumerate()", line)
+          .map((item, index) => new PyList([start + index, item])));
+      }, null);
+      def("zip", (interp, args, line) => {
+        if (!args.length) return new PyList([]);
+        const columns = args.map((value) => sequence(interp, value, "zip()", line));
+        const length = Math.min(...columns.map((column) => column.length));
+        return new PyList(Array.from({ length }, (_, index) =>
+          new PyList(columns.map((column) => column[index]))));
+      }, null);
+      def("all", (interp, args, line) => sequence(interp, args[0], "all()", line).every(isTruthy), 1);
+      def("any", (interp, args, line) => sequence(interp, args[0], "any()", line).some(isTruthy), 1);
       def("str", (interp, args) => display(args[0]), 1);
       def("repr", (interp, args) => reprValue(args[0]), 1);
       def("int", (interp, args, line) => {

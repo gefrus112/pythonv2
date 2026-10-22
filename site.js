@@ -5,6 +5,32 @@
   const root = document.documentElement;
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Turn the wide python.org-style link bar into an accessible disclosure on
+  // narrow screens. Without JavaScript, all links remain visible.
+  const mainNav = document.querySelector(".mainnav");
+  const mainNavInner = mainNav && mainNav.querySelector(".mainnav-inner");
+  if (mainNav && mainNavInner) {
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "nav-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.innerHTML = 'Menu <span aria-hidden="true">+</span>';
+    mainNavInner.prepend(toggle);
+    mainNav.classList.add("nav-enhanced");
+    toggle.addEventListener("click", () => {
+      const open = mainNav.classList.toggle("nav-open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.querySelector("span").textContent = open ? "−" : "+";
+    });
+    mainNavInner.addEventListener("click", (event) => {
+      if (event.target.closest("a") && matchMedia("(max-width: 900px)").matches) {
+        mainNav.classList.remove("nav-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.querySelector("span").textContent = "+";
+      }
+    });
+  }
+
   let progress = document.getElementById("scroll-progress");
   if (!progress) {
     progress = document.createElement("div");
@@ -45,6 +71,7 @@
     ".launcher-showcase", ".arcade-library-head", ".arcade-card", ".pocket-picker",
     ".pocket-arcade", ".sprite-animation-note", ".python-game-code",
     ".play-workspace", ".website-workshop", ".play-tutorial-grid article", ".tutorial-next",
+    ".python-quicklinks article", ".success-quote", ".feed-list li",
   ].join(","));
 
   if (reduceMotion || !("IntersectionObserver" in window)) {

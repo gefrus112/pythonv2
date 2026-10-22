@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
   <div class="topbar"><nav class="topbar-inner" aria-label="Site">
     <a href="index.html">Python</a><a href="docs.html">Docs</a><a href="download.html">Downloads</a>
@@ -35,7 +36,7 @@
     <div class="hero-actions"><a class="btn btn-yellow" href="#workspace">Open workspace</a><a class="btn btn-ghost" href="#website-workshop">Build a website</a></div>
   </div></section>
 
-  <main class="playground-main">
+  <main id="main-content" class="playground-main">
     <section class="play-workspace" id="workspace" aria-labelledby="workspace-title">
       <div class="play-toolbar">
         <div>
@@ -62,6 +63,7 @@
           <option value="website-v2">Website starter template</option>
           <option value="app-v2">Production app + Windows EXE data</option>
           <option value="game-v2">PyHope game data</option>
+          <option value="recovery-v2">Structured error recovery</option>
           <option value="classic-tour">Classic Python quick tour</option>
           <option value="error-lab">Error lab</option>
         </select>

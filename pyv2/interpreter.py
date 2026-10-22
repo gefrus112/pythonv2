@@ -296,6 +296,27 @@ class Interpreter:
     def error(self, kind: str, message: str, line=None):
         return Pyv2Error(kind, message, line, list(self.trace))
 
+    @staticmethod
+    def error_value(exc: Pyv2Error) -> dict:
+        """Convert a runtime exception into an inspectable language map."""
+        return {
+            "kind": exc.kind,
+            "message": exc.message,
+            "line": exc.line,
+            "trace": list(exc.trace),
+        }
+
+    def user_error(self, value, line: int | None) -> Pyv2Error:
+        if isinstance(value, dict):
+            kind = value.get("kind", "UserError")
+            message = value.get("message", display(value))
+            if not isinstance(kind, str) or not kind:
+                raise self.error("TypeError", "raised error kind must be a non-empty string", line)
+            if not isinstance(message, str):
+                raise self.error("TypeError", "raised error message must be a string", line)
+            return self.error(kind, message, line)
+        return self.error("UserError", display(value), line)
+
     # ---------- statements ----------
     def exec_block(self, body: list[dict], env: Env) -> None:
         for stmt in body:
@@ -314,6 +335,20 @@ class Interpreter:
                     return
             if node["else"] is not None:
                 self.exec_block(node["else"], Env(env))
+        elif t == "try":
+            try:
+                try:
+                    self.exec_block(node["body"], Env(env))
+                except Pyv2Error as exc:
+                    if node["catch"] is None:
+                        raise
+                    catch_env = Env(env)
+                    if node["catch_name"] is not None:
+                        catch_env.define(node["catch_name"], self.error_value(exc))
+                    self.exec_block(node["catch"], catch_env)
+            finally:
+                if node["finally"] is not None:
+                    self.exec_block(node["finally"], Env(env))
         elif t == "while":
             while is_truthy(self.eval_expr(node["cond"], env)):
                 try:
@@ -331,6 +366,8 @@ class Interpreter:
         elif t == "return":
             value = self.eval_expr(node["value"], env) if node["value"] is not None else None
             raise ReturnSignal(value)
+        elif t == "raise":
+            raise self.user_error(self.eval_expr(node["value"], env), node.get("line"))
         elif t == "break":
             raise BreakSignal()
         elif t == "continue":
@@ -688,6 +725,54 @@ class Interpreter:
                     raise interp.error("ValueError", "range() step must not be zero", line)
                 return RangeVal(nums[0], nums[1], nums[2])
             raise interp.error("TypeError", "range() takes 1 to 3 arguments", line)
+
+        def _sequence(interp, value, who, line):
+            if isinstance(value, list):
+                return list(value)
+            if isinstance(value, str):
+                return list(value)
+            if isinstance(value, dict):
+                return list(value.keys())
+            if isinstance(value, RangeVal):
+                return value.values()
+            raise interp.error("TypeError", f"{who} needs an iterable", line)
+
+        def _sum(interp, args, line):
+            if len(args) not in (1, 2):
+                raise interp.error("TypeError", "sum() takes one or two arguments", line)
+            total = args[1] if len(args) == 2 else 0
+            if isinstance(total, bool) or not isinstance(total, (int, float)):
+                raise interp.error("TypeError", "sum() start must be a number", line)
+            for item in _sequence(interp, args[0], "sum()", line):
+                if isinstance(item, bool) or not isinstance(item, (int, float)):
+                    raise interp.error("TypeError", "sum() items must be numbers", line)
+                total = interp.num_op("+", total, item, line)
+            return total
+
+        def _enumerate(interp, args, line):
+            if len(args) not in (1, 2):
+                raise interp.error("TypeError", "enumerate() takes one or two arguments", line)
+            start = 0
+            if len(args) == 2:
+                value = args[1]
+                if isinstance(value, bool) or not isinstance(value, (int, float)) \
+                        or float(value) != int(value):
+                    raise interp.error("TypeError", "enumerate() start must be an integer", line)
+                start = int(value)
+            return [[start + index, item]
+                    for index, item in enumerate(_sequence(interp, args[0], "enumerate()", line))]
+
+        def _zip(interp, args, line):
+            if not args:
+                return []
+            columns = [_sequence(interp, value, "zip()", line) for value in args]
+            return [list(row) for row in zip(*columns)]
+
+        def _all(interp, args, line):
+            return all(is_truthy(item) for item in _sequence(interp, args[0], "all()", line))
+
+        def _any(interp, args, line):
+            return any(is_truthy(item) for item in _sequence(interp, args[0], "any()", line))
 
         def _str(interp, args, line):
             return display(args[0])
@@ -1091,6 +1176,11 @@ class Interpreter:
             "print": Builtin("print", _print, None),
             "len": Builtin("len", _len, 1),
             "range": Builtin("range", _range, None),
+            "sum": Builtin("sum", _sum, None),
+            "enumerate": Builtin("enumerate", _enumerate, None),
+            "zip": Builtin("zip", _zip, None),
+            "all": Builtin("all", _all, 1),
+            "any": Builtin("any", _any, 1),
             "str": Builtin("str", _str, 1),
             "repr": Builtin("repr", _repr, 1),
             "int": Builtin("int", _int, 1),

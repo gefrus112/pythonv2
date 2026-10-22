@@ -181,6 +181,22 @@ fn boom():
 end
 print(boom())
 ''',
+    "caught_error": '''
+try:
+    print(1 / 0)
+catch error:
+    print(error.kind, error.message, error.line)
+finally:
+    print("cleaned")
+end
+''',
+    "custom_raise": 'try: raise {kind: "ConfigError", message: "missing"} catch e: print(e.kind, e.message) end',
+    "sequence_builtins": '''
+print(sum(range(5)), sum([1, 2], 10))
+print(enumerate(["a", "b"], 3))
+print(zip([1, 2, 3], ["a", "b"]))
+print(all([true, 1]), all([true, 0]), any([false, 4]))
+''',
 }
 
 
