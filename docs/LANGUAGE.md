@@ -8,7 +8,7 @@ edges. It ships with two runtimes that produce byte-identical output:
 | Reference interpreter | `pyv2/` (Python) | CLI, REPL, tests |
 | Browser/Node twin | `pyv2.js` | Playground on the website |
 
-File extension: `.pyv2` · CLI: `python3 -m pyv2` · Version: 0.2 "Sudbury"
+File extension: `.pyv2` · CLI: `python3 -m pyv2` · Version: 1.1 "Sudbury"
 
 ---
 
@@ -277,7 +277,12 @@ $ python3 -m pyv2 --version
 
 ## 8. Parity guarantee
 
-`tests/test_pyv2.py` (63 unit tests) and `tests/test_parity.py` (21 shared
-programs, including error paths) run every program through **both** runtimes
-and compare outputs byte for byte. If the twins ever disagree, the test suite
-fails. That's the deal.
+The suite runs **79 tests**: 63 language tests, 9 PyHope engine tests,
+6 Launcher tests, and one parity harness that sends 21 programs (including error paths) through
+**both** language runtimes and compares outputs byte for byte. If the twins
+ever disagree, the suite fails. That's the deal.
+
+PyHope is a separate standard-library-only engine package in `pyhope/`. It
+provides `Vec2`, `Sprite`, `TileMap`, fixed-step `Engine` scenes, DDA
+`raycast()`, and an ASCII preview; browser Canvas/WebGL renderers live in the
+website source.

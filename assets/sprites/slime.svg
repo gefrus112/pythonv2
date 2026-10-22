@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <title>Null Slime — original CC0 monster sprite</title>
+  <rect width="16" height="16" fill="none"/>
+  <path fill="#1b2733" d="M5 3h6v1h2v2h1v7h-2v1H4v-1H2V6h1V4h2z"/>
+  <path fill="#44a36f" d="M5 4h6v1h2v7h-2v1H5v-1H3V6h2z"/>
+  <path fill="#70d99a" d="M5 5h5v2H5z"/>
+  <path fill="#f7fbff" d="M5 8h2v2H5zm5 0h2v2h-2z"/>
+  <path fill="#25313d" d="M6 9h1v1H6zm4 0h1v1h-1zM7 11h3v1H7z"/>
+</svg>

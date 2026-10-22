@@ -1,7 +1,7 @@
 {
-  "name": "Python v2",
+  "name": "Python v2 + PyHope",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
-  "postCreateCommand": "python3 -m unittest discover -s tests -t .",
+  "postCreateCommand": "python3 -m pip install -e . && python3 -m unittest discover -s tests -t .",
   "forwardPorts": [8000],
   "portsAttributes": {
     "8000": {

@@ -1,0 +1,60 @@
+# Byte Beast Arena — a complete terminal game written in Python v2.
+# Run: python3 -m pyv2 examples/games/monster_arena.pyv2
+
+rooms = [
+    {name: "Blue Hall", monster: "Null Slime", hp: 6, damage: 2},
+    {name: "Version Vault", monster: "Byte Beast", hp: 10, damage: 3},
+    {name: "Comet Core", monster: "Red Compiler", hp: 14, damage: 4},
+]
+
+player_hp = 24
+blaster = 5
+score = 0
+playing = true
+
+print("=== PYHOPE: BYTE BEAST ARENA ===")
+print("A = attack, H = heal (once per room), Q = quit")
+
+for room in rooms:
+    healed = false
+    print(f"\nEntering {room.name}...")
+    print(f"A wild {room.monster} appears with {room.hp} HP!")
+
+    while room.hp > 0 and player_hp > 0:
+        print(f"You: {player_hp} HP | {room.monster}: {room.hp} HP")
+        action = input("[A/H/Q] > ").trim().lower()
+
+        if action == "q":
+            print("You escaped with score", score)
+            playing = false
+            break
+        elif action == "h" and not healed:
+            player_hp = min(24, player_hp + 7)
+            healed = true
+            print("Hope Bit restored your health!")
+        elif action == "a":
+            room.hp -= blaster
+            print(f"Comet Blaster hits for {blaster}!")
+        else:
+            print("That action fizzled.")
+            continue
+        end
+
+        if room.hp > 0:
+            player_hp -= room.damage
+            print(f"{room.monster} hits back for {room.damage}.")
+        end
+    end
+
+    if player_hp <= 0 or not playing:
+        break
+    end
+    score += 100
+    print(f"{room.monster} deleted! Score: {score}")
+end
+
+if playing and player_hp > 0:
+    print(f"\nARENA CLEAR — final score {score}!")
+elif player_hp <= 0:
+    print(f"\nGAME OVER — final score {score}.")
+end

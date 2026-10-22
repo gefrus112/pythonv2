@@ -21,6 +21,34 @@
       "problemMatcher": []
     },
     {
+      "label": "Open Python v2 Sudbury Launcher",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "pyv2.launcher"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run PyHope engine demo",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "pyhope", "--demo"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Serve Python v2 website + games",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "http.server", "8000", "--bind", "0.0.0.0"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
       "label": "Run Python v2 tests",
       "type": "shell",
       "command": "python3",

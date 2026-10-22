@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Games & PyHope Engine — Python v2</title>
+  <meta name="description" content="Play games made for Python v2 with PyHope: a monster raycaster, an original platform game, free CC0 sprites, and a 9.4-million-pixel GPU demo.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <div class="topbar">
+    <nav class="topbar-inner" aria-label="Site">
+      <a href="index.html">Python</a>
+      <a href="index.html#community">PSF</a>
+      <a href="docs.html">Docs</a>
+      <a href="download.html">Downloads</a>
+      <a class="active" href="games.html">Games</a>
+      <a href="index.html#community">Community</a>
+    </nav>
+  </div>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="index.html">
+        <img src="logo.svg" alt="Python v2 logo — two snakes, red and blue" width="64" height="64">
+        <span class="brand-word">python<sup>™</sup><em>v2</em></span>
+      </a>
+      <div class="masthead-tools">
+        <a class="btn-youtube" href="https://www.youtube.com/@CubeCometYT" target="_blank" rel="noopener">▶ Subscribe @CubeCometYT</a>
+        <a class="btn-social" href="download.html">Install v1.1</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mainnav" aria-label="Main">
+    <div class="mainnav-inner">
+      <a href="index.html#about">About</a>
+      <a href="download.html">Downloads</a>
+      <a href="docs.html">Documentation</a>
+      <a href="tutorial.html">Tutorial</a>
+      <a class="nav-current" href="games.html">Games</a>
+      <a href="index.html#community">Community</a>
+    </div>
+  </nav>
+
+  <section class="page-head game-page-head">
+    <div class="page-head-inner">
+      <p class="eyebrow">PYHOPE ENGINE • NO PYGAME • BUILT FOR PYTHON V2</p>
+      <h1>Games made with Python v2</h1>
+      <p>Fight original sprite monsters, play a classic-style platformer, inspect
+        free CC0 assets, or ask the GPU to ray-cast a single
+        <strong>9,437,184-pixel</strong> frame. The games and engine code ship
+        with the language.</p>
+      <div class="hero-actions">
+        <a class="btn btn-yellow" href="#play">Play now</a>
+        <a class="btn btn-ghost" href="download.html#pyhope">Install PyHope</a>
+        <a class="btn btn-ghost" href="docs.html#pyhope">Read engine docs</a>
+      </div>
+    </div>
+  </section>
+
+  <aside class="youtube-callout reveal-wide">
+    <div class="youtube-play" aria-hidden="true">▶</div>
+    <div>
+      <span class="eyebrow">THE 1,000 SUBSCRIBER QUEST</span>
+      <h2>Help @CubeCometYT reach 1K</h2>
+      <p>At 1,000 subscribers, Cube Comet will release a full video showing
+        how to install Python v2 and the PyHope game engine from start to finish.</p>
+    </div>
+    <a class="btn-youtube btn-youtube-big" href="https://www.youtube.com/@CubeCometYT" target="_blank" rel="noopener">Subscribe on YouTube</a>
+  </aside>
+
+  <main class="games-main">
+    <div class="game-tabs" role="tablist" aria-label="Games and engine sections">
+      <button role="tab" data-game-tab="play" aria-selected="true">🎮 Play</button>
+      <button role="tab" data-game-tab="gpu">⚡ 9M GPU Lab</button>
+      <button role="tab" data-game-tab="sprites">👾 Free Sprites</button>
+      <button role="tab" data-game-tab="source">&gt;_ Python v2 Source</button>
+    </div>
+
+    <!-- ==================== Play ==================== -->
+    <section data-game-panel="play" id="play" class="game-panel">
+      <div class="game-title-row">
+        <div>
+          <p class="eyebrow">GAME 01 • SOFTWARE RAYCASTER</p>
+          <h2>PyHope: Byte Beast Arena</h2>
+          <p>The original CPU raycaster, upgraded with billboard sprites,
+            monster AI, a blaster, hit detection, health, kills, and an honest
+            running pixel counter. It passes <strong>9 million software-rendered
+            pixels in under three seconds</strong> at 60 FPS.</p>
+        </div>
+        <div class="engine-pill">CPU • 57,600 px/frame</div>
+      </div>
+
+      <div class="game-stage game-stage-arena">
+        <canvas id="arena-canvas" width="320" height="180" aria-label="Byte Beast Arena. Click, use WASD to move, arrows to turn, space to fire."></canvas>
+        <div class="game-hud game-hud-rich">
+          <span id="arena-fps">– FPS</span>
+          <span id="arena-kills">MONSTERS 5 • KILLS 0 • HP 100</span>
+          <span id="arena-pixels">0 pixels rendered</span>
+          <span id="arena-pos">x 6.0 y 2.0</span>
+        </div>
+      </div>
+      <div class="control-strip">
+        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span>
+        <span><kbd>←</kbd><kbd>→</kbd> turn</span>
+        <span><kbd>Space</kbd> / <kbd>F</kbd> fire</span>
+        <span><kbd>Shift</kbd> sprint</span>
+        <span>or click the focused game to fire</span>
+      </div>
+
+      <div class="game-divider"></div>
+
+      <div class="game-title-row">
+        <div>
+          <p class="eyebrow">GAME 02 • ORIGINAL PLATFORMER</p>
+          <h2>Comet Hopper</h2>
+          <p>A legal, original classic-style platform game—not Mario and not
+            ripped Nintendo art. Python v2 generates the level rows; PyHope
+            handles movement, collision, enemies, coins, camera, and Canvas
+            rendering.</p>
+        </div>
+        <div class="engine-pill engine-pill-blue">PYTHON V2 LEVEL</div>
+      </div>
+      <div class="game-stage platform-stage">
+        <canvas id="platform-canvas" width="640" height="360" aria-label="Comet Hopper. Click, move with A and D, jump with W or Space."></canvas>
+        <div class="game-hud">
+          <span id="platform-status">HOPE BITS 0 • level generated by Python v2</span>
+          <button id="platform-reset" type="button">Restart</button>
+        </div>
+      </div>
+      <div class="control-strip">
+        <span><kbd>A</kbd><kbd>D</kbd> or <kbd>←</kbd><kbd>→</kbd> run</span>
+        <span><kbd>W</kbd> / <kbd>↑</kbd> / <kbd>Space</kbd> jump</span>
+        <span>jump on Null Slimes • collect Hope Bits • reach the red flag</span>
+      </div>
+
+      <div class="game-divider"></div>
+
+      <div class="game-title-row">
+        <div>
+          <p class="eyebrow">GAME 03 • TOP-DOWN RACING</p>
+          <h2>Comet Circuit</h2>
+          <p>Race three AI drivers around a Python v2-generated track. PyHope
+            handles acceleration, reverse, speed-sensitive steering, road grip,
+            grass drag, lap timing, camera tracking, and a best-time finish.</p>
+        </div>
+        <div class="engine-pill engine-pill-racing">PYTHON V2 TRACK</div>
+      </div>
+      <div class="game-stage racing-stage">
+        <canvas id="racing-canvas" width="800" height="450" aria-label="Comet Circuit racing game. Click, accelerate with W or Up, and steer with A D or arrow keys."></canvas>
+        <div class="game-hud">
+          <span id="racing-status">LAP 1/3 • 0 KM/H • Python v2 track</span>
+          <button id="racing-reset" type="button">Restart race</button>
+        </div>
+      </div>
+      <div class="control-strip">
+        <span><kbd>W</kbd> / <kbd>↑</kbd> accelerate</span>
+        <span><kbd>S</kbd> / <kbd>↓</kbd> brake &amp; reverse</span>
+        <span><kbd>A</kbd><kbd>D</kbd> or <kbd>←</kbd><kbd>→</kbd> steer</span>
+        <span><kbd>R</kbd> restart • complete 3 laps</span>
+      </div>
+    </section>
+
+    <!-- ==================== GPU ==================== -->
+    <section data-game-panel="gpu" id="gpu" class="game-panel" hidden>
+      <div class="game-title-row">
+        <div>
+          <p class="eyebrow">PYHOPE GPU RAYCASTER • WEBGL2</p>
+          <h2>Over nine million ray-cast pixels</h2>
+          <p><strong>Live mode</strong> runs at 1280×720. The opt-in
+            <strong>9M frame</strong> button resizes the real GPU canvas to
+            4096×2304 and ray-casts <strong>9,437,184 fragments</strong>.
+            It renders one still frame so small devices do not melt.</p>
+        </div>
+        <div class="engine-pill engine-pill-gpu">GPU • WEBGL2</div>
+      </div>
+
+      <div class="benchmark-note">
+        <strong>Honest benchmark:</strong> this is not CSS upscaling. In 9M mode,
+        <code>canvas.width × canvas.height</code> is exactly
+        <code>4096 × 2304</code>. Ray work and the large framebuffer stay on the
+        GPU instead of a 9-million-item Python list. It is memory-efficient—not
+        “zero RAM,” because every real browser and game needs memory.
+      </div>
+      <div class="game-stage gpu-stage">
+        <canvas id="gpu-canvas" width="1280" height="720" aria-label="GPU raycaster. Start live mode, click the canvas, and use WASD and arrow keys."></canvas>
+        <div class="game-hud">
+          <span id="gpu-status">GPU READY • press Start live</span>
+        </div>
+      </div>
+      <div class="gpu-actions">
+        <button class="btn btn-blue" id="gpu-live" type="button">▶ Start live 720p</button>
+        <button class="btn btn-yellow" id="gpu-9m" type="button">⚡ Render 9,437,184 pixels</button>
+      </div>
+      <div class="control-strip">
+        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span>
+        <span><kbd>←</kbd><kbd>→</kbd> turn</span>
+        <span>WebGL2 fragment shader • DDA grid rays • procedural walls</span>
+      </div>
+    </section>
+
+    <!-- ==================== Sprites ==================== -->
+    <section data-game-panel="sprites" id="sprites" class="game-panel" hidden>
+      <p class="eyebrow">ORIGINAL ASSETS • PUBLIC DOMAIN</p>
+      <h2>Free PyHope sprite pack</h2>
+      <p class="panel-lede">These sprites were made for Python v2 and dedicated
+        to the public domain under CC0. Download, remix, recolor, use in a
+        commercial game—no permission needed. They are not copied from Mario,
+        Nintendo, or another game.</p>
+      <div class="sprite-grid">
+        <article class="sprite-card">
+          <div class="sprite-preview"><img src="assets/sprites/comet-hero.svg" alt="Comet Kid pixel sprite"></div>
+          <h3>Comet Kid</h3><p>Original platform hero.</p>
+          <a href="assets/sprites/comet-hero.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card">
+          <div class="sprite-preview"><img src="assets/sprites/monster.svg" alt="Byte Beast pixel sprite"></div>
+          <h3>Byte Beast</h3><p>Raycaster monster.</p>
+          <a href="assets/sprites/monster.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card">
+          <div class="sprite-preview"><img src="assets/sprites/slime.svg" alt="Null Slime pixel sprite"></div>
+          <h3>Null Slime</h3><p>Squishy platform enemy.</p>
+          <a href="assets/sprites/slime.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card">
+          <div class="sprite-preview sprite-preview-wide"><img src="assets/sprites/blaster.svg" alt="Comet Blaster weapon sprite"></div>
+          <h3>Comet Blaster</h3><p>Original sci-fi weapon.</p>
+          <a href="assets/sprites/blaster.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card">
+          <div class="sprite-preview"><img src="assets/sprites/coin.svg" alt="Hope Bit coin sprite"></div>
+          <h3>Hope Bit</h3><p>Shiny collectible.</p>
+          <a href="assets/sprites/coin.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card sprite-license-card">
+          <div class="sprite-preview"><span>CC0</span></div>
+          <h3>No strings attached</h3><p>Read the public-domain dedication.</p>
+          <a href="assets/sprites/LICENSE.md">View license</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== Source ==================== -->
+    <section data-game-panel="source" id="source" class="game-panel" hidden>
+      <p class="eyebrow">READ IT • CHANGE IT • SHIP IT</p>
+      <h2>The levels and race track really come from Python v2</h2>
+      <p class="panel-lede">When this page starts, the browser interpreter runs
+        Python v2 scripts. Printed rows become Comet Hopper's platform level;
+        printed coordinate pairs become Comet Circuit's closed race track.
+        PyHope supplies physics, sprites, cameras, AI, and renderers.</p>
+      <div class="source-split">
+        <pre class="terminal"><code>level = [
+    "........................................",
+    "...........................C............",
+    ".............C...........####...........",
+    ".........#####..........................",
+    "..C..................M.................F",
+    "#####...........########..............###",
+    "........................................",
+    "########################################",
+]
+
+for row in level:
+    print(row)
+end</code></pre>
+        <div class="api-list">
+          <h3>PyHope 1.1 includes</h3>
+          <ul class="checklist">
+            <li><code>Vec2</code> math and movement</li>
+            <li><code>Sprite</code> entities and tags</li>
+            <li><code>TileMap</code> collision</li>
+            <li>fixed-step <code>Engine</code> scenes</li>
+            <li>DDA <code>raycast()</code></li>
+            <li>ASCII terminal preview</li>
+            <li>Canvas platform renderer</li>
+            <li>Top-down racing physics + AI</li>
+            <li>CPU sprite raycaster</li>
+            <li>WebGL2 9M renderer</li>
+          </ul>
+          <a class="btn btn-blue" href="docs.html#pyhope">PyHope API guide</a>
+          <a class="btn btn-ghost-dark" href="https://github.com/gefrus112/pythonv2">View all source</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="youtube-bottom">
+    <div>
+      <p class="eyebrow">NEXT MILESTONE: 1,000 SUBSCRIBERS</p>
+      <h2>Want the full video install tutorial?</h2>
+      <p>Subscribe to Cube Comet. At 1K, the Python v2 + PyHope installation
+        walkthrough goes live.</p>
+    </div>
+    <a class="btn-youtube btn-youtube-big" href="https://www.youtube.com/@CubeCometYT" target="_blank" rel="noopener">▶ Subscribe @CubeCometYT</a>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col"><h4>Python v2</h4><a href="index.html">Home</a><a href="download.html">Downloads</a><a href="tutorial.html">Tutorial</a></div>
+      <div class="footer-col"><h4>Games</h4><a href="games.html#play">Monster arena</a><a href="games.html#play">Platformer</a><a href="games.html#play">Comet Circuit racing</a><a href="games.html#gpu">9M GPU Lab</a></div>
+      <div class="footer-col"><h4>PyHope</h4><a href="download.html#pyhope">Install engine</a><a href="docs.html#pyhope">Engine docs</a><a href="games.html#source">Python v2 source</a></div>
+      <div class="footer-col"><h4>Community</h4><a href="https://www.youtube.com/@CubeCometYT">YouTube</a><a href="https://github.com/gefrus112/pythonv2">GitHub</a><a href="https://github.com/gefrus112/pythonv2/issues">Issues</a></div>
+      <div class="footer-col"><h4>Learn</h4><a href="guide.html">50 things to read</a><a href="docs.html">Reference</a><a href="assets/sprites/LICENSE.md">Sprite license</a></div>
+    </div>
+    <div class="footer-legal"><p><img src="favicon.svg" alt="" width="22" height="22">© <span id="year">2026</span> Python v2 + PyHope. Original game assets are CC0.</p></div>
+  </footer>
+
+  <!-- Python v2 generates the racing circuit used by Comet Circuit. -->
+  <script id="racing-track" type="text/pyv2">
+track = [
+    [280, 450], [350, 245], [560, 145], [825, 165], [1060, 290],
+    [1145, 500], [1035, 710], [790, 785], [515, 735], [300, 590],
+]
+for point in track:
+    print(point[0] + "," + point[1])
+end
+  </script>
+
+  <!-- This Python v2 program is executed by games.js to build the platform level. -->
+  <script id="platform-level" type="text/pyv2">
+level = [
+    "................................................................",
+    "................................................................",
+    "..............................................................F.",
+    "...........................C..................................###",
+    ".............C...........####...........C.......................",
+    ".........#####........................#####.............C........",
+    "..C..................M................................####.......",
+    "#####...........########...........M.........................####",
+    ".....####........................####...........#####.............",
+    "..........C.........C............................................",
+    "################################################################",
+]
+for row in level:
+    print(row)
+end
+  </script>
+  <script src="pyv2.js"></script>
+  <script src="game.js"></script>
+  <script src="gpu-game.js"></script>
+  <script src="site.js"></script>
+  <script src="games.js"></script>
+</body>
+</html>
