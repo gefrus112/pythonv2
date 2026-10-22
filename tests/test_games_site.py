@@ -49,6 +49,7 @@ class GamesSiteTests(unittest.TestCase):
             'id="site-html-source"', 'id="copy-website-html"',
             'data-site-view="preview"', 'data-site-view="html"',
             'data-preview-size="mobile"', 'data-preview-size="desktop"',
+            '<option value="app-v2">',
             'src="classic-python.js"', 'src="playground.js"',
         ):
             self.assertIn(required, playground)
@@ -70,6 +71,19 @@ class GamesSiteTests(unittest.TestCase):
         self.assertEqual(sum(line.startswith("GAME|") for line in lines), 3)
         self.assertGreaterEqual(sum(line.startswith("SKILL|") for line in lines), 6)
         self.assertIn("PythonV2PortfolioTemplate", script)
+
+    def test_production_app_playground_starter_runs(self):
+        script = (ROOT / "playground.js").read_text(encoding="utf-8")
+        match = re.search(
+            r'"app-v2": \{[\s\S]*?source: `([\s\S]*?)`,\n    \},',
+            script,
+        )
+        self.assertIsNotNone(match)
+        output, error = run_capture(match.group(1))
+        self.assertIsNone(error)
+        self.assertIn("Comet Notes v1.0.0", output)
+        self.assertIn("Build the Windows EXE", output)
+        self.assertIn("platform: embedded", output)
 
     def test_classic_python_compatibility_smoke(self):
         completed = subprocess.run(

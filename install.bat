@@ -46,6 +46,7 @@ if errorlevel 1 goto :pip_error
 
 echo [4/4] Running checks and creating the Python v2 app shortcut...
 py -m pyv2 --version
+py -m pyv2 doctor
 py -m pyhope --check
 py -c "from pyv2.launcher import safe_name; assert safe_name('Python v2') == 'Python-v2'"
 if errorlevel 1 goto :check_error

@@ -85,5 +85,28 @@
       "main()"
     ],
     "description": "Program skeleton"
+  },
+  "persistent-app": {
+    "prefix": "appdata",
+    "body": [
+      "info = app_info()",
+      "data = ${1:{}}",
+      "if file_exists(\"${2:data.json}\"):",
+      "    data = json_decode(read_text(\"${2:data.json}\"))",
+      "end",
+      "${3:# update data}",
+      "write_text(\"${2:data.json}\", json_encode(data))"
+    ],
+    "description": "Safe persistent app-data pattern"
+  },
+  "native-dialog": {
+    "prefix": "dialog",
+    "body": [
+      "answer = ui_ask(\"${1:App}\", \"${2:Question}\", \"${3:Default}\")",
+      "if answer != nil:",
+      "    ui_message(\"${1:App}\", answer)",
+      "end"
+    ],
+    "description": "Native packaged-app dialog"
   }
 }

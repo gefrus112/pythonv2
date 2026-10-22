@@ -50,6 +50,7 @@ python3 -m pip install --user --upgrade "$INSTALL_DIR"
 
 echo "[4/4] Running checks and creating the Python v2 app..."
 python3 -m pyv2 --version
+python3 -m pyv2 doctor
 python3 -m pyhope --check
 python3 -c "from pyv2.launcher import safe_name; assert safe_name('Python v2') == 'Python-v2'"
 

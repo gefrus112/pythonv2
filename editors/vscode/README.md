@@ -29,9 +29,10 @@ code --install-extension pyv2-0.1.0.vsix
 
 - Colorized `.pyv2` files (keywords, f-strings, numbers, comments, operators)
 - Smart indentation (`fn`/`if`/`while`/`for` indent, `end`/`elif`/`else` dedent)
-- Snippets: `fn`, `if`, `ifelse`, `while`, `for`, `forr`, `fstr`, `map`, `main`
-- Run the current file with **Ctrl+Shift+B** (task included in the repo's
-  `.vscode/tasks.json`)
+- Snippets: `fn`, `if`, `ifelse`, `while`, `for`, `forr`, `fstr`, `map`,
+  `main`, `appdata`, and `dialog`
+- Run the current file with **Ctrl+Shift+B**, validate application metadata,
+  or create a Windows build kit from the included `.vscode/tasks.json` tasks
 
 ## Not using VS Code?
 

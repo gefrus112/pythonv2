@@ -749,6 +749,50 @@
     return "unknown";
   }
 
+  function jsonToNative(value, seen) {
+    if (value === null || typeof value === "boolean" || typeof value === "string") return value;
+    if (typeof value === "number") {
+      if (!Number.isFinite(value)) throw new Error("non-finite numbers are not valid JSON");
+      if (Number.isInteger(value) && !Number.isSafeInteger(value)) {
+        throw new Error("integer exceeds the cross-runtime safe range");
+      }
+      return value;
+    }
+    const active = seen || new Set();
+    if (value instanceof PyList) {
+      if (active.has(value)) throw new Error("circular data is not valid JSON");
+      active.add(value);
+      const out = value.items.map((item) => jsonToNative(item, active));
+      active.delete(value);
+      return out;
+    }
+    if (value instanceof PyMap) {
+      if (active.has(value)) throw new Error("circular data is not valid JSON");
+      active.add(value);
+      const out = {};
+      for (const [key, item] of value.entries()) {
+        if (typeof key !== "string") throw new Error("JSON map keys must be strings");
+        out[key] = jsonToNative(item, active);
+      }
+      active.delete(value);
+      return out;
+    }
+    throw new Error(typeName(value) + " is not valid JSON");
+  }
+
+  function nativeToJsonValue(value) {
+    if (typeof value === "number" && Number.isInteger(value) && !Number.isSafeInteger(value)) {
+      throw new Error("integer exceeds the cross-runtime safe range");
+    }
+    if (Array.isArray(value)) return new PyList(value.map(nativeToJsonValue));
+    if (value !== null && typeof value === "object") {
+      const result = new PyMap();
+      Object.entries(value).forEach(([key, item]) => result.set(key, nativeToJsonValue(item)));
+      return result;
+    }
+    return value;
+  }
+
   // ------------------------------------------------------------------
   // Environments
   // ------------------------------------------------------------------
@@ -1279,6 +1323,44 @@
       def("clock", () => (typeof performance !== "undefined" ? performance.now() : Date.now()) / 1000, 0);
       def("input", (interp, args, line) => {
         throw interp.error("RuntimeError", "input() is not available in the browser playground", line);
+      }, null);
+      def("args", () => new PyList([]), 0);
+      def("app_info", () => {
+        const info = new PyMap();
+        info.set("name", "Python v2 Program"); info.set("version", "1.0.0");
+        info.set("id", "python-v2-program"); info.set("platform", "browser");
+        info.set("data_dir", null); info.set("has_assets", false); info.set("max_text_bytes", 0);
+        return info;
+      }, 0);
+      def("json_encode", (interp, args, line) => {
+        try { return JSON.stringify(jsonToNative(args[0])); }
+        catch (error) { throw interp.error("ValueError", "json_encode(): " + error.message, line); }
+      }, 1);
+      def("json_decode", (interp, args, line) => {
+        if (typeof args[0] !== "string") throw interp.error("TypeError", "json_decode() needs a string", line);
+        try { return nativeToJsonValue(JSON.parse(args[0])); }
+        catch (error) { throw interp.error("ValueError", "json_decode(): invalid JSON", line); }
+      }, 1);
+      ["read_text", "write_text", "append_text", "file_exists", "make_dir", "list_dir",
+       "delete_file", "read_asset", "asset_exists", "sleep_ms"].forEach((name) => {
+        def(name, (interp, args, line) => {
+          throw interp.error("CapabilityError", name + "() is available in desktop and CLI apps, not the browser", line);
+        }, null);
+      });
+      def("ui_message", (interp, args, line) => {
+        if (typeof args[0] !== "string" || typeof args[1] !== "string") {
+          throw interp.error("TypeError", "ui_message() needs title and message strings", line);
+        }
+        if (typeof global.alert !== "function") throw interp.error("CapabilityError", "message dialogs are unavailable", line);
+        global.alert(args[0] + "\n\n" + args[1]); return null;
+      }, 2);
+      def("ui_ask", (interp, args, line) => {
+        if (typeof args[0] !== "string" || typeof args[1] !== "string") {
+          throw interp.error("TypeError", "ui_ask() needs title and prompt strings", line);
+        }
+        if (typeof global.prompt !== "function") throw interp.error("CapabilityError", "input dialogs are unavailable", line);
+        const answer = global.prompt(args[0] + "\n\n" + args[1], args.length > 2 ? display(args[2]) : "");
+        return answer === null ? null : answer;
       }, null);
       def("chr", (interp, args, line) => String.fromCodePoint(intArg(interp, args[0], "chr()", line)), 1);
       def("ord", (interp, args, line) => {

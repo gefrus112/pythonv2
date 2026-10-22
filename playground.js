@@ -40,7 +40,7 @@ skills = ["Python v2", "PyHope", "Web design", "Canvas games", "Creative coding"
 stats = [
     {value: "10", label: "Playable games"},
     {value: "8", label: "Open assets"},
-    {value: "92+", label: "Passing tests"},
+    {value: "108+", label: "Passing tests"},
 ]
 projects = [
     {title: "Python v2", kind: "Language", description: "A friendlier Python remake with browser and desktop runtimes.", link: "https://github.com/gefrus112/pythonv2"},
@@ -68,6 +68,32 @@ end
 for game in games:
     print("GAME|" + game.title + "|" + game.genre + "|" + game.description + "|" + game.link)
 end`,
+    },
+    "app-v2": {
+      mode: "pyv2", file: "comet-notes.pyv2",
+      source: `# Production app data model — this part runs in browser and desktop.
+# Download it, then use: pyv2 build comet-notes.pyv2
+info = app_info()
+settings = {
+    app_name: "Comet Notes",
+    version: "1.0.0",
+    theme: "night",
+    autosave: true,
+}
+notes = [
+    {title: "Design the app", done: true},
+    {title: "Build the Windows EXE", done: false},
+]
+
+encoded = json_encode({settings: settings, notes: notes})
+restored = json_decode(encoded)
+print(restored.settings.app_name, "v" + restored.settings.version)
+for note in restored.notes:
+    print(note.done ? "[x]" : "[ ]", note.title)
+end
+print("platform:", info.platform)
+print("Next: download source, run 'pyv2 new windows-app', then 'pyv2 build'.")
+# Desktop/EXE apps also get safe read_text, write_text, assets, args, and dialogs.`,
     },
     "game-v2": {
       mode: "pyv2", file: "game-data.pyv2",
@@ -155,7 +181,7 @@ print("average:", divide(42, len(items)))`,
     email: "hello@example.com",
     availability: "Available for select projects",
     skills: ["Python v2", "PyHope", "Web design", "Canvas games", "Creative coding", "UI systems"],
-    stats: [{ value: "10", label: "Playable games" }, { value: "8", label: "Open assets" }, { value: "92+", label: "Passing tests" }],
+    stats: [{ value: "10", label: "Playable games" }, { value: "8", label: "Open assets" }, { value: "108+", label: "Passing tests" }],
     projects: [
       { title: "Python v2", kind: "Language", description: "A friendlier Python remake with browser and desktop runtimes.", link: "https://github.com/gefrus112/pythonv2" },
       { title: "PyHope Arcade", kind: "Games", description: "Ten original shooters, platformers, racers, and arcade experiments.", link: "https://gefrus112.github.io/pythonv2/games.html" },

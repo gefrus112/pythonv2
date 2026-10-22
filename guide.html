@@ -330,14 +330,14 @@ boom()</code></pre>
   <h3>Use the REPL</h3>
   <p>Run pyv2 with no file for an interactive prompt; Ctrl-D exits.</p>
   <pre><code>python3 -m pyv2</code></pre>
-</article><article class="guide-card" data-category="tools" data-search="cli flags check the version or run a source file. output and errors are terminal friendly. pyv2 --version
-pyv2 examples/fizzbuzz.pyv2">
+</article><article class="guide-card" data-category="tools" data-search="app cli create validate build windows exe arguments safe data json pyv2 new check build doctor">
   <div class="guide-number">39</div>
   <div class="guide-category">Tools</div>
-  <h3>CLI flags</h3>
-  <p>Check the version or run a source file. Output and errors are terminal friendly.</p>
-  <pre><code>pyv2 --version
-pyv2 examples/fizzbuzz.pyv2</code></pre>
+  <h3>Application CLI</h3>
+  <p>Create, validate, and package production apps; pass arguments after the source filename.</p>
+  <pre><code>pyv2 new windows-app "My App"
+pyv2 check My-App
+pyv2 build My-App</code></pre>
 </article><article class="guide-card" data-category="tools" data-search="vs code the repository includes run/test tasks, file association, highlighting, and snippets. ctrl+shift+b  # run current .pyv2 file">
   <div class="guide-number">40</div>
   <div class="guide-category">Tools</div>
@@ -354,9 +354,9 @@ pyv2 examples/fizzbuzz.pyv2</code></pre>
   <div class="guide-number">42</div>
   <div class="guide-category">Tools</div>
   <h3>Playground + Sudbury Workspace</h3>
-  <p>The Playground turns Python v2 profile, project, and game data into a responsive portfolio with live preview and inspectable HTML. The desktop app adds multi-file projects, assets, editors, and settings.</p>
+  <p>The Playground builds responsive portfolios. The desktop app adds safe files, assets, editors, and Website, Game, CLI, or Windows EXE-ready project creation.</p>
   <pre><code>pyhope --studio
-# or open playground.html</code></pre>
+# New Project → Windows app</code></pre>
 </article><article class="guide-card" data-category="pyhope" data-search="vec2 immutable vectors provide addition, scaling, length, normalization, and dot products. direction = vec2(3, 4).normalized()">
   <div class="guide-number">43</div>
   <div class="guide-category">PyHope</div>
@@ -401,12 +401,13 @@ def gravity(scene, dt): ...</code></pre>
   <h3>9M GPU renderer</h3>
   <p>WebGL2 live mode is 720p; benchmark mode ray-casts 4096×2304 = 9,437,184 pixels.</p>
   <pre><code>games.html#gpu</code></pre>
-</article><article class="guide-card" data-category="ship" data-search="release your game keep assets licensed, test on keyboard and touch-sized screens, then publish with github pages. python3 -m unittest discover -s tests -t .">
+</article><article class="guide-card" data-category="ship" data-search="release software game windows exe validate tests build github pages actions pyv2 check build native">
   <div class="guide-number">50</div>
   <div class="guide-category">Ship</div>
-  <h3>Release your game</h3>
-  <p>Keep assets licensed, test on keyboard and touch-sized screens, then publish with GitHub Pages.</p>
-  <pre><code>python3 -m unittest discover -s tests -t .</code></pre>
+  <h3>Release software or games</h3>
+  <p>Run tests, validate app metadata, create an integrity-tracked kit, then build the real EXE on Windows or publish games with GitHub Pages.</p>
+  <pre><code>pyv2 check My-App
+pyv2 build My-App --native</code></pre>
 </article>
     </div>
   </main>

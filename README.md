@@ -48,6 +48,8 @@ The product is: 384
 | `assert` is a keyword with moods | `assert(cond, msg)` is a function |
 | trailing commas *sometimes* | trailing commas & multi-line everything |
 | one runtime | two parity-tested runtimes — CLI **and** browser |
+| ad-hoc file access | capability-based app data, atomic saves, and read-only assets |
+| packaging guesswork | validated projects, reproducible kits, and real Windows `.exe` builds |
 
 ## 🚀 Quick start
 
@@ -79,13 +81,50 @@ $ python3 -m pyhope --demo                # engine demo
 $ python3 -m pyv2 examples/games/monster_arena.pyv2
 ```
 
+## 🏗️ Build production Windows applications
+
+Python v2 now includes the **Sudbury Build Tools**: app metadata, strict JSON,
+command-line arguments, sandboxed UTF-8 files, atomic saves, read-only bundled
+assets, native dialogs, validation, integrity manifests, and an inspectable
+Windows packaging pipeline.
+
+```console
+# Create a complete application project
+$ pyv2 new windows-app "Comet Tasks"
+
+# Develop and validate it
+$ pyv2 Comet-Tasks/main.pyv2 --add "Ship the app"
+$ pyv2 check Comet-Tasks
+
+# Create a reproducible Windows build kit from any operating system
+$ pyv2 build Comet-Tasks
+
+# On Windows: build the real one-file Comet-Tasks.exe
+> pyv2 build Comet-Tasks --native
+```
+
+Each project includes `pyv2app.json`, VS Code tasks, a readable batch builder,
+a PowerShell builder, app assets, and a GitHub Actions Windows workflow. Every
+build kit vendors the exact Python v2 runtime and hashes its inputs. The actual
+`.exe` is produced by PyInstaller **on Windows**; macOS and Linux create
+the same reviewable build kit or can use the included Windows CI workflow.
+Python v2 never disguises a non-Windows binary as an `.exe`. Generated files
+are not Authenticode-signed automatically; public distributors should add their
+own protected signing certificate in Windows CI.
+
+Packaged apps store writable data under
+`%LOCALAPPDATA%\\PythonV2Apps\\APP-ID`. Absolute paths, traversal, symlink
+escapes, oversized text, and writes to bundled assets are blocked by default.
+See [`examples/software/comet_notes.pyv2`](examples/software/comet_notes.pyv2).
+
 ## 🖥️ Python v2 Sudbury Launcher
 
 Version 1.1 ships Python v2 as its own lightweight desktop application. The
 workspace provides Home, Code Studio, a path-safe atomic file service, project
 wizard, eight packaged CC0 assets, Games/GPU, detected editor connections,
 local settings, docs, a polished offline personal/portfolio/game website
-starter, and a preview server—all using the Python standard library. Open it with `pyv2-launcher`,
+starter, Windows app project generation, and a preview server—all using the
+Python standard library. Open it with `pyv2-launcher`,
 `pyhope-studio`, or `pyhope --studio`.
 
 ## 🎮 PyHope game engine
@@ -167,8 +206,8 @@ The short version:
 $ python3 -m unittest discover -s tests -t .
 ```
 
-**92 tests pass:** 63 language tests, 9 PyHope engine tests, 12 workspace/Launcher tests,
-7 arcade/Playground site tests, plus a parity harness that runs 21 programs (including error paths) through both the
+**108 tests pass:** 63 language tests, 9 PyHope engine tests, 14 production-app/build tests,
+13 workspace/Launcher tests, 8 arcade/Playground site tests, plus a parity harness that runs 25 programs (including error paths) through both the
 Python and JavaScript runtimes and demands byte-identical output.
 
 ## 📦 Repo layout
@@ -184,7 +223,7 @@ tutorial.html    10 runnable language lessons + browser sandbox
 guide.html       50 concise language/engine learning topics
 games.html       10-game arcade, GPU lab, animated sprites, Python v2 source
 arcade.js         seven-game shared Canvas engine for Pocket Arcade
-pyv2/            interpreter, CLI, desktop Launcher, packaged browser runtime
+pyv2/            interpreter, safe app runtime, Windows builder, CLI, desktop Launcher
 pyhope/          engine, CLI, and packaged offline CC0 asset library
 pyv2.js          twin language runtime in JavaScript
 game.js          CPU sprite raycaster (monsters + weapon)
@@ -196,7 +235,8 @@ install.bat      Windows installer for pyv2 + PyHope
 install.sh       macOS/Linux installer for pyv2 + PyHope
 editors/vscode/  VS Code syntax highlighting + snippets
 examples/games/  playable Python v2 game/source examples
-tests/           language, parity, and PyHope engine tests
+examples/software/ persistent JSON and safe app-data examples
+tests/           language, app builder, parity, site, workspace, and engine tests
 docs/LANGUAGE.md full language reference & grammar
 ```
 
