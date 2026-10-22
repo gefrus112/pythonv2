@@ -4,7 +4,7 @@
  * print JSON {output, error}. Used by tests/test_parity.py.
  */
 const fs = require("fs");
-const Pyv2 = require(__dirname + "/../site/pyv2.js");
+const Pyv2 = require(__dirname + "/../pyv2.js");
 
 const source = fs.readFileSync(0, "utf8");
 const result = Pyv2.runCapture(source);

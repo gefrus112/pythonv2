@@ -478,11 +478,26 @@ class Parser:
             sub.skip_newlines()
             if not sub.check("EOF"):
                 raise ParseError(f"Trailing input in f-string expression {{{src}}}", line)
+            self._reline(e, line)
             return e
         except LexError as exc:
             raise ParseError(exc.message, line) from exc
         except ParseError as exc:
             raise ParseError(f"in f-string expression {{{src}}}: {exc.message}", line) from exc
+
+    def _reline(self, node, line: int) -> None:
+        """Stamp the f-string's real line number onto embedded AST nodes."""
+        if isinstance(node, dict):
+            if "line" in node:
+                node["line"] = line
+            for value in node.values():
+                self._reline(value, line)
+        elif isinstance(node, list):
+            for item in node:
+                self._reline(item, line)
+        elif isinstance(node, tuple):
+            for item in node:
+                self._reline(item, line)
 
 
 def parse(source: str) -> dict:

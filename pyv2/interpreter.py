@@ -215,9 +215,10 @@ class RangeVal:
 # Environments
 # --------------------------------------------------------------------------
 class Env:
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, scope_root: bool = False):
         self.vars: dict = {}
         self.parent = parent
+        self.scope_root = scope_root  # True for globals and function frames
 
     def get(self, name: str):
         env = self
@@ -250,13 +251,22 @@ class Env:
     def define(self, name: str, value) -> None:
         self.vars[name] = value
 
+    def define_in_root(self, name: str, value) -> None:
+        """First-time assignment binds in the nearest function scope (or
+        global), never inside if/while/for blocks — so block-local temporaries
+        don't vanish after the block."""
+        env = self
+        while env is not None and not env.scope_root:
+            env = env.parent
+        (env if env is not None else self).vars[name] = value
+
 
 # --------------------------------------------------------------------------
 # Interpreter
 # --------------------------------------------------------------------------
 class Interpreter:
     def __init__(self, output=None, read_input=None):
-        self.globals = Env()
+        self.globals = Env(scope_root=True)
         self.output = output if output is not None else self._default_output
         self.read_input = read_input
         self.trace: list[str] = []
@@ -314,7 +324,7 @@ class Interpreter:
         elif t == "fn":
             fn = Fn(node["name"], node["params"], node["body"], env, node["line"])
             if not env.set_existing(node["name"], fn):
-                env.define(node["name"], fn)
+                env.define_in_root(node["name"], fn)
         elif t == "return":
             value = self.eval_expr(node["value"], env) if node["value"] is not None else None
             raise ReturnSignal(value)
@@ -338,7 +348,7 @@ class Interpreter:
         if target["t"] == "var":
             name = target["name"]
             if not env.set_existing(name, value):
-                env.define(name, value)
+                env.define_in_root(name, value)
         elif target["t"] == "index":
             obj = self.eval_expr(target["obj"], env)
             idx = self.eval_expr(target["idx"], env)
@@ -625,7 +635,7 @@ class Interpreter:
                 raise self.error("TypeError",
                                  f"Function '{callee.name}' expects {len(callee.params)} "
                                  f"argument(s) but got {len(args)}", line)
-            call_env = Env(callee.closure)
+            call_env = Env(callee.closure, scope_root=True)
             for param, arg in zip(callee.params, args):
                 call_env.define(param, arg)
             self.trace.append(f"{callee.name} (line {callee.line})")

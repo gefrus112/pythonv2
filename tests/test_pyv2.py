@@ -425,6 +425,39 @@ class TestSemantics(unittest.TestCase):
         """
         self.assertEqual(run(src), "3")
 
+    def test_first_assignment_in_block_binds_outer(self):
+        src = """
+        if true:
+            grade = "B"
+        end
+        print(grade)
+
+        i = 0
+        while i < 2:
+            if i == 0:
+                seen = []
+            end
+            seen.push(i)
+            i += 1
+        end
+        print(seen)
+
+        for x in [1]:
+            total = x * 10
+        end
+        print(total)
+        """
+        self.assertEqual(run(src), 'B\n[0, 1]\n10')
+
+    def test_fn_defined_in_block_is_visible_after(self):
+        src = """
+        if true:
+            fn hello(): return "hi" end
+        end
+        print(hello())
+        """
+        self.assertEqual(run(src), "hi")
+
     def test_shadowing_in_block(self):
         src = """
         x = "outer"

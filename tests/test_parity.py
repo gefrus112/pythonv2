@@ -144,6 +144,41 @@ print(0 - 0.0, round(-2.5), round(2.5, 1))
 ''',
     "break_top": "break",
     "chain": 'if true: print(1) end print(2)\nfn f(x): return x * 2 end print(f(21))\nwhile false: 1 end print("done")',
+    "scopes": '''
+if true:
+    grade = "B"
+end
+print(grade)
+
+i = 0
+while i < 3:
+    if i == 0:
+        log = []
+    end
+    log.push(i * i)
+    i += 1
+end
+print(log)
+
+for x in [1, 2]:
+    last = x * 10
+end
+print(last)
+
+fn outer():
+    if true:
+        fn inner(): return 7 end
+    end
+    return inner()
+end
+print(outer())
+
+# f-string runtime errors report the real source line
+fn boom():
+    return f"{missing_name}"
+end
+print(boom())
+''',
 }
 
 
