@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <title>Python v2 — intertwined blue and red comet snakes</title>
+  <defs>
+    <linearGradient id="blue2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#70d6ff"/><stop offset=".46" stop-color="#337fca"/><stop offset="1" stop-color="#193e72"/></linearGradient>
+    <linearGradient id="red2" x1="1" y1="1" x2="0" y2="0"><stop stop-color="#8f2445"/><stop offset=".5" stop-color="#df4747"/><stop offset="1" stop-color="#ff8278"/></linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd343"/><stop offset=".48" stop-color="#fff2a8"/><stop offset="1" stop-color="#e8a91a"/></linearGradient>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="180%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#07131f" flood-opacity=".45"/><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#ffd343" flood-opacity=".4"/></filter>
+  </defs>
+  <circle cx="80" cy="80" r="75" fill="#122232" stroke="url(#rim)" stroke-width="5"/>
+  <circle cx="80" cy="80" r="66" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="2" stroke-dasharray="4 8"/>
+  <g filter="url(#glow)" stroke-linejoin="round">
+    <path d="M76 24c-23 0-35 10-35 27v16H27c-13 0-20 9-20 23v10c0 14 8 23 23 23h19V99c0-16 11-27 28-27h29c15 0 24-10 24-25V38c0-9-8-14-21-14H76zm-18 14a6 6 0 1 1 0 12 6 6 0 0 1 0-12zM38 79h43V65H54v-8h42v23H38z" fill="url(#blue2)" stroke="#102e55" stroke-width="5"/>
+    <path d="M84 136c23 0 35-10 35-27V93h14c13 0 20-9 20-23V60c0-14-8-23-23-23h-19v24c0 16-11 27-28 27H54c-15 0-24 10-24 25v9c0 9 8 14 21 14h33zm18-14a6 6 0 1 1 0-12 6 6 0 0 1 0 12zM122 81H79v14h27v8H64V80h58z" fill="url(#red2)" stroke="#772037" stroke-width="5"/>
+    <path d="M44 49c8-15 26-18 61-16" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="6" stroke-linecap="round"/>
+    <path d="M116 111c-8 15-26 18-61 16" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="58" cy="44" r="6" fill="#fff"/><circle cx="102" cy="116" r="6" fill="#fff"/>
+    <circle cx="60" cy="44" r="2" fill="#152333"/><circle cx="100" cy="116" r="2" fill="#152333"/>
+  </g>
+  <path d="M134 19l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#ffd343"/>
+  <path d="M25 127l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#70d6ff"/>
+  <rect x="112" y="129" width="35" height="22" rx="11" fill="#ffd343" stroke="#122232" stroke-width="3"/>
+  <text x="129.5" y="145" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" font-weight="900" fill="#122232">v2</text>
+</svg>

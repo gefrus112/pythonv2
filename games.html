@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Games & PyHope Engine — Python v2</title>
-  <meta name="description" content="Play games made for Python v2 with PyHope: a monster raycaster, an original platform game, free CC0 sprites, and a 9.4-million-pixel GPU demo.">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="Play 10 original Python v2 and PyHope games: shooters, platformers, racing, Snake Byte, Orb Breaker, animated CC0 sprites, and a 9.4-million-pixel GPU lab.">
+  <link rel="icon" type="image/svg+xml" href="favicon-v2.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
   <header class="masthead">
     <div class="masthead-inner">
       <a class="brand" href="index.html">
-        <img src="logo.svg" alt="Python v2 logo — two snakes, red and blue" width="64" height="64">
+        <img src="logo-v2.svg" alt="Python v2 logo — two snakes, red and blue" width="64" height="64">
         <span class="brand-word">python<sup>™</sup><em>v2</em></span>
       </a>
       <div class="masthead-tools">
@@ -49,11 +49,11 @@
   <section class="page-head game-page-head">
     <div class="page-head-inner">
       <p class="eyebrow">PYHOPE ENGINE • NO PYGAME • BUILT FOR PYTHON V2</p>
-      <h1>Games made with Python v2</h1>
-      <p>Fight original sprite monsters, play a classic-style platformer, inspect
-        free CC0 assets, or ask the GPU to ray-cast a single
-        <strong>9,437,184-pixel</strong> frame. The games and engine code ship
-        with the language.</p>
+<h1>10 games. One Python v2 arcade.</h1>
+      <p>Choose from <strong>10 playable games</strong>—shooters, platformers,
+        racing, snake, and brick-breaking—then inspect the animated CC0
+        characters and Python v2 source behind them. Or ask the GPU to ray-cast
+        a real <strong>9,437,184-pixel</strong> frame.</p>
       <div class="hero-actions">
         <a class="btn btn-yellow" href="#play">Play now</a>
         <a class="btn btn-ghost" href="download.html#pyhope">Install PyHope</a>
@@ -75,7 +75,7 @@
 
   <main class="games-main">
     <div class="game-tabs" role="tablist" aria-label="Games and engine sections">
-      <button role="tab" data-game-tab="play" aria-selected="true">🎮 Play</button>
+      <button role="tab" data-game-tab="play" aria-selected="true">🎮 10 Games</button>
       <button role="tab" data-game-tab="gpu">⚡ 9M GPU Lab</button>
       <button role="tab" data-game-tab="sprites">👾 Free Sprites</button>
       <button role="tab" data-game-tab="source">&gt;_ Python v2 Source</button>
@@ -83,7 +83,74 @@
 
     <!-- ==================== Play ==================== -->
     <section data-game-panel="play" id="play" class="game-panel">
-      <div class="game-title-row">
+      <section class="arcade-library" aria-labelledby="arcade-library-title">
+        <div class="arcade-library-head">
+          <div>
+            <p class="eyebrow">PYHOPE ARCADE • 10 ORIGINAL GAMES</p>
+            <h2 id="arcade-library-title">Pick a game. Click its icon. Play.</h2>
+            <p>Every illustrated card opens its game below. Games 04–10 share the
+              Pocket Arcade screen so switching games is instant—no download,
+              sign-in, or third-party assets.</p>
+          </div>
+          <span class="arcade-live"><i></i> 10 games online</span>
+        </div>
+        <div class="arcade-grid">
+          <a class="arcade-card" href="#byte-beast">
+            <span class="arcade-card-art"><img src="assets/game-icons/byte-beast.svg" alt="Red Byte Beast and blue blaster"></span>
+            <span class="arcade-card-copy"><b><i>01</i> Byte Beast Arena</b><small>Shooter • 3D raycast</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" href="#comet-hopper">
+            <span class="arcade-card-art"><img src="assets/game-icons/comet-hopper.svg" alt="Comet Kid jumping over platforms"></span>
+            <span class="arcade-card-copy"><b><i>02</i> Comet Hopper</b><small>Platformer • adventure</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" href="#comet-circuit">
+            <span class="arcade-card-art"><img src="assets/game-icons/comet-circuit.svg" alt="Red car on a winding race track"></span>
+            <span class="arcade-card-copy"><b><i>03</i> Comet Circuit</b><small>Racing • 3 laps</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" data-pocket-game="neon-blaster" href="#pocket-arcade">
+            <span class="arcade-card-art"><img src="assets/game-icons/neon-blaster.svg" alt="Blue spaceship firing at red drones"></span>
+            <span class="arcade-card-copy"><b><i>04</i> Neon Blaster</b><small>Shooter • enemy waves</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" data-pocket-game="asteroid-drift" href="#pocket-arcade">
+            <span class="arcade-card-art"><img src="assets/game-icons/asteroid-drift.svg" alt="Spaceship drifting through asteroids"></span>
+            <span class="arcade-card-copy"><b><i>05</i> Asteroid Drift</b><small>Shooter • space survival</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" data-pocket-game="target-blitz" href="#pocket-arcade">
+            <span class="arcade-card-art"><img src="assets/game-icons/target-blitz.svg" alt="Bright target in a precision reticle"></span>
+            <span class="arcade-card-copy"><b><i>06</i> Target Blitz</b><small>Shooter • mouse &amp; touch</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" data-pocket-game="skybound" href="#pocket-arcade">
+            <span class="arcade-card-art"><img src="assets/game-icons/skybound.svg" alt="Comet Kid jumping between sky platforms"></span>
+            <span class="arcade-card-copy"><b><i>07</i> Skybound</b><small>Platformer • endless climb</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" data-pocket-game="turbo-trail" href="#pocket-arcade">
+            <span class="arcade-card-art"><img src="assets/game-icons/turbo-trail.svg" alt="Blue car racing down a sunset highway"></span>
+            <span class="arcade-card-copy"><b><i>08</i> Turbo Trail</b><small>Racing • endless traffic</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" data-pocket-game="snake-byte" href="#pocket-arcade">
+            <span class="arcade-card-art"><img src="assets/game-icons/snake-byte.svg" alt="Green pixel snake collecting a Hope Bit"></span>
+            <span class="arcade-card-copy"><b><i>09</i> Snake Byte</b><small>Arcade • grid challenge</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+          <a class="arcade-card" data-pocket-game="orb-breaker" href="#pocket-arcade">
+            <span class="arcade-card-art"><img src="assets/game-icons/orb-breaker.svg" alt="Glowing orb bouncing toward colorful bricks"></span>
+            <span class="arcade-card-copy"><b><i>10</i> Orb Breaker</b><small>Arcade • brick breaker</small></span>
+            <span class="arcade-play-icon" aria-hidden="true">▶</span>
+          </a>
+        </div>
+      </section>
+
+      <div class="game-divider arcade-divider"></div>
+
+      <div class="game-title-row" id="byte-beast">
         <div>
           <p class="eyebrow">GAME 01 • SOFTWARE RAYCASTER</p>
           <h2>PyHope: Byte Beast Arena</h2>
@@ -114,7 +181,7 @@
 
       <div class="game-divider"></div>
 
-      <div class="game-title-row">
+      <div class="game-title-row" id="comet-hopper">
         <div>
           <p class="eyebrow">GAME 02 • ORIGINAL PLATFORMER</p>
           <h2>Comet Hopper</h2>
@@ -140,7 +207,7 @@
 
       <div class="game-divider"></div>
 
-      <div class="game-title-row">
+      <div class="game-title-row" id="comet-circuit">
         <div>
           <p class="eyebrow">GAME 03 • TOP-DOWN RACING</p>
           <h2>Comet Circuit</h2>
@@ -163,6 +230,41 @@
         <span><kbd>A</kbd><kbd>D</kbd> or <kbd>←</kbd><kbd>→</kbd> steer</span>
         <span><kbd>R</kbd> restart • complete 3 laps</span>
       </div>
+
+      <div class="game-divider"></div>
+
+      <section class="pocket-arcade" id="pocket-arcade" aria-labelledby="arcade-title">
+        <div class="game-title-row pocket-title-row">
+          <div>
+            <p class="eyebrow" id="arcade-badge">GAME 04 • WAVE SHOOTER</p>
+            <h2 id="arcade-title">Neon Blaster</h2>
+            <p id="arcade-description">Pilot the Comet, weave through Null Drones,
+              and stream blue energy through an endless neon attack wave.</p>
+          </div>
+          <div class="engine-pill engine-pill-pocket">PYTHON V2 ARCADE</div>
+        </div>
+        <div class="pocket-picker" aria-label="Choose a Pocket Arcade game">
+          <button type="button" data-pocket-game="neon-blaster">04 Neon Blaster</button>
+          <button type="button" data-pocket-game="asteroid-drift">05 Asteroid Drift</button>
+          <button type="button" data-pocket-game="target-blitz">06 Target Blitz</button>
+          <button type="button" data-pocket-game="skybound">07 Skybound</button>
+          <button type="button" data-pocket-game="turbo-trail">08 Turbo Trail</button>
+          <button type="button" data-pocket-game="snake-byte">09 Snake Byte</button>
+          <button type="button" data-pocket-game="orb-breaker">10 Orb Breaker</button>
+        </div>
+        <div class="game-stage pocket-stage">
+          <canvas id="arcade-canvas" width="800" height="450" aria-label="Pocket Arcade game canvas. Select one of seven games, click, and use the displayed controls."></canvas>
+          <div class="game-hud">
+            <span id="arcade-status">SCORE 0 • SHIELDS 3</span>
+            <button id="arcade-reset" type="button">Restart game</button>
+          </div>
+        </div>
+        <div class="control-strip arcade-control-strip">
+          <span class="live-dot" aria-hidden="true"></span>
+          <strong id="arcade-controls">WASD / arrows move • Space or click fires • R restarts</strong>
+          <span>Click the canvas first to focus keyboard controls.</span>
+        </div>
+      </section>
     </section>
 
     <!-- ==================== GPU ==================== -->
@@ -205,37 +307,53 @@
 
     <!-- ==================== Sprites ==================== -->
     <section data-game-panel="sprites" id="sprites" class="game-panel" hidden>
-      <p class="eyebrow">ORIGINAL ASSETS • PUBLIC DOMAIN</p>
-      <h2>Free PyHope sprite pack</h2>
-      <p class="panel-lede">These sprites were made for Python v2 and dedicated
-        to the public domain under CC0. Download, remix, recolor, use in a
-        commercial game—no permission needed. They are not copied from Mario,
-        Nintendo, or another game.</p>
-      <div class="sprite-grid">
-        <article class="sprite-card">
-          <div class="sprite-preview"><img src="assets/sprites/comet-hero.svg" alt="Comet Kid pixel sprite"></div>
+      <p class="eyebrow">ORIGINAL ASSETS • ANIMATED • PUBLIC DOMAIN</p>
+      <h2>Meet the animated PyHope cast</h2>
+      <p class="panel-lede">These characters and game objects were drawn for
+        Python v2 and dedicated to the public domain under CC0. Hover or focus a
+        card to trigger its animation, then download the crisp SVG for your own
+        Python v2 game. No Nintendo, Mario, or third-party art.</p>
+      <div class="sprite-animation-note"><span aria-hidden="true">✦</span><strong>Animation lab:</strong> run, hover, squash, recoil, drive, and spin previews—all CSS-powered and reduced-motion safe.</div>
+      <div class="sprite-grid sprite-grid-animated">
+        <article class="sprite-card motion-run" tabindex="0">
+          <div class="sprite-preview"><img src="assets/sprites/comet-hero.svg" alt="Animated Comet Kid pixel sprite"></div>
           <h3>Comet Kid</h3><p>Original platform hero.</p>
           <a href="assets/sprites/comet-hero.svg" download>Download SVG</a>
         </article>
-        <article class="sprite-card">
-          <div class="sprite-preview"><img src="assets/sprites/monster.svg" alt="Byte Beast pixel sprite"></div>
+        <article class="sprite-card motion-float" tabindex="0">
+          <div class="sprite-preview"><img src="assets/sprites/monster.svg" alt="Animated Byte Beast pixel sprite"></div>
           <h3>Byte Beast</h3><p>Raycaster monster.</p>
           <a href="assets/sprites/monster.svg" download>Download SVG</a>
         </article>
-        <article class="sprite-card">
-          <div class="sprite-preview"><img src="assets/sprites/slime.svg" alt="Null Slime pixel sprite"></div>
+        <article class="sprite-card motion-squash" tabindex="0">
+          <div class="sprite-preview"><img src="assets/sprites/slime.svg" alt="Animated Null Slime pixel sprite"></div>
           <h3>Null Slime</h3><p>Squishy platform enemy.</p>
           <a href="assets/sprites/slime.svg" download>Download SVG</a>
         </article>
-        <article class="sprite-card">
-          <div class="sprite-preview sprite-preview-wide"><img src="assets/sprites/blaster.svg" alt="Comet Blaster weapon sprite"></div>
+        <article class="sprite-card motion-blast" tabindex="0">
+          <div class="sprite-preview sprite-preview-wide"><img src="assets/sprites/blaster.svg" alt="Animated Comet Blaster weapon sprite"></div>
           <h3>Comet Blaster</h3><p>Original sci-fi weapon.</p>
           <a href="assets/sprites/blaster.svg" download>Download SVG</a>
         </article>
-        <article class="sprite-card">
-          <div class="sprite-preview"><img src="assets/sprites/coin.svg" alt="Hope Bit coin sprite"></div>
+        <article class="sprite-card motion-spin" tabindex="0">
+          <div class="sprite-preview"><img src="assets/sprites/coin.svg" alt="Animated Hope Bit coin sprite"></div>
           <h3>Hope Bit</h3><p>Shiny collectible.</p>
           <a href="assets/sprites/coin.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card motion-run" tabindex="0">
+          <div class="sprite-preview"><img src="assets/sprites/comet-pilot.svg" alt="Animated Comet Pilot shooter sprite"></div>
+          <h3>Comet Pilot</h3><p>Neon Blaster hero.</p>
+          <a href="assets/sprites/comet-pilot.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card motion-float" tabindex="0">
+          <div class="sprite-preview"><img src="assets/sprites/drone.svg" alt="Animated Null Drone enemy sprite"></div>
+          <h3>Null Drone</h3><p>Flying shooter enemy.</p>
+          <a href="assets/sprites/drone.svg" download>Download SVG</a>
+        </article>
+        <article class="sprite-card motion-drive" tabindex="0">
+          <div class="sprite-preview sprite-preview-wide"><img src="assets/sprites/race-car.svg" alt="Animated Comet Racer car sprite"></div>
+          <h3>Comet Racer</h3><p>Top-down race car.</p>
+          <a href="assets/sprites/race-car.svg" download>Download SVG</a>
         </article>
         <article class="sprite-card sprite-license-card">
           <div class="sprite-preview"><span>CC0</span></div>
@@ -248,11 +366,11 @@
     <!-- ==================== Source ==================== -->
     <section data-game-panel="source" id="source" class="game-panel" hidden>
       <p class="eyebrow">READ IT • CHANGE IT • SHIP IT</p>
-      <h2>The levels and race track really come from Python v2</h2>
+      <h2>The arcade is wired to real Python v2 code</h2>
       <p class="panel-lede">When this page starts, the browser interpreter runs
-        Python v2 scripts. Printed rows become Comet Hopper's platform level;
-        printed coordinate pairs become Comet Circuit's closed race track.
-        PyHope supplies physics, sprites, cameras, AI, and renderers.</p>
+        Python v2 scripts. Printed rows become Comet Hopper's level; coordinate
+        pairs become Comet Circuit's track; and a seven-game manifest configures
+        Pocket Arcade. PyHope supplies physics, sprites, cameras, AI, and renderers.</p>
       <div class="source-split">
         <pre class="terminal"><code>level = [
     "........................................",
@@ -279,12 +397,51 @@ end</code></pre>
             <li>ASCII terminal preview</li>
             <li>Canvas platform renderer</li>
             <li>Top-down racing physics + AI</li>
+            <li>Seven Pocket Arcade game modes</li>
+            <li>Animated CC0 character sprites</li>
             <li>CPU sprite raycaster</li>
             <li>WebGL2 9M renderer</li>
           </ul>
           <a class="btn btn-blue" href="docs.html#pyhope">PyHope API guide</a>
           <a class="btn btn-ghost-dark" href="https://github.com/gefrus112/pythonv2">View all source</a>
         </div>
+      </div>
+
+      <div class="python-game-code">
+        <div class="python-game-code-copy">
+          <p class="eyebrow">REAL .PYV2 GAME LOGIC</p>
+          <h3>Characters, animation states, and shooters</h3>
+          <p>The browser executes a Python v2 manifest to configure games 04–10.
+            The repository also includes a playable terminal edition of Neon
+            Blaster and reusable character animation state code.</p>
+          <div class="source-downloads">
+            <a class="btn btn-blue" href="examples/games/neon_blaster.pyv2" download>Download shooter code</a>
+            <a class="btn btn-ghost-dark" href="examples/games/sprite_animation.pyv2" download>Animation code</a>
+          </div>
+        </div>
+        <pre class="terminal"><code>character = {
+    name: "Comet Pilot",
+    state: "idle",
+    frame: 0,
+}
+
+animations = {
+    idle: [0, 1, 0, 2],
+    run: [3, 4, 5, 4],
+    jump: [6, 7],
+    fire: [8, 9, 8],
+}
+
+fn play(state, loops):
+    for loop in range(loops):
+        for frame in animations[state]:
+            character.frame = frame
+            print(f"{state} frame {frame}")
+        end
+    end
+end
+
+play("run", 2)</code></pre>
       </div>
     </section>
   </main>
@@ -302,13 +459,29 @@ end</code></pre>
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-col"><h4>Python v2</h4><a href="index.html">Home</a><a href="download.html">Downloads</a><a href="tutorial.html">Tutorial</a></div>
-      <div class="footer-col"><h4>Games</h4><a href="games.html#play">Monster arena</a><a href="games.html#play">Platformer</a><a href="games.html#play">Comet Circuit racing</a><a href="games.html#gpu">9M GPU Lab</a></div>
+      <div class="footer-col"><h4>Games</h4><a href="games.html#play">All 10 games</a><a href="games.html#byte-beast">Shooters</a><a href="games.html#comet-hopper">Platformers</a><a href="games.html#comet-circuit">Racing</a><a href="games.html#gpu">9M GPU Lab</a></div>
       <div class="footer-col"><h4>PyHope</h4><a href="download.html#pyhope">Install engine</a><a href="docs.html#pyhope">Engine docs</a><a href="games.html#source">Python v2 source</a></div>
       <div class="footer-col"><h4>Community</h4><a href="https://www.youtube.com/@CubeCometYT">YouTube</a><a href="https://github.com/gefrus112/pythonv2">GitHub</a><a href="https://github.com/gefrus112/pythonv2/issues">Issues</a></div>
       <div class="footer-col"><h4>Learn</h4><a href="guide.html">50 things to read</a><a href="docs.html">Reference</a><a href="assets/sprites/LICENSE.md">Sprite license</a></div>
     </div>
-    <div class="footer-legal"><p><img src="favicon.svg" alt="" width="22" height="22">© <span id="year">2026</span> Python v2 + PyHope. Original game assets are CC0.</p></div>
+    <div class="footer-legal"><p><img src="favicon-v2.svg" alt="" width="22" height="22">© <span id="year">2026</span> Python v2 + PyHope. Original game assets are CC0.</p></div>
   </footer>
+
+  <!-- Python v2 configures all seven Pocket Arcade games at startup. -->
+  <script id="arcade-manifest" type="text/pyv2">
+games = [
+    ["neon-blaster", "Neon Blaster", "WAVE SHOOTER"],
+    ["asteroid-drift", "Asteroid Drift", "SPACE SHOOTER"],
+    ["target-blitz", "Target Blitz", "PRECISION SHOOTER"],
+    ["skybound", "Skybound", "ARCADE PLATFORMER"],
+    ["turbo-trail", "Turbo Trail", "ENDLESS RACING"],
+    ["snake-byte", "Snake Byte", "GRID ARCADE"],
+    ["orb-breaker", "Orb Breaker", "BRICK BREAKER"],
+]
+for game in games:
+    print(game[0] + "|" + game[1] + "|" + game[2])
+end
+  </script>
 
   <!-- Python v2 generates the racing circuit used by Comet Circuit. -->
   <script id="racing-track" type="text/pyv2">
@@ -345,5 +518,6 @@ end
   <script src="gpu-game.js"></script>
   <script src="site.js"></script>
   <script src="games.js"></script>
+  <script src="arcade.js"></script>
 </body>
 </html>

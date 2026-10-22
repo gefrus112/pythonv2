@@ -7,14 +7,14 @@
   // ------------------------------------------------------------------
   const tabs = [...document.querySelectorAll("[data-game-tab]")];
   const panels = [...document.querySelectorAll("[data-game-panel]")];
-  function selectTab(name) {
+  function selectTab(name, updateHash) {
     tabs.forEach((button) => {
       const on = button.dataset.gameTab === name;
       button.setAttribute("aria-selected", on ? "true" : "false");
       button.tabIndex = on ? 0 : -1;
     });
     panels.forEach((panel) => { panel.hidden = panel.dataset.gamePanel !== name; });
-    if (history.replaceState) history.replaceState(null, "", "#" + name);
+    if (updateHash !== false && history.replaceState) history.replaceState(null, "", "#" + name);
   }
   tabs.forEach((button, index) => {
     button.addEventListener("click", () => selectTab(button.dataset.gameTab));
@@ -27,8 +27,16 @@
       next.focus();
     });
   });
-  const initialTab = location.hash.slice(1);
-  selectTab(tabs.some((tab) => tab.dataset.gameTab === initialTab) ? initialTab : "play");
+  const initialHash = location.hash.slice(1);
+  const initialTab = tabs.some((tab) => tab.dataset.gameTab === initialHash) ? initialHash : "play";
+  // Preserve deep links such as #comet-circuit and #pocket-arcade instead of
+  // replacing them with #play before the browser can scroll to the game.
+  selectTab(initialTab, !initialHash);
+  window.addEventListener("hashchange", () => {
+    const hash = location.hash.slice(1);
+    const panel = tabs.some((tab) => tab.dataset.gameTab === hash) ? hash : "play";
+    selectTab(panel, false);
+  });
 
   // ------------------------------------------------------------------
   // CPU monster arena
@@ -43,6 +51,12 @@
     });
     arena.attach();
     arena.start();
+    if ("IntersectionObserver" in window) {
+      const arenaVisibility = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => entry.isIntersecting ? arena.start() : arena.stop());
+      }, { rootMargin: "180px 0px" });
+      arenaVisibility.observe(arenaCanvas);
+    }
   }
 
   // ------------------------------------------------------------------
@@ -287,11 +301,17 @@
   };
 
   CometHopper.prototype.start = function () {
+    this.visible = true;
+    if ("IntersectionObserver" in window) {
+      const visibility = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => { this.visible = entry.isIntersecting; });
+      }, { rootMargin: "180px 0px" });
+      visibility.observe(this.canvas);
+    }
     const loop = (time) => {
       const dt = Math.min(0.05, (time - this.last) / 1000);
       this.last = time;
-      this.update(dt);
-      this.draw();
+      if (this.visible) { this.update(dt); this.draw(); }
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
@@ -518,11 +538,17 @@
   };
 
   CometCircuit.prototype.start = function () {
+    this.visible = true;
+    if ("IntersectionObserver" in window) {
+      const visibility = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => { this.visible = entry.isIntersecting; });
+      }, { rootMargin: "180px 0px" });
+      visibility.observe(this.canvas);
+    }
     const loop = (time) => {
       const dt = Math.min(.05, (time - this.last) / 1000);
       this.last = time;
-      this.update(dt);
-      this.draw();
+      if (this.visible) { this.update(dt); this.draw(); }
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);

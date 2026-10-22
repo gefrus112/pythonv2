@@ -1,7 +1,9 @@
 # Free sprites for PyHope games
 
-Five original, public-domain (CC0) pixel sprites. SVG keeps every edge crisp
-at any size. See `LICENSE.md`.
+Eight original, public-domain (CC0) pixel sprites. SVG keeps every edge crisp
+at any size. The Games page animates them with reduced-motion-safe CSS, and
+`examples/games/sprite_animation.pyv2` demonstrates reusable character states.
+See `LICENSE.md`.
 
 Use them in HTML:
 
