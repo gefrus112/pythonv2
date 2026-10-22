@@ -622,9 +622,9 @@ jobs:
       - name: Install Python v2 and PyInstaller
         run: python -m pip install pyinstaller "git+{SOURCE_REPOSITORY}"
       - name: Validate app
-        run: pyv2 check .
+        run: python -m pyv2 check .
       - name: Build integrity-tracked executable
-        run: pyv2 build . --native --output build/windows
+        run: python -m pyv2 build . --native --output build/windows
       - uses: actions/upload-artifact@v4
         with:
           name: windows-executable

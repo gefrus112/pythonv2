@@ -110,7 +110,7 @@ def _check_command(argv: list[str]) -> int:
     if options.as_json:
         print(json.dumps(result, sort_keys=True))
     else:
-        print(f"✓ {config.name} {config.version} is ready to build")
+        print(f"[OK] {config.name} {config.version} is ready to build")
         print(f"  entry: {config.entry}")
         print(f"  mode:  {result['mode']} • assets: {result['assets']}")
     return 0
@@ -129,7 +129,7 @@ def _new_command(argv: list[str]) -> int:
     except (BuildError, OSError, ValueError) as exc:
         print(f"could not create app: {exc}", file=sys.stderr)
         return 1
-    print(f"✓ Created {'windowed' if options.windowed else 'console'} Windows app: {project}")
+    print(f"[OK] Created {'windowed' if options.windowed else 'console'} Windows app: {project}")
     print(f"  check: pyv2 check {project}")
     print(f"  kit:   pyv2 build {project}")
     print("  exe:   run build-windows.bat on Windows or use the included GitHub workflow")
@@ -164,11 +164,11 @@ def _build_command(argv: list[str]) -> int:
     except (BuildError, OSError) as exc:
         print(f"build failed: {exc}", file=sys.stderr)
         return 1
-    print(f"✓ Validated {result.config.name} {result.config.version}")
-    print(f"✓ Windows build kit: {result.kit_dir}")
-    print(f"✓ Integrity manifest: {result.manifest}")
+    print(f"[OK] Validated {result.config.name} {result.config.version}")
+    print(f"[OK] Windows build kit: {result.kit_dir}")
+    print(f"[OK] Integrity manifest: {result.manifest}")
     if result.executable:
-        print(f"✓ Windows executable: {result.executable}")
+        print(f"[OK] Windows executable: {result.executable}")
     elif os.name == "nt":
         print("Next: run the generated build.bat, or add --native after installing PyInstaller.")
     else:
