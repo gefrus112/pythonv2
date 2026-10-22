@@ -1,0 +1,16 @@
+# This manifest is executed by the Games page's Python v2 browser runtime.
+# Printed fields configure the shared Pocket Arcade launcher.
+
+games = [
+    ["neon-blaster", "Neon Blaster", "WAVE SHOOTER"],
+    ["asteroid-drift", "Asteroid Drift", "SPACE SHOOTER"],
+    ["target-blitz", "Target Blitz", "PRECISION SHOOTER"],
+    ["skybound", "Skybound", "ARCADE PLATFORMER"],
+    ["turbo-trail", "Turbo Trail", "ENDLESS RACING"],
+    ["snake-byte", "Snake Byte", "GRID ARCADE"],
+    ["orb-breaker", "Orb Breaker", "BRICK BREAKER"],
+]
+
+for game in games:
+    print(game[0] + "|" + game[1] + "|" + game[2])
+end

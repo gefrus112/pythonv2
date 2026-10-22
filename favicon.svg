@@ -1,10 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <title>Python v2 blue and red snake icon</title>
-  <defs>
-    <linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5d9bd0"/><stop offset=".5" stop-color="#2f6fbd"/><stop offset="1" stop-color="#1f4c85"/></linearGradient>
-    <linearGradient id="r" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f07069"/><stop offset=".5" stop-color="#d64541"/><stop offset="1" stop-color="#9e2f31"/></linearGradient>
-  </defs>
-  <path d="M61 7C43 7 34 14 34 27v14H22C10 41 4 51 4 65v18c0 13 7 21 20 21h16V86c0-14 10-24 25-24h28c13 0 21-9 21-22V27c0-13-9-20-22-20H61zm-9 15a5 5 0 1 1 0 10 5 5 0 0 1 0-10zM31 51h39v-9H45v-7h36v17H31z" fill="url(#b)" stroke="#173f66" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M67 121c18 0 27-7 27-20V87h12c12 0 18-10 18-24V45c0-13-7-21-20-21H88v18c0 14-10 24-25 24H35c-13 0-21 9-21 22v13c0 13 9 20 22 20h31zm9-15a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm21-29H58v9h25v7H47V76h50z" fill="url(#r)" stroke="#86282b" stroke-width="4" stroke-linejoin="round"/>
-  <circle cx="52" cy="27" r="5" fill="#fff"/><circle cx="76" cy="101" r="5" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Python v2 red and blue comet snakes</title>
+  <defs><linearGradient id="b" x2="1" y2="1"><stop stop-color="#70d6ff"/><stop offset="1" stop-color="#245ea8"/></linearGradient><linearGradient id="r" x2="1" y2="1"><stop stop-color="#ff8278"/><stop offset="1" stop-color="#b62f46"/></linearGradient></defs>
+  <circle cx="32" cy="32" r="30" fill="#122232" stroke="#ffd343" stroke-width="2"/>
+  <path d="M30 9c-9 0-14 4-14 11v6h-5c-5 0-8 4-8 9v4c0 6 3 9 9 9h7v-9c0-7 5-11 12-11h11c6 0 10-4 10-10v-4c0-3-4-5-9-5zm-7 6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z" fill="url(#b)" stroke="#173f66" stroke-width="2"/>
+  <path d="M34 55c9 0 14-4 14-11v-6h5c5 0 8-4 8-9v-4c0-6-3-9-9-9h-7v9c0 7-5 11-12 11H22c-6 0-10 4-10 10v4c0 3 4 5 9 5zm7-6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="url(#r)" stroke="#86282b" stroke-width="2"/>
+  <path d="M54 4l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z" fill="#ffd343"/>
 </svg>

@@ -1,0 +1,49 @@
+# Neon Blaster — playable terminal shooter logic in Python v2.
+# Run: python3 -m pyv2 examples/games/neon_blaster.pyv2
+
+lanes = ["LEFT", "CENTER", "RIGHT"]
+player_lane = 1
+shield = 3
+score = 0
+wave = 1
+playing = true
+
+print("=== NEON BLASTER ===")
+print("L/R changes lane, F fires, Q quits")
+
+while playing and shield > 0 and wave <= 12:
+    enemy_lane = (wave * 7 + 1) % 3
+    print(f"\nWave {wave}: Null Drone approaching {lanes[enemy_lane]}")
+    action = input("[L/R/F/Q] > ").trim().lower()
+
+    if action == "q":
+        playing = false
+    elif action == "l":
+        player_lane = max(0, player_lane - 1)
+        print(f"Pilot moved {lanes[player_lane]}")
+    elif action == "r":
+        player_lane = min(2, player_lane + 1)
+        print(f"Pilot moved {lanes[player_lane]}")
+    elif action == "f":
+        if player_lane == enemy_lane:
+            score += 25
+            print("DIRECT HIT +25")
+        else:
+            print("The pulse missed.")
+        end
+    else:
+        print("Controls: L, R, F, or Q")
+    end
+
+    if playing and player_lane == enemy_lane and action != "f":
+        shield -= 1
+        print(f"Impact! Shields remaining: {shield}")
+    end
+    wave += 1
+end
+
+if shield > 0:
+    print(f"\nFLIGHT COMPLETE — score {score}")
+else:
+    print(f"\nSHIP DOWN — score {score}")
+end

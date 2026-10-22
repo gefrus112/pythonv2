@@ -31,6 +31,7 @@
     const nav = document.querySelector(".mainnav");
     if (nav) nav.classList.toggle("nav-scrolled", scrollY > 95);
     root.style.setProperty("--scroll-y", scrollY + "px");
+    root.style.setProperty("--page-parallax", Math.min(70, scrollY * .12).toFixed(1) + "px");
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
@@ -41,7 +42,8 @@
     ".news-card", ".start-box", ".game-title-row", ".game-stage",
     ".sprite-card", ".doc-section-inner > h2", ".steps", ".ref-table",
     ".youtube-callout", ".youtube-bottom", ".source-split", ".benchmark-note",
-    ".launcher-showcase",
+    ".launcher-showcase", ".arcade-library-head", ".arcade-card", ".pocket-picker",
+    ".pocket-arcade", ".sprite-animation-note", ".python-game-code",
   ].join(","));
 
   if (reduceMotion || !("IntersectionObserver" in window)) {
@@ -88,6 +90,23 @@
     if (countObserver) countObserver.observe(node);
     else node.textContent = Number(node.dataset.count).toLocaleString() + (node.dataset.suffix || "");
   });
+
+  // A soft pointer-following light and card-local sheen make the site feel
+  // responsive without moving content or getting in the way of controls.
+  const finePointer = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+  if (!reduceMotion && finePointer) {
+    window.addEventListener("pointermove", (event) => {
+      root.style.setProperty("--pointer-x", (event.clientX / innerWidth * 100).toFixed(1) + "%");
+      root.style.setProperty("--pointer-y", (event.clientY / innerHeight * 100).toFixed(1) + "%");
+    }, { passive: true });
+    document.querySelectorAll(".arcade-card").forEach((card) => {
+      card.addEventListener("pointermove", (event) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--mx", ((event.clientX - rect.left) / rect.width * 100).toFixed(1) + "%");
+        card.style.setProperty("--my", ((event.clientY - rect.top) / rect.height * 100).toFixed(1) + "%");
+      }, { passive: true });
+    });
+  }
 
   const year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());

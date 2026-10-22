@@ -1,0 +1,31 @@
+# Animation state data for a Python v2 / PyHope character.
+# A renderer can map each state to SVG frames or Canvas transforms.
+
+character = {
+    name: "Comet Pilot",
+    state: "idle",
+    frame: 0,
+    x: 120,
+    y: 280,
+}
+
+animations = {
+    idle: [0, 1, 0, 2],
+    run: [3, 4, 5, 4],
+    jump: [6, 7],
+    fire: [8, 9, 8],
+}
+
+fn play(state, loops):
+    frames = animations[state]
+    print(f"Playing {character.name}: {state}")
+    for loop in range(loops):
+        for frame in frames:
+            character.frame = frame
+            print(f"frame={frame} x={character.x} y={character.y}")
+        end
+    end
+end
+
+play("run", 2)
+play("fire", 1)
