@@ -41,6 +41,28 @@ class GamesSiteTests(unittest.TestCase):
             self.assertNotIn('href="favicon.svg"', text, page.name)
             self.assertIn("favicon-v2.svg", text, page.name)
 
+    def test_playground_has_dual_runtime_terminals_and_workshop(self):
+        playground = (ROOT / "playground.html").read_text(encoding="utf-8")
+        for required in (
+            'data-runtime="pyv2"', 'data-runtime="classic"', 'id="play-output"',
+            'id="play-errors"', 'id="command-input"', 'id="site-preview"',
+            'src="classic-python.js"', 'src="playground.js"',
+        ):
+            self.assertIn(required, playground)
+        for page in ROOT.glob("*.html"):
+            self.assertIn('href="playground.html"', page.read_text(encoding="utf-8"), page.name)
+
+    def test_classic_python_compatibility_smoke(self):
+        completed = subprocess.run(
+            ["node", str(ROOT / "tests" / "classic_python_smoke.js")],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("Classic compatibility smoke OK", completed.stdout)
+
     def test_all_pocket_games_render_headlessly(self):
         completed = subprocess.run(
             ["node", str(ROOT / "tests" / "arcade_smoke.js")],

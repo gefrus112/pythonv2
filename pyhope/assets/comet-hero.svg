@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <title>Comet Kid — original CC0 platform hero sprite</title>
+  <rect width="16" height="16" fill="none"/>
+  <path fill="#1c2b38" d="M5 1h6v1h2v2h1v5h-2v2h1v4H9v-2H7v2H3v-4h1V9H2V5h2V2h1z"/>
+  <path fill="#2f6fbd" d="M5 2h6v1h2v4H4V3h1z"/>
+  <path fill="#5fc4dc" d="M6 3h5v1H6z"/>
+  <path fill="#f1bd8a" d="M4 5h9v4H5V8H4z"/>
+  <path fill="#25313d" d="M7 5h1v2H7zm4 0h1v2h-1z"/>
+  <path fill="#d64541" d="M4 9h8v4H9v-2H7v2H4z"/>
+  <path fill="#ffd343" d="M2 7h3v2H2z"/>
+  <path fill="#2f6fbd" d="M3 13h4v2H3zm6 0h4v2H9z"/>
+</svg>

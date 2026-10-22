@@ -44,6 +44,7 @@
     ".youtube-callout", ".youtube-bottom", ".source-split", ".benchmark-note",
     ".launcher-showcase", ".arcade-library-head", ".arcade-card", ".pocket-picker",
     ".pocket-arcade", ".sprite-animation-note", ".python-game-code",
+    ".play-workspace", ".website-workshop", ".play-tutorial-grid article", ".tutorial-next",
   ].join(","));
 
   if (reduceMotion || !("IntersectionObserver" in window)) {

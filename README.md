@@ -82,9 +82,11 @@ $ python3 -m pyv2 examples/games/monster_arena.pyv2
 ## 🖥️ Python v2 Sudbury Launcher
 
 Version 1.1 ships Python v2 as its own lightweight desktop application. The
-launcher provides a Code Studio for `.pyv2` files, output console, project
-wizard, offline Python v2 website template, local preview server, Games/GPU
-library, docs hub, and PyHope tools—all using the Python standard library.
+workspace provides Home, Code Studio, a path-safe atomic file service, project
+wizard, eight packaged CC0 assets, Games/GPU, detected editor connections,
+local settings, docs, an offline website template, and a preview server—all
+using the Python standard library. Open it with `pyv2-launcher`,
+`pyhope-studio`, or `pyhope --studio`.
 
 ## 🎮 PyHope game engine
 
@@ -118,6 +120,9 @@ styled after python.org, then pushed further:
   `pyv2.js`, running in your browser — press the yellow `>_` badge)
 * a **Downloads page** (`download.html`) — install the language on
   macOS / Linux / Windows / any editor
+* a **dual-runtime Playground** (`playground.html`) — Python v2, an honestly
+  labeled Classic Python compatibility subset, command history, separate error
+  terminal, downloadable source, and a live website workshop
 * a **tutorial** (`tutorial.html`) — 10 runnable lessons, sandbox included
 * a **10-game arcade** (`games.html`) with shooters, platformers, racing,
   Snake Byte, Orb Breaker, animated sprites, Python v2 source, and the 9M GPU lab
@@ -161,14 +166,17 @@ The short version:
 $ python3 -m unittest discover -s tests -t .
 ```
 
-**83 tests pass:** 63 language tests, 9 PyHope engine tests, 6 Launcher tests,
-4 arcade/site tests, plus a parity harness that runs 21 programs (including error paths) through both the
+**90 tests pass:** 63 language tests, 9 PyHope engine tests, 11 workspace/Launcher tests,
+6 arcade/Playground site tests, plus a parity harness that runs 21 programs (including error paths) through both the
 Python and JavaScript runtimes and demands byte-identical output.
 
 ## 📦 Repo layout
 
 ```
-index.html       home website (GitHub Pages serves this) — playground + game
+index.html       home website (GitHub Pages serves this) — quick runner + game
+playground.html  dual-runtime editor, commands, errors, website workshop
+playground.js    Playground sessions, templates, terminals, and HTML export
+classic-python.js documented classic-syntax compatibility translator
 download.html    one-click installers + desktop/editor setup
 docs.html        language reference + complete PyHope API guide
 tutorial.html    10 runnable language lessons + browser sandbox
@@ -176,7 +184,7 @@ guide.html       50 concise language/engine learning topics
 games.html       10-game arcade, GPU lab, animated sprites, Python v2 source
 arcade.js         seven-game shared Canvas engine for Pocket Arcade
 pyv2/            interpreter, CLI, desktop Launcher, packaged browser runtime
-pyhope/          dependency-free game engine package + CLI
+pyhope/          engine, CLI, and packaged offline CC0 asset library
 pyv2.js          twin language runtime in JavaScript
 game.js          CPU sprite raycaster (monsters + weapon)
 gpu-game.js      WebGL2 raycaster (9,437,184-pixel mode)

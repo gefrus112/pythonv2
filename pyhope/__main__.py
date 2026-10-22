@@ -46,7 +46,11 @@ def main(argv: list[str] | None = None) -> int:
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--demo", action="store_true", help="render the built-in ASCII demo")
     group.add_argument("--check", action="store_true", help="run a quick installation check")
+    group.add_argument("--studio", action="store_true", help="open the Python v2 + PyHope desktop workspace")
     args = parser.parse_args(argv)
+    if args.studio:
+        from pyv2.launcher import main as launch_studio
+        return launch_studio()
     if args.check:
         _check()
     else:

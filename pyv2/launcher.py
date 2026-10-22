@@ -1,7 +1,8 @@
 """Python v2 Launcher — dependency-free desktop workspace.
 
-The launcher uses tkinter from the Python standard library. It can edit and
-run .pyv2 files, create CLI/game/web projects, preview generated websites,
+The workspace uses tkinter from the Python standard library. It can edit and
+run .pyv2 files, manage a safe local workspace, export packaged PyHope assets,
+connect installed code editors, create projects, preview generated websites,
 and open the PyHope games and documentation. No Electron or pygame required.
 """
 
@@ -12,10 +13,12 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from importlib import resources
 from pathlib import Path
 import html
+import json
 import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import webbrowser
 
@@ -23,12 +26,32 @@ from . import __version__
 from .interpreter import Interpreter, Pyv2Error
 from .parser import ParseError
 
-APP_TITLE = f"Python v2 {__version__} — Sudbury Launcher"
+APP_TITLE = f"Python v2 + PyHope {__version__} — Sudbury Workspace"
 SITE_URL = "https://gefrus112.github.io/pythonv2/"
 GAMES_URL = SITE_URL + "games.html"
 DOCS_URL = SITE_URL + "docs.html"
 GUIDE_URL = SITE_URL + "guide.html"
+PLAYGROUND_URL = SITE_URL + "playground.html"
 YOUTUBE_URL = "https://www.youtube.com/@CubeCometYT"
+
+EDITOR_COMMANDS = {
+    "VS Code": "code",
+    "VSCodium": "codium",
+    "Zed": "zed",
+    "Sublime Text": "subl",
+    "PyCharm": "charm",
+}
+
+ASSET_DESCRIPTIONS = {
+    "comet-hero.svg": ("Comet Kid", "Animated platform hero"),
+    "comet-pilot.svg": ("Comet Pilot", "Neon shooter character"),
+    "drone.svg": ("Null Drone", "Flying shooter enemy"),
+    "monster.svg": ("Byte Beast", "Raycaster monster"),
+    "slime.svg": ("Null Slime", "Platform enemy"),
+    "race-car.svg": ("Comet Racer", "Top-down racing car"),
+    "blaster.svg": ("Comet Blaster", "Original sci-fi weapon"),
+    "coin.svg": ("Hope Bit", "Animated collectible"),
+}
 
 
 WEB_APP_SOURCE = '''# app.pyv2 — this program builds the text on your website
@@ -224,6 +247,132 @@ def create_project(parent: str | Path, name: str, kind: str) -> Path:
     return target
 
 
+class WorkspaceFileService:
+    """Small, safe file service used by the desktop workspace.
+
+    Every path is resolved beneath ``root``. Writes are atomic and UTF-8 text
+    only; traversal and symlink escapes are rejected before touching a file.
+    """
+
+    def __init__(self, root: str | Path):
+        self.root = Path(root).expanduser().resolve()
+        self.root.mkdir(parents=True, exist_ok=True)
+
+    def resolve(self, relative: str | Path) -> Path:
+        relative = Path(relative)
+        if relative.is_absolute():
+            raise ValueError("workspace paths must be relative")
+        target = (self.root / relative).resolve()
+        try:
+            target.relative_to(self.root)
+        except ValueError as exc:
+            raise ValueError("path escapes the workspace") from exc
+        return target
+
+    def list_entries(self) -> list[dict[str, object]]:
+        entries: list[dict[str, object]] = []
+        for path in sorted(self.root.rglob("*"), key=lambda item: (not item.is_dir(), str(item).lower())):
+            if any(part.startswith(".") and part != ".vscode" for part in path.relative_to(self.root).parts):
+                continue
+            entries.append({
+                "path": path.relative_to(self.root).as_posix(),
+                "directory": path.is_dir(),
+                "size": 0 if path.is_dir() else path.stat().st_size,
+            })
+        return entries
+
+    def read_text(self, relative: str | Path, max_bytes: int = 2_000_000) -> str:
+        path = self.resolve(relative)
+        if not path.is_file():
+            raise FileNotFoundError(str(relative))
+        if path.stat().st_size > max_bytes:
+            raise ValueError("file is too large for the built-in editor")
+        return path.read_text(encoding="utf-8")
+
+    def write_text(self, relative: str | Path, content: str) -> Path:
+        path = self.resolve(relative)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary: Path | None = None
+        try:
+            with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as handle:
+                handle.write(content)
+                temporary = Path(handle.name)
+            temporary.replace(path)
+        finally:
+            if temporary and temporary.exists():
+                temporary.unlink()
+        return path
+
+    def create_folder(self, relative: str | Path) -> Path:
+        path = self.resolve(relative)
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
+    def rename(self, old: str | Path, new: str | Path) -> Path:
+        source, target = self.resolve(old), self.resolve(new)
+        if not source.exists():
+            raise FileNotFoundError(str(old))
+        if target.exists():
+            raise FileExistsError(str(new))
+        target.parent.mkdir(parents=True, exist_ok=True)
+        source.rename(target)
+        return target
+
+    def delete(self, relative: str | Path) -> None:
+        path = self.resolve(relative)
+        if not path.exists():
+            raise FileNotFoundError(str(relative))
+        if path.is_dir():
+            path.rmdir()  # intentionally refuses non-empty recursive deletion
+        else:
+            path.unlink()
+
+
+class SettingsStore:
+    DEFAULTS = {
+        "workspace": str(Path.home() / "PythonV2Workspace"),
+        "editor": "Auto detect",
+        "font_size": 12,
+        "autosave": False,
+    }
+
+    def __init__(self, path: str | Path | None = None):
+        self.path = Path(path or (Path.home() / ".pythonv2" / "settings.json")).expanduser()
+
+    def load(self) -> dict[str, object]:
+        settings = dict(self.DEFAULTS)
+        try:
+            loaded = json.loads(self.path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                settings.update({key: loaded[key] for key in settings.keys() & loaded.keys()})
+        except (OSError, ValueError, TypeError):
+            pass
+        return settings
+
+    def save(self, settings: dict[str, object]) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        clean = dict(self.DEFAULTS)
+        clean.update({key: settings[key] for key in clean.keys() & settings.keys()})
+        self.path.write_text(json.dumps(clean, indent=2) + "\n", encoding="utf-8")
+
+
+def detect_editors(which=shutil.which) -> list[dict[str, object]]:
+    """Return all supported external editors and whether they are connected."""
+    found = []
+    for name, command in EDITOR_COMMANDS.items():
+        path = which(command)
+        found.append({"name": name, "command": command, "path": path, "connected": bool(path)})
+    return found
+
+
+def packaged_assets() -> list[str]:
+    root = resources.files("pyhope").joinpath("assets")
+    try:
+        return sorted(item.name for item in root.iterdir() if item.name.endswith(".svg"))
+    except (FileNotFoundError, NotADirectoryError):
+        return []
+
+
 class Launcher:
     BG = "#111c27"
     PANEL = "#182838"
@@ -238,8 +387,14 @@ class Launcher:
     def __init__(self, root, tk, ttk, dialogs):
         self.root, self.tk, self.ttk = root, tk, ttk
         self.filedialog, self.messagebox, self.simpledialog = dialogs
+        self.settings_store = SettingsStore()
+        self.settings = self.settings_store.load()
+        self.file_service = WorkspaceFileService(str(self.settings["workspace"]))
         self.current_file: Path | None = None
         self.current_project: Path | None = None
+        self.workspace_selection: str | None = None
+        self.workspace_list = None
+        self.workspace_editor = None
         self.servers: list[ThreadingHTTPServer] = []
         self.nav_buttons = {}
         self.editor = None
@@ -281,9 +436,9 @@ class Launcher:
         self._draw_logo(self.header)
         title_box = self.tk.Frame(self.header, bg=self.PANEL)
         title_box.pack(side="left", pady=16)
-        self.tk.Label(title_box, text="PYTHON V2", bg=self.PANEL, fg=self.TEXT,
+        self.tk.Label(title_box, text="PYTHON V2 + PYHOPE", bg=self.PANEL, fg=self.TEXT,
                       font=("Segoe UI", 19, "bold")).pack(anchor="w")
-        self.tk.Label(title_box, text="1.1 Sudbury • APP LAUNCHER", bg=self.PANEL,
+        self.tk.Label(title_box, text="1.1 SUDBURY • CREATIVE WORKSPACE", bg=self.PANEL,
                       fg=self.YELLOW, font=("Consolas", 9, "bold")).pack(anchor="w")
         self.tk.Button(self.header, text="DONATION • COMING SOON", state="disabled",
                        disabledforeground="#6d7d8b", bg="#273746", relief="flat",
@@ -304,19 +459,23 @@ class Launcher:
         nav = [
             ("⌂  Home", self.show_home),
             (">_  Code Studio", self.show_editor),
+            ("▤  Files", self.show_files),
             ("＋  New Project", self.show_projects),
+            ("◆  Assets", self.show_assets),
             ("▦  Games & GPU", self.show_games),
+            ("↗  Connected Editors", self.show_editors),
+            ("⚙  Settings", self.show_settings),
             ("?  Docs & Learn", self.show_docs),
         ]
         for label, command in nav:
             button = self.tk.Button(self.sidebar, text=label, command=partial(self._navigate, label, command),
                                     anchor="w", bg="#0d1720", fg=self.MUTED,
                                     activebackground=self.PANEL_2, activeforeground="white",
-                                    bd=0, relief="flat", padx=22, pady=15,
-                                    font=("Segoe UI", 11), cursor="hand2")
+                                    bd=0, relief="flat", padx=20, pady=10,
+                                    font=("Segoe UI", 10), cursor="hand2")
             button.pack(fill="x", padx=8, pady=2)
             self.nav_buttons[label] = button
-        self.tk.Label(self.sidebar, text="PYV2 1.1.0\nPYHOPE • GPU READY",
+        self.tk.Label(self.sidebar, text="PYV2 1.1.0 • PYHOPE\nFILES • ASSETS • EDITORS",
                       justify="left", bg="#0d1720", fg="#5e7688",
                       font=("Consolas", 8)).pack(side="bottom", anchor="w", padx=22, pady=22)
 
@@ -369,14 +528,14 @@ class Launcher:
 
     def show_home(self):
         self._clear()
-        self._page_head("Build with Python v2", "Your language, editor, project launcher, game engine, and website builder in one lightweight app.")
+        self._page_head("Python v2 + PyHope Home", "Code, managed files, offline assets, projects, games, editor connections, and settings in one lightweight workspace.")
         hero = self.tk.Frame(self.content, bg="#203d59", highlightbackground=self.BLUE_LIGHT, highlightthickness=1)
         hero.pack(fill="x", padx=32, pady=(0, 22))
         self.tk.Label(hero, text="PYTHON V2 1.1 • SUDBURY", bg="#203d59", fg=self.YELLOW,
                       font=("Consolas", 10, "bold")).pack(anchor="w", padx=24, pady=(20, 5))
         self.tk.Label(hero, text="The snake, but better — now with its own app.", bg="#203d59", fg="white",
                       font=("Segoe UI", 19, "bold")).pack(anchor="w", padx=24)
-        self.tk.Label(hero, text="Edit .pyv2 • create websites • build PyHope games • run 9M GPU demos",
+        self.tk.Label(hero, text="Edit .pyv2 • manage files • export assets • connect editors • build websites and games",
                       bg="#203d59", fg="#c9deee", font=("Segoe UI", 10)).pack(anchor="w", padx=24, pady=(5, 20))
 
         grid = self.tk.Frame(self.content, bg=self.BG)
@@ -384,13 +543,17 @@ class Launcher:
         for column in range(3):
             grid.columnconfigure(column, weight=1, uniform="cards")
         cards = [
-            ("Code Studio", "Open, edit, save, and run .pyv2 programs without leaving the launcher.", "Open editor", self.show_editor, self.BLUE),
-            ("Website Builder", "Create a real website whose content is generated by Python v2 in the browser.", "New website", self.show_projects, self.RED),
-            ("PyHope Arcade", "Open 10 playable shooters, platformers, racers, animated sprites, and the 9.4M GPU lab.", "Play games", self.show_games, "#44a36f"),
+            ("Code Studio", "Edit and run .pyv2 programs with a built-in output console.", "Open editor", self.show_editor, self.BLUE),
+            ("Workspace Files", "Create, read, save, rename, and safely delete files inside your own workspace.", "Manage files", self.show_files, "#44a36f"),
+            ("Website Builder", "Create a complete browser project generated by Python v2.", "New website", self.show_projects, self.RED),
+            ("Asset Library", "Export eight packaged CC0 PyHope characters, enemies, weapons, cars, and coins.", "Browse assets", self.show_assets, "#8f2c52"),
+            ("PyHope Arcade", "Open 10 shooters, platformers, racers, and the 9.4M GPU lab.", "Play games", self.show_games, "#7655b7"),
+            ("Connected Editors", "Detect VS Code, VSCodium, Zed, Sublime Text, and PyCharm.", "Check editors", self.show_editors, self.YELLOW),
         ]
-        for col, args in enumerate(cards):
+        for index, args in enumerate(cards):
+            row, col = divmod(index, 3)
             card = self._card(grid, *args)
-            card.grid(row=0, column=col, sticky="nsew", padx=(0 if col == 0 else 7, 0 if col == 2 else 7))
+            card.grid(row=row, column=col, sticky="nsew", padx=(0 if col == 0 else 7, 0 if col == 2 else 7), pady=7)
 
     def show_editor(self):
         self._clear()
@@ -408,7 +571,7 @@ class Launcher:
         editor_frame = self.tk.Frame(panes, bg=self.PANEL)
         self.editor = self.tk.Text(editor_frame, bg="#101a24", fg="#e5edf4", insertbackground=self.YELLOW,
                                    selectbackground=self.BLUE, relief="flat", padx=16, pady=14,
-                                   undo=True, font=("Consolas", 12), wrap="none")
+                                   undo=True, font=("Consolas", int(self.settings.get("font_size", 12))), wrap="none")
         self.editor.pack(fill="both", expand=True)
         if self.current_file and self.current_file.exists():
             self.editor.insert("1.0", self.current_file.read_text(encoding="utf-8"))
@@ -447,6 +610,9 @@ class Launcher:
     def run_editor(self):
         if self.editor is None or not self.editor.winfo_exists():
             return
+        if self.settings.get("autosave") and self.current_file:
+            self.current_file.write_text(self.editor.get("1.0", "end-1c"), encoding="utf-8")
+            self._set_status("Autosaved " + str(self.current_file))
         lines = []
         interp = Interpreter(output=lines.append, read_input=lambda prompt="": self.simpledialog.askstring("Python v2 input", prompt) or "")
         try:
@@ -463,6 +629,298 @@ class Launcher:
         self.output.insert("1.0", text or "✓ Program finished (no output)")
         self.output.configure(state="disabled")
         self._set_status("Run finished" if not error else "Run finished with an error")
+
+    # ------------------------------------------------------------------
+    # Built-in workspace file service
+    # ------------------------------------------------------------------
+    def show_files(self):
+        self._clear()
+        self._page_head("Files", "Your own local file service. Every operation stays inside the configured workspace, and saves are atomic.")
+        toolbar = self.tk.Frame(self.content, bg=self.BG)
+        toolbar.pack(fill="x", padx=32, pady=(0, 12))
+        self.tk.Label(toolbar, text=str(self.file_service.root), bg=self.BG, fg=self.BLUE_LIGHT,
+                      font=("Consolas", 9)).pack(side="left")
+        self.ttk.Button(toolbar, text="Change workspace", command=self._change_workspace,
+                        style="Dark.TButton").pack(side="right")
+        self.ttk.Button(toolbar, text="New folder", command=self._new_workspace_folder,
+                        style="Dark.TButton").pack(side="right", padx=5)
+        self.ttk.Button(toolbar, text="New file", command=self._new_workspace_file,
+                        style="Accent.TButton").pack(side="right", padx=5)
+
+        split = self.tk.PanedWindow(self.content, orient="horizontal", bg=self.BG, sashwidth=6, bd=0)
+        split.pack(fill="both", expand=True, padx=32, pady=(0, 24))
+        left = self.tk.Frame(split, bg=self.PANEL)
+        self.workspace_list = self.tk.Listbox(left, bg="#0d1720", fg=self.TEXT,
+                                              selectbackground=self.BLUE, selectforeground="white",
+                                              relief="flat", font=("Consolas", 10), activestyle="none")
+        self.workspace_list.pack(fill="both", expand=True, padx=8, pady=8)
+        self.workspace_list.bind("<<ListboxSelect>>", self._select_workspace_entry)
+        split.add(left, minsize=260)
+
+        right = self.tk.Frame(split, bg=self.PANEL)
+        head = self.tk.Frame(right, bg=self.PANEL)
+        head.pack(fill="x", padx=14, pady=(12, 7))
+        self.workspace_file_label = self.tk.Label(head, text="Select a text file", bg=self.PANEL,
+                                                  fg=self.MUTED, font=("Consolas", 10))
+        self.workspace_file_label.pack(side="left")
+        self.ttk.Button(head, text="Open in Code Studio", command=self._open_workspace_in_studio,
+                        style="Dark.TButton").pack(side="right")
+        self.ttk.Button(head, text="Delete", command=self._delete_workspace_entry,
+                        style="Dark.TButton").pack(side="right", padx=4)
+        self.ttk.Button(head, text="Rename", command=self._rename_workspace_entry,
+                        style="Dark.TButton").pack(side="right", padx=4)
+        self.ttk.Button(head, text="Save", command=self._save_workspace_file,
+                        style="Blue.TButton").pack(side="right", padx=4)
+        self.workspace_editor = self.tk.Text(right, bg="#0e1822", fg="#e5edf4", insertbackground=self.YELLOW,
+                                             selectbackground=self.BLUE, relief="flat", padx=16, pady=14,
+                                             undo=True, font=("Consolas", int(self.settings.get("font_size", 12))), wrap="none")
+        self.workspace_editor.pack(fill="both", expand=True, padx=8, pady=(0, 8))
+        split.add(right, minsize=430)
+        self._refresh_workspace_files()
+
+    def _refresh_workspace_files(self, select: str | None = None):
+        if self.workspace_list is None or not self.workspace_list.winfo_exists():
+            return
+        self.workspace_entries = self.file_service.list_entries()
+        self.workspace_list.delete(0, "end")
+        selected_index = None
+        for index, entry in enumerate(self.workspace_entries):
+            marker = "▸ " if entry["directory"] else "  "
+            suffix = "/" if entry["directory"] else f"  ({entry['size']} B)"
+            self.workspace_list.insert("end", marker + str(entry["path"]) + suffix)
+            if select == entry["path"]:
+                selected_index = index
+        if selected_index is not None:
+            self.workspace_list.selection_set(selected_index)
+            self.workspace_list.see(selected_index)
+            self._select_workspace_entry()
+
+    def _select_workspace_entry(self, _event=None):
+        selected = self.workspace_list.curselection() if self.workspace_list else ()
+        if not selected:
+            return
+        entry = self.workspace_entries[selected[0]]
+        self.workspace_selection = str(entry["path"])
+        self.workspace_file_label.configure(text=self.workspace_selection)
+        self.workspace_editor.configure(state="normal")
+        self.workspace_editor.delete("1.0", "end")
+        if entry["directory"]:
+            self.workspace_editor.insert("1.0", "Folder: " + self.workspace_selection + "\n\nCreate or select a file to edit its contents.")
+            self.workspace_editor.configure(state="disabled")
+        else:
+            self.workspace_editor.configure(state="normal")
+            try:
+                self.workspace_editor.insert("1.0", self.file_service.read_text(self.workspace_selection))
+            except (UnicodeDecodeError, ValueError) as exc:
+                self.workspace_editor.insert("1.0", "Preview unavailable: " + str(exc))
+                self.workspace_editor.configure(state="disabled")
+
+    def _new_workspace_file(self):
+        name = self.simpledialog.askstring("New workspace file", "Relative name (for example: src/main.pyv2)")
+        if not name:
+            return
+        try:
+            path = self.file_service.resolve(name)
+            if path.exists():
+                raise FileExistsError(name)
+            starter = CLI_SOURCE.format(name=path.stem) if path.suffix == ".pyv2" else ""
+            self.file_service.write_text(name, starter)
+            self._refresh_workspace_files(Path(name).as_posix())
+            self._set_status("Created workspace file " + name)
+        except Exception as exc:
+            self.messagebox.showerror("Could not create file", str(exc))
+
+    def _new_workspace_folder(self):
+        name = self.simpledialog.askstring("New workspace folder", "Relative folder name")
+        if not name:
+            return
+        try:
+            self.file_service.create_folder(name)
+            self._refresh_workspace_files(Path(name).as_posix())
+            self._set_status("Created workspace folder " + name)
+        except Exception as exc:
+            self.messagebox.showerror("Could not create folder", str(exc))
+
+    def _save_workspace_file(self):
+        if not self.workspace_selection or self.workspace_editor is None:
+            return
+        try:
+            if self.file_service.resolve(self.workspace_selection).is_dir():
+                return
+            self.file_service.write_text(self.workspace_selection, self.workspace_editor.get("1.0", "end-1c"))
+            self._refresh_workspace_files(self.workspace_selection)
+            self._set_status("Saved " + self.workspace_selection)
+        except Exception as exc:
+            self.messagebox.showerror("Could not save file", str(exc))
+
+    def _rename_workspace_entry(self):
+        if not self.workspace_selection:
+            return
+        new = self.simpledialog.askstring("Rename workspace entry", "New relative path", initialvalue=self.workspace_selection)
+        if not new or new == self.workspace_selection:
+            return
+        try:
+            self.file_service.rename(self.workspace_selection, new)
+            self.workspace_selection = Path(new).as_posix()
+            self._refresh_workspace_files(self.workspace_selection)
+            self._set_status("Renamed to " + self.workspace_selection)
+        except Exception as exc:
+            self.messagebox.showerror("Could not rename", str(exc))
+
+    def _delete_workspace_entry(self):
+        if not self.workspace_selection:
+            return
+        if not self.messagebox.askyesno("Delete workspace entry", f"Delete {self.workspace_selection}?\n\nNon-empty folders are always protected."):
+            return
+        try:
+            self.file_service.delete(self.workspace_selection)
+            self.workspace_selection = None
+            self._refresh_workspace_files()
+            self.workspace_editor.configure(state="normal")
+            self.workspace_editor.delete("1.0", "end")
+            self._set_status("Workspace entry deleted")
+        except Exception as exc:
+            self.messagebox.showerror("Could not delete", str(exc))
+
+    def _open_workspace_in_studio(self):
+        if not self.workspace_selection:
+            return
+        path = self.file_service.resolve(self.workspace_selection)
+        if not path.is_file():
+            return
+        self.current_file = path
+        self.show_editor()
+
+    def _change_workspace(self):
+        chosen = self.filedialog.askdirectory(title="Choose Python v2 workspace")
+        if not chosen:
+            return
+        self.settings["workspace"] = chosen
+        self.settings_store.save(self.settings)
+        self.file_service = WorkspaceFileService(chosen)
+        self.workspace_selection = None
+        self.show_files()
+        self._set_status("Workspace changed to " + chosen)
+
+    # ------------------------------------------------------------------
+    # Offline PyHope assets
+    # ------------------------------------------------------------------
+    def show_assets(self):
+        self._clear()
+        self._page_head("Assets", "Eight original CC0 sprites ship inside PyHope. Export them into any game without downloading a third-party pack.")
+        actions = self.tk.Frame(self.content, bg=self.BG)
+        actions.pack(fill="x", padx=32, pady=(0, 10))
+        self.ttk.Button(actions, text="Open animated web gallery", style="Accent.TButton",
+                        command=lambda: webbrowser.open(GAMES_URL + "#sprites")).pack(side="left")
+        self.tk.Label(actions, text="CC0 • commercial use allowed • SVG • original artwork",
+                      bg=self.BG, fg=self.MUTED, font=("Consolas", 9)).pack(side="left", padx=15)
+        grid = self.tk.Frame(self.content, bg=self.BG)
+        grid.pack(fill="both", expand=True, padx=32, pady=(0, 24))
+        for column in range(2):
+            grid.columnconfigure(column, weight=1)
+        for index, asset in enumerate(packaged_assets()):
+            title, description = ASSET_DESCRIPTIONS.get(asset, (Path(asset).stem.replace("-", " ").title(), "PyHope CC0 asset"))
+            card = self._card(grid, title, description + "\n" + asset, "Export SVG",
+                              lambda name=asset: self._export_asset(name), [self.BLUE, self.RED, "#44a36f", "#8f2c52"][index % 4])
+            card.grid(row=index // 2, column=index % 2, sticky="nsew", padx=7, pady=7)
+
+    def _export_asset(self, name: str):
+        target = self.filedialog.asksaveasfilename(title="Export PyHope asset", initialfile=name,
+                                                   defaultextension=".svg", filetypes=[("SVG image", "*.svg")])
+        if not target:
+            return
+        try:
+            data = resources.files("pyhope").joinpath("assets", name).read_bytes()
+            Path(target).write_bytes(data)
+            self._set_status("Exported " + name + " to " + target)
+        except Exception as exc:
+            self.messagebox.showerror("Could not export asset", str(exc))
+
+    # ------------------------------------------------------------------
+    # Connected editors and settings
+    # ------------------------------------------------------------------
+    def show_editors(self):
+        self._clear()
+        self._page_head("Connected Editors", "Use the built-in Code Studio or open your workspace in a detected desktop editor. Detection uses PATH only—no accounts or tokens.")
+        grid = self.tk.Frame(self.content, bg=self.BG)
+        grid.pack(fill="both", expand=True, padx=32, pady=(0, 24))
+        grid.columnconfigure(0, weight=1); grid.columnconfigure(1, weight=1)
+        built_in = self._card(grid, "Python v2 Code Studio", "CONNECTED • Built in\nRun .pyv2 files without another application.",
+                              "Open Code Studio", self.show_editor, "#44a36f")
+        built_in.grid(row=0, column=0, sticky="nsew", padx=7, pady=7)
+        playground = self._card(grid, "Browser Playground", "CONNECTED • Web\nPython v2, Classic compatibility, commands, errors, and templates.",
+                                "Open Playground", lambda: webbrowser.open(PLAYGROUND_URL), self.BLUE)
+        playground.grid(row=0, column=1, sticky="nsew", padx=7, pady=7)
+        for index, editor in enumerate(detect_editors(), start=2):
+            connected = bool(editor["connected"])
+            text = ("CONNECTED • " + str(editor["path"])) if connected else ("NOT FOUND • install the '" + str(editor["command"]) + "' PATH command")
+            command = (lambda item=editor: self._open_external_editor(item)) if connected else (lambda: None)
+            card = self._card(grid, str(editor["name"]), text, "Open workspace" if connected else "Not connected",
+                              command, "#44a36f" if connected else "#52697b")
+            card.grid(row=index // 2, column=index % 2, sticky="nsew", padx=7, pady=7)
+
+    def _open_external_editor(self, editor: dict[str, object]):
+        target = self.current_project or self.file_service.root
+        try:
+            subprocess.Popen([str(editor["path"]), str(target)])
+            self.settings["editor"] = str(editor["name"])
+            self.settings_store.save(self.settings)
+            self._set_status(f"Opened {target} in {editor['name']}")
+        except OSError as exc:
+            self.messagebox.showerror("Could not open editor", str(exc))
+
+    def show_settings(self):
+        self._clear()
+        self._page_head("Settings", "Configure your workspace, preferred connected editor, Code Studio size, and autosave behavior.")
+        form = self.tk.Frame(self.content, bg=self.PANEL, padx=26, pady=26)
+        form.pack(fill="x", padx=32)
+        workspace = self.tk.StringVar(value=str(self.settings["workspace"]))
+        editor = self.tk.StringVar(value=str(self.settings["editor"]))
+        font_size = self.tk.StringVar(value=str(self.settings["font_size"]))
+        autosave = self.tk.BooleanVar(value=bool(self.settings["autosave"]))
+        self.tk.Label(form, text="Workspace folder", bg=self.PANEL, fg=self.TEXT).grid(row=0, column=0, sticky="w", pady=9)
+        workspace_entry = self.tk.Entry(form, textvariable=workspace, bg="#0f1b26", fg=self.TEXT,
+                                        insertbackground=self.YELLOW, relief="flat", font=("Segoe UI", 10))
+        workspace_entry.grid(row=0, column=1, sticky="ew", padx=12, ipady=8)
+        self.ttk.Button(form, text="Browse", style="Dark.TButton",
+                        command=lambda: self._browse_variable(workspace)).grid(row=0, column=2)
+        self.tk.Label(form, text="Preferred editor", bg=self.PANEL, fg=self.TEXT).grid(row=1, column=0, sticky="w", pady=9)
+        editor_box = self.ttk.Combobox(form, textvariable=editor, state="readonly",
+                                       values=["Auto detect"] + list(EDITOR_COMMANDS), font=("Segoe UI", 10))
+        editor_box.grid(row=1, column=1, sticky="ew", padx=12)
+        self.tk.Label(form, text="Code font size", bg=self.PANEL, fg=self.TEXT).grid(row=2, column=0, sticky="w", pady=9)
+        size_box = self.ttk.Combobox(form, textvariable=font_size, state="readonly",
+                                     values=[str(value) for value in range(9, 21)], width=8)
+        size_box.grid(row=2, column=1, sticky="w", padx=12)
+        self.tk.Checkbutton(form, text="Autosave the current file before Run", variable=autosave,
+                            bg=self.PANEL, fg=self.TEXT, selectcolor="#0f1b26", activebackground=self.PANEL,
+                            activeforeground=self.TEXT).grid(row=3, column=1, sticky="w", padx=12, pady=9)
+        form.columnconfigure(1, weight=1)
+        self.ttk.Button(form, text="Save Settings", style="Accent.TButton",
+                        command=lambda: self._save_settings(workspace.get(), editor.get(), font_size.get(), autosave.get())).grid(row=4, column=1, sticky="w", padx=12, pady=(18, 0))
+        self.tk.Label(self.content, text="Settings are stored locally in ~/.pythonv2/settings.json. No account, cloud sync, telemetry, or credentials are used.",
+                      bg=self.BG, fg=self.MUTED, font=("Segoe UI", 10), wraplength=780,
+                      justify="left").pack(anchor="w", padx=32, pady=18)
+
+    def _browse_variable(self, variable):
+        chosen = self.filedialog.askdirectory(title="Choose Python v2 workspace")
+        if chosen:
+            variable.set(chosen)
+
+    def _save_settings(self, workspace: str, editor: str, font_size: str, autosave: bool):
+        try:
+            size = int(font_size)
+            if not 9 <= size <= 20:
+                raise ValueError("font size must be between 9 and 20")
+            service = WorkspaceFileService(workspace)
+            self.settings.update({"workspace": str(service.root), "editor": editor,
+                                  "font_size": size, "autosave": bool(autosave)})
+            self.settings_store.save(self.settings)
+            self.file_service = service
+            self._set_status("Settings saved")
+            self.messagebox.showinfo("Settings saved", "Workspace settings were saved locally.")
+        except Exception as exc:
+            self.messagebox.showerror("Could not save settings", str(exc))
 
     def show_projects(self):
         self._clear()
@@ -579,6 +1037,7 @@ class Launcher:
         grid = self.tk.Frame(self.content, bg=self.BG)
         grid.pack(fill="both", expand=True, padx=32)
         links = [
+            ("Dual-runtime Playground", "Run Python v2 or Classic compatibility with commands and an error terminal.", "Open Playground", PLAYGROUND_URL, self.YELLOW),
             ("10-lesson Tutorial", "Runnable examples in the browser.", "Start tutorial", SITE_URL + "tutorial.html", self.BLUE),
             ("50-topic Field Guide", "Searchable language and engine recipes.", "Read 50 guides", GUIDE_URL, self.RED),
             ("Language Reference", "Syntax, semantics, builtins and editor setup.", "Open docs", DOCS_URL, "#44a36f"),

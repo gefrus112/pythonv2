@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playground — Python v2 + Classic Python</title>
+  <meta name="description" content="Run Python v2 and a documented Classic Python compatibility subset in your browser. Includes command terminal, error console, examples, and a downloadable website template.">
+  <link rel="icon" type="image/svg+xml" href="favicon-v2.svg">
+  <link rel="apple-touch-icon" href="logo-v2.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <div class="topbar"><nav class="topbar-inner" aria-label="Site">
+    <a href="index.html">Python</a><a href="docs.html">Docs</a><a href="download.html">Downloads</a>
+    <a class="active" href="playground.html">Playground</a><a href="games.html">Games</a><a href="guide.html">50 Guides</a>
+  </nav></div>
+
+  <header class="masthead"><div class="masthead-inner">
+    <a class="brand" href="index.html"><img src="logo-v2.svg" alt="Python v2 intertwined red and blue snakes" width="64" height="64"><span class="brand-word">python<sup>™</sup><em>v2</em></span></a>
+    <div class="masthead-tools"><span class="runtime-ready"><i></i> Browser runtime ready</span><a class="btn-social" href="download.html#app">Install app</a></div>
+  </div></header>
+  <nav class="mainnav" aria-label="Main"><div class="mainnav-inner">
+    <a href="index.html">Home</a><a href="download.html">Downloads</a><a href="docs.html">Documentation</a>
+    <a class="nav-current" href="playground.html">Playground</a><a href="tutorial.html">Tutorial</a><a href="games.html">Games</a>
+  </div></nav>
+
+  <section class="page-head playground-head"><div class="page-head-inner">
+    <p class="eyebrow">NO INSTALL • COMMAND TERMINAL • WEBSITE WORKSHOP</p>
+    <h1>Write it. Run it. Break it. Learn it.</h1>
+    <p>Use the real Python v2 browser runtime or switch to Classic Python
+      compatibility mode. Output and errors stay separate, commands have
+      history, and the website starter turns program output into a real page.</p>
+    <div class="hero-actions"><a class="btn btn-yellow" href="#workspace">Open workspace</a><a class="btn btn-ghost" href="#website-workshop">Build a website</a></div>
+  </div></section>
+
+  <main class="playground-main">
+    <section class="play-workspace" id="workspace" aria-labelledby="workspace-title">
+      <div class="play-toolbar">
+        <div>
+          <p class="eyebrow">DUAL-MODE BROWSER LAB</p>
+          <h2 id="workspace-title">Playground workspace</h2>
+        </div>
+        <div class="runtime-switch" role="group" aria-label="Choose language mode">
+          <button type="button" data-runtime="pyv2" class="active" aria-pressed="true"><span>V2</span> Python v2</button>
+          <button type="button" data-runtime="classic" aria-pressed="false"><span>PY</span> Classic Python</button>
+        </div>
+      </div>
+
+      <div class="compat-notice" id="compat-notice" hidden>
+        <strong>Classic compatibility mode—not CPython.</strong> It runs common
+        classic syntax locally by translating it to the Python v2 browser runtime.
+        Variables, functions, loops, lists, maps, math, and print work; imports and
+        third-party packages require a local CPython installation.
+      </div>
+
+      <div class="play-controls">
+        <label for="play-example">Starter</label>
+        <select id="play-example">
+          <option value="hello-v2">Python v2 quick tour</option>
+          <option value="website-v2">Website starter template</option>
+          <option value="game-v2">PyHope game data</option>
+          <option value="classic-tour">Classic Python quick tour</option>
+          <option value="error-lab">Error lab</option>
+        </select>
+        <span class="play-file" id="play-file">main.pyv2</span>
+        <button type="button" id="play-reset">Reset example</button>
+        <button type="button" id="play-download">Download source</button>
+        <button type="button" class="play-run" id="play-run">▶ Run <kbd>Ctrl</kbd>+<kbd>Enter</kbd></button>
+      </div>
+
+      <div class="play-editor-shell">
+        <div class="editor-chrome"><span class="traffic red"></span><span class="traffic yellow"></span><span class="traffic green"></span><strong id="editor-mode-label">PYTHON V2</strong><span id="editor-position">Ln 1, Col 1</span></div>
+        <div class="play-editor-area">
+          <pre id="play-lines" aria-hidden="true">1</pre>
+          <label class="sr-only" for="play-code">Program source</label>
+          <textarea id="play-code" spellcheck="false" autocomplete="off" wrap="off" aria-describedby="editor-help"></textarea>
+        </div>
+        <p id="editor-help" class="editor-help">Tab inserts four spaces. Ctrl+Enter runs the whole file. Errors include their source line.</p>
+      </div>
+
+      <div class="terminal-heading">
+        <div><span class="terminal-led"></span><strong>Run terminal</strong></div>
+        <button type="button" id="terminal-clear">Clear terminals</button>
+      </div>
+      <div class="play-terminal-grid">
+        <section class="play-terminal output-terminal" aria-labelledby="output-title">
+          <header><span id="output-title">OUTPUT</span><small>stdout</small></header>
+          <pre id="play-output" aria-live="polite">Ready. Press Run or enter a command below.</pre>
+        </section>
+        <section class="play-terminal error-terminal" aria-labelledby="error-title">
+          <header><span id="error-title">PROBLEMS</span><small id="problem-count">0 errors</small></header>
+          <pre id="play-errors" aria-live="assertive">No problems detected.</pre>
+        </section>
+      </div>
+      <form class="command-line" id="command-form">
+        <span id="command-prompt">v2&gt;</span>
+        <label class="sr-only" for="command-input">Run a command</label>
+        <input id="command-input" autocomplete="off" spellcheck="false" placeholder='Try: print("hello") or 6 * 7'>
+        <button type="submit">Run command</button>
+      </form>
+      <p class="command-help"><code>:help</code> commands • <code>:clear</code> terminals • <code>:reset</code> command session • use ↑/↓ for history</p>
+    </section>
+
+    <section class="website-workshop" id="website-workshop">
+      <div class="workshop-copy">
+        <p class="eyebrow">PYTHON V2 WEBSITE TEMPLATE</p>
+        <h2>Turn program output into a website</h2>
+        <p>The starter prints a title, tagline, and feature list. The workshop
+          reads those values into the live preview. Change the data, run it, and
+          download a standalone HTML page when it looks right.</p>
+        <ol class="workshop-steps">
+          <li><span>1</span><div><strong>Load the template</strong><p>Start with valid Python v2 data and a loop.</p></div></li>
+          <li><span>2</span><div><strong>Edit and run</strong><p>Your output becomes the preview—errors stay in Problems.</p></div></li>
+          <li><span>3</span><div><strong>Download the page</strong><p>Export a clean HTML file or use the full desktop project builder.</p></div></li>
+        </ol>
+        <div class="hero-actions">
+          <button class="btn btn-blue" type="button" id="load-website-template">Load website template</button>
+          <button class="btn btn-yellow" type="button" id="download-website">Download website HTML</button>
+        </div>
+      </div>
+      <div class="site-preview-window">
+        <div class="preview-browser"><span></span><span></span><span></span><div>preview://python-v2-site</div></div>
+        <iframe id="site-preview" title="Website template preview" sandbox=""></iframe>
+      </div>
+    </section>
+
+    <section class="play-tutorial" id="playground-tutorial">
+      <p class="eyebrow">PLAYGROUND TUTORIAL</p><h2>From first run to useful project</h2>
+      <div class="play-tutorial-grid">
+        <article><span>01</span><h3>Choose a runtime</h3><p>Python v2 uses <code>fn</code>, <code>end</code>, lowercase booleans, and readable ternaries. Classic mode accepts familiar <code>def</code> and indentation for its supported subset.</p></article>
+        <article><span>02</span><h3>Read the terminals</h3><p>Normal <code>print()</code> text goes to Output. Syntax and runtime failures go only to Problems, with the line and error type.</p></article>
+        <article><span>03</span><h3>Run commands</h3><p>The bottom prompt remembers successful variables. Enter expressions such as <code>6 * 7</code>, assignments, or <code>print()</code>. Use ↑ and ↓ for history.</p></article>
+        <article><span>04</span><h3>Move to the app</h3><p>The desktop PyHope workspace adds managed files, offline assets, projects, editor connections, settings, and local website previews.</p></article>
+      </div>
+      <div class="tutorial-next"><strong>Want the complete language path?</strong><a href="tutorial.html">Open the 10-lesson tutorial →</a><a href="guide.html">Browse all 50 guide topics →</a></div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-inner">
+    <div class="footer-col"><h4>Build</h4><a href="playground.html">Playground</a><a href="download.html#app">Desktop app</a><a href="docs.html#pyhope">PyHope API</a></div>
+    <div class="footer-col"><h4>Learn</h4><a href="tutorial.html">Tutorial</a><a href="guide.html">50 guides</a><a href="docs.html">Reference</a></div>
+    <div class="footer-col"><h4>Play</h4><a href="games.html">10-game arcade</a><a href="games.html#sprites">Animated sprites</a><a href="games.html#source">Game code</a></div>
+    <div class="footer-col"><h4>Install</h4><a href="download.html">Downloads</a><a href="download.html#editors">Editors</a><a href="docs.html#devcontainer">Codespaces</a></div>
+    <div class="footer-col"><h4>Community</h4><a href="https://github.com/gefrus112/pythonv2">GitHub</a><a href="https://www.youtube.com/@CubeCometYT">YouTube</a></div>
+  </div><div class="footer-legal"><p><img src="favicon-v2.svg" alt="" width="22" height="22">© <span id="year">2026</span> Python v2 + PyHope.</p></div></footer>
+
+  <script src="pyv2.js"></script>
+  <script src="classic-python.js"></script>
+  <script src="site.js"></script>
+  <script src="playground.js"></script>
+</body>
+</html>

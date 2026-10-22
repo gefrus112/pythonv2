@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 12 12" shape-rendering="crispEdges">
+  <title>Hope Bit — original CC0 collectible sprite</title>
+  <rect width="12" height="12" fill="none"/>
+  <path fill="#ad7800" d="M4 1h4v1h2v2h1v4h-1v2H8v1H4v-1H2V8H1V4h1V2h2z"/>
+  <path fill="#ffd343" d="M4 2h4v1h2v5H9v2H4V9H2V4h2z"/>
+  <path fill="#fff2a6" d="M4 3h2v5H4z"/>
+  <path fill="#e4a900" d="M7 3h2v6H7z"/>
+</svg>

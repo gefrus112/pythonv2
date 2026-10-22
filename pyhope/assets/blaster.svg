@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="64" viewBox="0 0 24 16" shape-rendering="crispEdges">
+  <title>Comet Blaster — original CC0 weapon sprite</title>
+  <rect width="24" height="16" fill="none"/>
+  <path fill="#16222d" d="M2 5h14V3h5v2h2v4h-7v2h-3v5H7v-5H2z"/>
+  <path fill="#2f6fbd" d="M3 6h13V4h4v3h-4v2H3z"/>
+  <path fill="#5fc4dc" d="M5 5h10v2H5z"/>
+  <path fill="#ffd343" d="M17 5h5v2h-5z"/>
+  <path fill="#33495f" d="M8 9h5v5H9v-2H8z"/>
+  <path fill="#d64541" d="M11 10h2v2h-2z"/>
+</svg>
