@@ -1,0 +1,27 @@
+# error_recovery.pyv2 — structured failures without exception classes
+
+fn parse_port(raw):
+    if raw == "":
+        raise {kind: "ConfigError", message: "port is required"}
+    end
+    port = int(raw)
+    if port < 1 or port > 65535:
+        raise {kind: "ConfigError", message: "port must be between 1 and 65535"}
+    end
+    return port
+end
+
+inputs = ["8080", "", "70000", "not-a-number"]
+for raw in inputs:
+    try:
+        port = parse_port(raw)
+        print("ready:", port)
+    catch error:
+        print(error.kind + ":", error.message, "at line", error.line)
+    finally:
+        print("checked", repr(raw))
+    end
+end
+
+print("numbered inputs:", enumerate(inputs, 1))
+print("numeric total:", sum([8000, 80]))

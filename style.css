@@ -1765,3 +1765,194 @@ body::before {
   .game-portfolio-callout { grid-template-columns: auto 1fr; }
   .game-portfolio-callout .btn { grid-column: 1 / -1; width: fit-content; }
 }
+
+/* ============================================================
+   Python.org-inspired homepage information architecture
+   ============================================================ */
+.skip-link {
+  position: fixed;
+  z-index: 10000;
+  top: 8px;
+  left: 8px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: var(--topbar);
+  background: var(--yellow);
+  font-weight: 800;
+  transform: translateY(-150%);
+  transition: transform .15s ease;
+}
+.skip-link:focus { transform: translateY(0); text-decoration: none; }
+
+.python-quicklinks {
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.python-quicklinks-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 42px 24px 38px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.python-quicklinks article {
+  position: relative;
+  min-width: 0;
+  padding: 2px 30px 2px 74px;
+  border-right: 1px solid var(--line);
+}
+.python-quicklinks article:first-child { padding-left: 58px; }
+.python-quicklinks article:last-child { padding-right: 0; border-right: 0; }
+.quick-icon {
+  position: absolute;
+  top: 3px;
+  left: 22px;
+  color: var(--blue-btn);
+  font-family: var(--mono);
+  font-size: 32px;
+  line-height: 1;
+  font-weight: 800;
+}
+.python-quicklinks article:first-child .quick-icon { left: 5px; }
+.python-quicklinks h2 {
+  margin: 0 0 8px;
+  color: var(--blue-ink);
+  font-size: 21px;
+  font-weight: 500;
+}
+.python-quicklinks p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.python-quicklinks a { font-weight: 700; }
+
+.success-quote {
+  position: relative;
+  margin: 0 0 28px;
+  padding: 25px 34px 24px 66px;
+  border-left: 6px solid var(--yellow);
+  border-radius: 4px 10px 10px 4px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--shell-deep), var(--shell));
+  box-shadow: 0 12px 28px rgba(31, 60, 88, .18);
+}
+.success-quote::before {
+  content: "“";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  color: var(--yellow);
+  font-family: Georgia, serif;
+  font-size: 64px;
+  line-height: 1;
+}
+.success-quote blockquote { margin: 0; font-size: 20px; line-height: 1.5; }
+.success-quote figcaption { margin-top: 9px; color: #cad9e6; font-size: 13px; font-weight: 700; }
+
+.news-events-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+.feed-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--yellow);
+}
+.feed-heading h2 { margin: 0; font-size: 26px; }
+.feed-heading > a { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.feed-list { margin: 0; padding: 0; list-style: none; }
+.feed-list li {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.feed-list time {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.feed-list a { font-size: 16px; font-weight: 700; }
+.feed-list p { margin: 5px 0 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+.event-list time {
+  display: inline-block;
+  align-self: start;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: #5d4800;
+  background: #ffe995;
+  font-family: var(--font);
+  font-weight: 800;
+  text-align: center;
+}
+
+.nav-toggle {
+  display: none;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  font: 700 15px var(--font);
+  cursor: pointer;
+  text-align: left;
+}
+.nav-toggle span { float: right; color: var(--yellow); font-family: var(--mono); }
+
+/* Fit the expanded, python.org-like primary navigation on one row when possible. */
+@media (min-width: 1001px) {
+  .mainnav a { padding-inline: clamp(14px, 1.65vw, 24px); }
+}
+@media (max-width: 900px) {
+  .python-quicklinks-inner { grid-template-columns: 1fr 1fr; padding-block: 28px; }
+  .python-quicklinks article { padding: 18px 26px 22px 68px; border-bottom: 1px solid var(--line); }
+  .python-quicklinks article:nth-child(2) { border-right: 0; }
+  .python-quicklinks article:nth-child(3),
+  .python-quicklinks article:nth-child(4) { border-bottom: 0; padding-top: 24px; }
+  .python-quicklinks article:first-child { padding-left: 68px; }
+  .quick-icon, .python-quicklinks article:first-child .quick-icon { top: 20px; left: 20px; }
+  .python-quicklinks article:nth-child(n+3) .quick-icon { top: 26px; }
+  .news-events-grid { grid-template-columns: 1fr; gap: 42px; }
+
+  .mainnav.nav-enhanced { padding-inline: 18px; padding-bottom: 8px; }
+  .mainnav.nav-enhanced .mainnav-inner { display: block; overflow: hidden; }
+  .mainnav.nav-enhanced .nav-toggle { display: block; }
+  .mainnav.nav-enhanced .mainnav-inner > a { display: none; padding: 12px 18px; border-top: 1px solid rgba(255,255,255,.12); }
+  .mainnav.nav-enhanced.nav-open .mainnav-inner > a { display: block; }
+}
+@media (max-width: 640px) {
+  .topbar { overflow-x: auto; scrollbar-width: thin; }
+  .topbar-inner { width: max-content; min-width: 100%; justify-content: flex-start; }
+  .masthead-inner { display: grid; grid-template-columns: 1fr; padding-inline: 18px; }
+  .masthead-tools { width: 100%; }
+  .masthead-tools .searchbox { order: -1; width: 100%; }
+  .searchbox input { width: auto; min-width: 0; flex: 1; }
+  .btn-youtube, .masthead-tools > .btn-donate, .masthead-tools > .btn-social { flex: 1; }
+
+  .python-quicklinks-inner { grid-template-columns: 1fr; padding-inline: 18px; }
+  .python-quicklinks article,
+  .python-quicklinks article:first-child,
+  .python-quicklinks article:nth-child(3),
+  .python-quicklinks article:nth-child(4) {
+    padding: 22px 8px 22px 62px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .python-quicklinks article:last-child { border-bottom: 0; }
+  .quick-icon,
+  .python-quicklinks article:first-child .quick-icon,
+  .python-quicklinks article:nth-child(n+3) .quick-icon { top: 24px; left: 14px; }
+  .success-quote { padding: 23px 22px 22px 48px; }
+  .success-quote::before { left: 12px; font-size: 52px; }
+  .success-quote blockquote { font-size: 17px; }
+  .feed-list li { grid-template-columns: 1fr; gap: 6px; }
+  .feed-heading h2 { font-size: 23px; }
+}

@@ -37,7 +37,7 @@ Hello, stranger!
 ## 2. Syntax at a glance
 
 * **Statements** are separated by newlines. Blank lines are ignored.
-* **Blocks** open after `:` and close with `end` (for `if`, `while`, `for`, `fn`).
+* **Blocks** open after `:` and close with `end` (for `if`, `while`, `for`, `fn`, `try`).
   Indentation is cosmetic — tabs vs. spaces can never break your program.
 * One-liners are fine: `fn sq(x): return x * x end`
 * **Trailing commas** are allowed in lists, maps, calls and parameter lists,
@@ -132,7 +132,34 @@ end
 `for` iterates lists (a snapshot — mutation during the loop is safe), strings
 (characters), maps (keys) and ranges.
 
-### 2.5 Functions
+### 2.5 Recoverable errors
+
+Use `try`, `catch`, and `finally` for structured recovery. A named catch receives
+an inspectable map with `kind`, `message`, `line`, and `trace` fields. `finally`
+always runs—even when the protected block returns, breaks, continues, or raises.
+
+```python
+try:
+    config = json_decode(read_text("settings.json"))
+catch error:
+    print(f"Could not load settings: {error.kind} — {error.message}")
+    config = {theme: "dark"}
+finally:
+    print("Settings check complete")
+end
+```
+
+Create a `UserError` by raising any value, or supply a map to choose the kind:
+
+```python
+raise "The operation stopped"
+raise {kind: "ConfigError", message: "port is required"}
+```
+
+Either `catch`, `finally`, or both are required. A bare `catch:` is allowed when
+the program does not need the error details.
+
+### 2.6 Functions
 
 ```python
 fn add(a, b):
@@ -152,7 +179,7 @@ ZeroDivisionError: Division by zero at line 3
   in outer (line 5)
 ```
 
-### 2.6 Strings & f-strings
+### 2.7 Strings & f-strings
 
 ```python
 name = "Ada"
@@ -162,7 +189,7 @@ print(f"{{literal braces}} survive")
 
 Anything inside `{…}` is a full expression. `{{` and `}}` produce literal braces.
 
-### 2.7 Data structures
+### 2.8 Data structures
 
 ```python
 xs = [3, 1, 2]
@@ -186,6 +213,10 @@ hero.scores.push(30)
 | `print(...)` | print values, space-separated |
 | `len(x)` | length of string / list / map / range |
 | `range(stop)` `range(a, b)` `range(a, b, step)` | integer range |
+| `sum(items, start?)` | add numbers from an iterable |
+| `enumerate(items, start?)` | list of `[index, value]` pairs |
+| `zip(a, b, ...)` | rows from iterables, stopping at the shortest |
+| `all(items)` / `any(items)` | truth tests across an iterable |
 | `str(x)` `repr(x)` `int(x)` `float(x)` `bool(x)` | conversions |
 | `abs(x)` `floor(x)` `ceil(x)` `round(x, digits)` `sqrt(x)` `pow(a, b)` | math |
 | `min(...)` / `max(...)` | over arguments or one list |
@@ -235,9 +266,11 @@ Errors are `Kind: message at line N` with an optional call trace:
 
 `SyntaxError`, `NameError`, `TypeError`, `IndexError`, `KeyError`,
 `ZeroDivisionError`, `ValueError`, `OverflowError`, `AssertionError`,
-`AttributeError`, `CapabilityError`, `RuntimeError`.
+`AttributeError`, `CapabilityError`, `RuntimeError`, `UserError`.
 
-The CLI exits with status 1 on error; the playground prints the error in red
+Runtime errors can be recovered with `try` / `catch`; syntax errors happen before
+execution and cannot be caught. The CLI exits with status 1 on an uncaught error;
+the playground prints the error in red
 and keeps your code.
 
 ## 5. What's better than Python v1
@@ -248,6 +281,7 @@ and keeps your code.
 | `nonlocal` required for closure writes | assignment finds the binding, period |
 | `"n=" + str(n)` | `"n=" + n` |
 | `x if ok else y` (reads backwards) | `ok ? x : y` |
+| exceptions need class boilerplate | caught errors are useful `kind` / `message` / `line` / `trace` maps |
 | `assert` is a statement | `assert()` is a function |
 | trailing commas only *sometimes* | trailing commas everywhere |
 | one runtime | two parity-tested runtimes, one in your browser |
@@ -257,13 +291,14 @@ and keeps your code.
 ```ebnf
 program    := stmt*
 stmt       := simple | compound
-simple     := "return" expr? | "break" | "continue" | assign | expr
-compound   := if | while | for | fn
+simple     := "return" expr? | "raise" expr | "break" | "continue" | assign | expr
+compound   := if | while | for | fn | try
 if         := "if" expr ":" block ("elif" expr ":" block)* ("else" ":" block)? "end"
 while      := "while" expr ":" block "end"
 for        := "for" IDENT "in" expr ":" block "end"
 fn         := "fn" IDENT "(" params ")" ":" block "end"
-block      := stmt* until "end" / "elif" / "else"
+try        := "try" ":" block ("catch" IDENT? ":" block)? ("finally" ":" block)? "end"
+block      := stmt* until its compound terminator
 assign     := target ("=" | "+=" | "-=" | "*=" | "/=" | "%=") expr
 target     := IDENT | index | attr
 ternary    := or ("?" ternary ":" ternary)?
@@ -305,8 +340,8 @@ non-Windows binary.
 
 ## 8. Parity guarantee
 
-The suite runs **108 tests**: 63 language tests, 9 PyHope engine tests, 14 production-app/build tests,
-8 arcade/Playground site tests, 13 workspace/Launcher tests, and one parity harness that sends 25 programs (including error paths) through
+The suite runs **112 tests**: 67 language tests, 9 PyHope engine tests, 14 production-app/build tests,
+8 arcade/Playground site tests, 13 workspace/Launcher tests, and one parity harness that sends 28 programs (including error paths) through
 **both** language runtimes and compares outputs byte for byte. If the twins
 ever disagree, the suite fails. That's the deal.
 

@@ -13,7 +13,7 @@
       "(#[^\\n]*)",                                                     // comment
       "(f?\"(?:\\\\.|[^\"\\\\\\n])*\"|f?'(?:\\\\.|[^'\\\\\\n])*')",     // strings / f-strings
       "\\b(\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)\\b",                     // numbers
-      "\\b(fn|if|elif|else|while|for|in|return|break|continue|and|or|not|true|false|nil|end)\\b",
+      "\\b(fn|if|elif|else|while|for|in|return|raise|try|catch|finally|break|continue|and|or|not|true|false|nil|end)\\b",
       "([+\\-*/%<>=!]+|[()\\[\\]{},.:?])",                               // operators / punctuation
     ].join("|"),
     "g"
@@ -120,22 +120,21 @@ print("best:", hero.scores[-1])
 print("city:", hero.get("city", "unknown"))`,
     },
     {
-      title: "Recursion Without Regret",
-      desc: "First-class functions, real closures, and a ternary that reads the way " +
-            "you think: <code>ok ? \"yes\" : \"no\"</code>. The classics, fixed.",
-      link: "More language tools",
-      href: "docs.html",
+      title: "Errors You Can Actually Handle",
+      desc: "Recover with <code>try</code> and <code>catch</code>, inspect a plain error " +
+            "map, and use <code>finally</code> for cleanup that always runs. Raise your " +
+            "own named errors without writing a class.",
+      link: "Learn structured recovery",
+      href: "docs.html#language",
       code:
-`fn fib(n):
-    if n < 2:
-        return n
-    end
-    return fib(n - 1) + fib(n - 2)
-end
-
-for i in range(10):
-    label = i % 2 == 0 ? "even" : "odd"
-    print(f"fib({i}) = {fib(i)}  ({label})")
+`try:
+    print("loading settings…")
+    raise {kind: "ConfigError", message: "port is required"}
+catch error:
+    print(error.kind + ":", error.message)
+    print("source line:", error.line)
+finally:
+    print("settings check complete")
 end`,
     },
   ];

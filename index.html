@@ -10,17 +10,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
   <!-- ============ top utility bar ============ -->
   <div class="topbar">
     <nav class="topbar-inner" aria-label="Site">
       <a class="active" href="index.html">Python</a>
-      <a href="#community">PSF</a>
+      <a href="#community">Foundation</a>
       <a href="docs.html">Docs</a>
-      <a href="download.html">PyPI</a>
+      <a href="download.html#get">Packages</a>
       <a href="games.html">Games</a>
       <a href="#community">Community</a>
-    <a href="playground.html">Playground</a></nav>
+      <a href="playground.html">Playground</a>
+    </nav>
   </div>
 
   <!-- ============ masthead ============ -->
@@ -54,10 +56,12 @@
       <a href="games.html">Games</a>
       <a href="#success">Success Stories</a>
       <a href="#news">News</a>
-    <a href="playground.html">Playground</a></div>
+      <a href="#events">Events</a>
+      <a href="playground.html">Playground</a>
+    </div>
   </nav>
 
-  <main>
+  <main id="main-content">
     <!-- ============ hero: REPL panel + carousel ============ -->
     <section class="hero" id="about">
       <div class="hero-panel">
@@ -86,6 +90,36 @@
         <a href="tutorial.html"><span class="prompt">»»&gt;</span> Learn More</a></p>
     </section>
 
+    <!-- ============ python.org-style task links ============ -->
+    <section class="python-quicklinks" aria-label="Start with Python v2">
+      <div class="python-quicklinks-inner">
+        <article>
+          <span class="quick-icon" aria-hidden="true">›_</span>
+          <h2>Get Started</h2>
+          <p>Whether you're new to programming or shipping your next app, start with a short guided path.</p>
+          <a href="tutorial.html">Start the tutorial <span aria-hidden="true">›</span></a>
+        </article>
+        <article>
+          <span class="quick-icon" aria-hidden="true">↓</span>
+          <h2>Download</h2>
+          <p>Install the Sudbury language, desktop workspace, PyHope, and Windows EXE toolchain together.</p>
+          <a href="download.html">Download Python v2 <span aria-hidden="true">›</span></a>
+        </article>
+        <article>
+          <span class="quick-icon" aria-hidden="true">▤</span>
+          <h2>Documentation</h2>
+          <p>Browse the language reference, editor setup, application APIs, and packaging guides.</p>
+          <a href="docs.html">Read the docs <span aria-hidden="true">›</span></a>
+        </article>
+        <article>
+          <span class="quick-icon" aria-hidden="true">▶</span>
+          <h2>Try Python v2</h2>
+          <p>Run the real browser interpreter, inspect errors, build a website, or switch to Classic mode.</p>
+          <a href="playground.html">Open Playground <span aria-hidden="true">›</span></a>
+        </article>
+      </div>
+    </section>
+
     <!-- ============ yellow band + release card ============ -->
     <section class="band">
       <div class="band-inner">
@@ -100,8 +134,8 @@
         <div class="band-card">
           <div>
             <strong>Python v2 1.1 “Sudbury” is out</strong><br>
-            <span>Our own desktop Launcher, offline website builder, PyHope,
-              sprite games, installers, free assets, and a 9M GPU lab.</span>
+            <span>Now with structured <code>try</code>/<code>catch</code>/<code>finally</code>,
+              richer iterable tools, the desktop Launcher, Windows EXE builds, PyHope, and the 9M GPU lab.</span>
           </div>
           <div class="hero-actions"><a class="btn btn-yellow" href="playground.html">Open Playground</a><a class="btn btn-blue" href="download.html">Download v1.1</a></div>
         </div>
@@ -114,6 +148,11 @@
         <h2><span class="prompt">»»&gt;</span>Success Stories</h2>
         <p class="lede">Things people have built with Python v2 + PyHope — from a pure CPU
           framebuffer to an optional 9.4-million-pixel GPU render.</p>
+        <figure class="success-quote">
+          <blockquote>“One readable language can move from a browser idea to a desktop workspace,
+            a game, a polished website, and a real Windows application.”</blockquote>
+          <figcaption>Python v2 1.1 “Sudbury” release story</figcaption>
+        </figure>
         <div class="grid">
           <article class="card">
             <div class="card-icon">▶</div>
@@ -193,6 +232,7 @@ end</code></pre>
             <tr><td>TabError: inconsistent use of tabs</td><td>No such thing. Ever.</td></tr>
             <tr><td><code>"n=" + str(n)</code></td><td><code>"n=" + n</code></td></tr>
             <tr><td><code>x if ok else y</code> (backwards)</td><td><code>ok ? x : y</code></td></tr>
+            <tr><td>Exception objects and boilerplate</td><td><code>catch error</code> gives a useful map; <code>finally</code> always runs</td></tr>
             <tr><td><code>assert</code> statement</td><td><code>assert(cond, msg)</code> — a normal function</td></tr>
             <tr><td>Surprising <code>nonlocal</code> rules</td><td>Closures just work</td></tr>
           </tbody>
@@ -226,10 +266,10 @@ end</code></pre>
               expressions and all. String concatenation with numbers is legal too.</p>
           </article>
           <article class="card">
-            <div class="card-icon">?</div>
-            <h3>Forward Ternary</h3>
-            <p><code>ok ? "yes" : "no"</code> reads left to right, like your eyes do.
-              Wild concept.</p>
+            <div class="card-icon">!</div>
+            <h3>Errors You Can Work With</h3>
+            <p>Recover with <code>try</code>, inspect <code>error.kind</code> and
+              <code>error.message</code>, and rely on <code>finally</code> for cleanup.</p>
           </article>
           <article class="card">
             <div class="card-icon">⚡</div>
@@ -349,11 +389,16 @@ end</code></pre>
             <p>Condition first, like a question should be.</p>
             <code class="snippet">status = ok ? "yes" : "no"</code>
           </div>
-          <div class="doc-card" data-tags="range len type">
+          <div class="doc-card" data-tags="try catch finally raise error recovery">
+            <h3>try / catch / finally</h3>
+            <p>Recover from runtime errors, inspect their fields, and always clean up.</p>
+            <code class="snippet">try: risky() catch error: print(error.kind) end</code>
+          </div>
+          <div class="doc-card" data-tags="range len type sum enumerate zip all any">
             <h3>builtins</h3>
-            <p><code>len</code>, <code>range</code>, <code>type</code>, <code>str</code>,
-              <code>int</code>, <code>sort</code>, <code>join</code>, <code>assert</code>, …</p>
-            <code class="snippet">print(type(2), len("abc"))</code>
+            <p><code>len</code>, <code>range</code>, <code>sum</code>, <code>enumerate</code>,
+              <code>zip</code>, <code>all</code>, <code>any</code>, <code>type</code>, …</p>
+            <code class="snippet">print(sum(range(5)))</code>
           </div>
           <div class="doc-card" data-tags="method string upper split">
             <h3>string methods</h3>
@@ -373,32 +418,57 @@ end</code></pre>
       </div>
     </section>
 
-    <!-- ============ news / events ============ -->
+    <!-- ============ python.org-style news / events lists ============ -->
     <section class="section news-section" id="news">
       <div class="section-inner">
-        <h2><span class="prompt">»»&gt;</span>News &amp; Events</h2>
-        <div class="news-grid">
-          <article class="news-card">
-            <div class="news-date">Oct 22, 2026</div>
-            <h3>Python v2 1.1 "Sudbury" released</h3>
-            <p>Python v2 gets its own desktop Launcher, portfolio builder, and
-              Windows EXE toolchain—plus safe app APIs, PyHope, and a 9M GPU lab.</p>
-            <a href="#start">Read more →</a>
-          </article>
-          <article class="news-card">
-            <div class="news-date">Oct 21, 2026</div>
-            <h3>Portfolio Studio lands in Playground</h3>
-            <p>Edit a Python v2 starter and watch it become a responsive personal,
-              project, and game showcase. Preview the page or inspect its HTML.</p>
-            <a href="playground.html#website-workshop">Open the studio →</a>
-          </article>
-          <article class="news-card">
-            <div class="news-date">Coming soon</div>
-            <h3>Pyv2Conf 2027 — call for talks</h3>
-            <p>One track, one rule: every talk must demo something running in
-              the CPU renderer. Stickers included.</p>
-            <a href="#community">Read more →</a>
-          </article>
+        <div class="news-events-grid">
+          <section class="feed-panel" aria-labelledby="latest-news-title">
+            <div class="feed-heading">
+              <h2 id="latest-news-title"><span class="prompt">»»&gt;</span>Latest News</h2>
+              <a href="https://github.com/gefrus112/pythonv2">All news</a>
+            </div>
+            <ol class="feed-list">
+              <li>
+                <time datetime="2026-10-22">2026-10-22</time>
+                <div><a href="docs.html#language">Structured error recovery lands in both runtimes</a>
+                  <p>Use <code>try</code>, <code>catch</code>, <code>finally</code>, and <code>raise</code> with inspectable error details.</p></div>
+              </li>
+              <li>
+                <time datetime="2026-10-22">2026-10-22</time>
+                <div><a href="#start">Python v2 1.1 “Sudbury” released</a>
+                  <p>The desktop Launcher and reproducible Windows EXE workflow are available now.</p></div>
+              </li>
+              <li>
+                <time datetime="2026-10-21">2026-10-21</time>
+                <div><a href="playground.html#website-workshop">Portfolio Studio arrives in Playground</a>
+                  <p>Edit Python v2 data and preview a responsive personal site with its exact HTML.</p></div>
+              </li>
+            </ol>
+          </section>
+
+          <section class="feed-panel" id="events" aria-labelledby="events-title">
+            <div class="feed-heading">
+              <h2 id="events-title"><span class="prompt">»»&gt;</span>Upcoming</h2>
+              <a href="#community">Community</a>
+            </div>
+            <ol class="feed-list event-list">
+              <li>
+                <time>At 1K</time>
+                <div><a href="https://www.youtube.com/@CubeCometYT">Complete Python v2 installation video</a>
+                  <p>The full language, editor, PyHope, and app-building walkthrough unlocks at 1,000 subscribers.</p></div>
+              </li>
+              <li>
+                <time>Soon</time>
+                <div><a href="#community">Donation support opens</a>
+                  <p>Donation support is not open yet; no payment information is being collected.</p></div>
+              </li>
+              <li>
+                <time>Any time</time>
+                <div><a href="playground.html">Browser build session</a>
+                  <p>Open the Playground and make a language program, game data set, or portfolio site.</p></div>
+              </li>
+            </ol>
+          </section>
         </div>
       </div>
     </section>
@@ -411,7 +481,7 @@ end</code></pre>
         <div class="stat-row stat-row-big">
           <div class="stat"><strong>1</strong><span>language, zero config</span></div>
           <div class="stat"><strong>2</strong><span>runtime twins</span></div>
-          <div class="stat"><strong>79</strong><span>passing tests</span></div>
+          <div class="stat"><strong>112</strong><span>passing tests</span></div>
           <div class="stat"><strong>∞</strong><span>indentation saved</span></div>
         </div>
         <div class="youtube-callout">
@@ -464,7 +534,7 @@ end</code></pre>
         <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
         <a href="https://github.com/gefrus112/pythonv2/issues">Issues</a>
         <a href="#news">News</a>
-        <a href="#news">Events</a>
+        <a href="#events">Events</a>
       </div>
       <div class="footer-col">
         <h4>Games &amp; PyHope</h4>

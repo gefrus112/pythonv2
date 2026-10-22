@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="topbar"><nav class="topbar-inner" aria-label="Site"><a href="index.html">Python</a><a href="docs.html">Docs</a><a href="download.html">Downloads</a><a href="tutorial.html">Tutorial</a><a href="games.html">Games</a><a class="active" href="guide.html">50 Guides</a><a href="playground.html">Playground</a></nav></div>
   <header class="masthead"><div class="masthead-inner">
     <a class="brand" href="index.html"><img src="logo-v2.svg" alt="Python v2 red and blue snakes" width="64" height="64"><span class="brand-word">python<sup>™</sup><em>v2</em></span></a>
@@ -23,7 +24,7 @@
       closures, editor setup, CC0 sprites, DDA ray casting and a 9.4-million-pixel GPU frame.</p>
   </div></section>
 
-  <main class="guide-main">
+  <main id="main-content" class="guide-main">
     <div class="guide-toolbar">
       <label for="guide-search">Search all 50 topics</label>
       <input id="guide-search" type="search" placeholder="Try: closures, sprites, VS Code, raycast…" autocomplete="off">
@@ -210,12 +211,15 @@ print(xs.pop(), xs)</code></pre>
   <h3>Slices</h3>
   <p>slice(start, end) makes a new string or list and supports negative positions.</p>
   <pre><code>print([0, 1, 2, 3].slice(1, 3))</code></pre>
-</article><article class="guide-card" data-category="data" data-search="sorting lists sort returns a new list, while sort_by accepts a key function. print([3, 1, 2].sort())">
+</article><article class="guide-card" data-category="data" data-search="iterable toolkit sort sum enumerate zip all any lists ranges strings maps print(sum(range(5)))">
   <div class="guide-number">24</div>
   <div class="guide-category">Data</div>
-  <h3>Sorting lists</h3>
-  <p>sort returns a new list, while sort_by accepts a key function.</p>
-  <pre><code>print([3, 1, 2].sort())</code></pre>
+  <h3>Iterable toolkit</h3>
+  <p>Sort, total, number, pair, or truth-test iterable values with concise builtins.</p>
+  <pre><code>print([3, 1, 2].sort())
+print(sum(range(5)))
+print(enumerate([&quot;a&quot;, &quot;b&quot;], 1))
+print(zip([1, 2], [&quot;a&quot;, &quot;b&quot;]))</code></pre>
 </article><article class="guide-card" data-category="data" data-search="map literals bare identifier keys become strings; quoted and computed keys work too. hero = {name: &quot;ada&quot;, hp: 100}">
   <div class="guide-number">25</div>
   <div class="guide-category">Data</div>
@@ -316,14 +320,15 @@ print(square(7))</code></pre>
   <h3>Assertions</h3>
   <p>assert is a normal function and accepts your own message.</p>
   <pre><code>assert(len([1, 2]) == 2, &quot;list size changed&quot;)</code></pre>
-</article><article class="guide-card" data-category="tools" data-search="read errors errors include a kind, message, source line, and function stack frames. fn boom(): return missing end
-boom()">
+</article><article class="guide-card" data-category="tools" data-search="recover errors try catch finally raise kind message line trace cleanup">
   <div class="guide-number">37</div>
   <div class="guide-category">Tools</div>
-  <h3>Read errors</h3>
-  <p>Errors include a kind, message, source line, and function stack frames.</p>
-  <pre><code>fn boom(): return missing end
-boom()</code></pre>
+  <h3>Recover from errors</h3>
+  <p>Catch runtime failures as maps with kind, message, line, and trace; finally always runs.</p>
+  <pre><code>try: raise &quot;stop&quot;
+catch error: print(error.kind, error.message)
+finally: print(&quot;clean&quot;)
+end</code></pre>
 </article><article class="guide-card" data-category="tools" data-search="use the repl run pyv2 with no file for an interactive prompt; ctrl-d exits. python3 -m pyv2">
   <div class="guide-number">38</div>
   <div class="guide-category">Tools</div>

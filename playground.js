@@ -40,7 +40,7 @@ skills = ["Python v2", "PyHope", "Web design", "Canvas games", "Creative coding"
 stats = [
     {value: "10", label: "Playable games"},
     {value: "8", label: "Open assets"},
-    {value: "108+", label: "Passing tests"},
+    {value: "112+", label: "Passing tests"},
 ]
 projects = [
     {title: "Python v2", kind: "Language", description: "A friendlier Python remake with browser and desktop runtimes.", link: "https://github.com/gefrus112/pythonv2"},
@@ -116,6 +116,31 @@ end
 print(hit(enemies[0], 3))
 print(f"score = {player.score}")`,
     },
+    "recovery-v2": {
+      mode: "pyv2", file: "resilient-app.pyv2",
+      source: `# Structured recovery keeps expected failures inside your app.
+fn load_port(raw):
+    if raw == "":
+        raise {kind: "ConfigError", message: "port is required"}
+    end
+    return int(raw)
+end
+
+inputs = ["8080", "", "not-a-number"]
+for raw in inputs:
+    try:
+        port = load_port(raw)
+        print("ready on port", port)
+    catch error:
+        print(error.kind + ":", error.message, "at line", error.line)
+    finally:
+        print("checked input", repr(raw))
+    end
+end
+
+print("total:", sum([2, 4, 6]))
+print("numbered:", enumerate(["red", "blue"], 1))`,
+    },
     "classic-tour": {
       mode: "classic", file: "classic.py",
       source: `# Classic Python compatibility tour
@@ -181,7 +206,7 @@ print("average:", divide(42, len(items)))`,
     email: "hello@example.com",
     availability: "Available for select projects",
     skills: ["Python v2", "PyHope", "Web design", "Canvas games", "Creative coding", "UI systems"],
-    stats: [{ value: "10", label: "Playable games" }, { value: "8", label: "Open assets" }, { value: "108+", label: "Passing tests" }],
+    stats: [{ value: "10", label: "Playable games" }, { value: "8", label: "Open assets" }, { value: "112+", label: "Passing tests" }],
     projects: [
       { title: "Python v2", kind: "Language", description: "A friendlier Python remake with browser and desktop runtimes.", link: "https://github.com/gefrus112/pythonv2" },
       { title: "PyHope Arcade", kind: "Games", description: "Ten original shooters, platformers, racers, and arcade experiments.", link: "https://gefrus112.github.io/pythonv2/games.html" },

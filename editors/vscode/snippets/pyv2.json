@@ -55,6 +55,30 @@
     ],
     "description": "For loop over a range"
   },
+  "try-catch": {
+    "prefix": "trycatch",
+    "body": [
+      "try:",
+      "    ${1:work}",
+      "catch ${2:error}:",
+      "    ${3:print(error.kind, error.message)}",
+      "end"
+    ],
+    "description": "Recover from a runtime error"
+  },
+  "try-catch-finally": {
+    "prefix": "tryfinal",
+    "body": [
+      "try:",
+      "    ${1:work}",
+      "catch ${2:error}:",
+      "    ${3:recovery}",
+      "finally:",
+      "    ${4:cleanup}",
+      "end"
+    ],
+    "description": "Recover from an error and always clean up"
+  },
   "f-string": {
     "prefix": "fstr",
     "body": "f\"${1:text} {${2:expr}}\"",

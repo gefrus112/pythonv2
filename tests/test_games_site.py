@@ -49,12 +49,21 @@ class GamesSiteTests(unittest.TestCase):
             'id="site-html-source"', 'id="copy-website-html"',
             'data-site-view="preview"', 'data-site-view="html"',
             'data-preview-size="mobile"', 'data-preview-size="desktop"',
-            '<option value="app-v2">',
+            '<option value="app-v2">', '<option value="recovery-v2">',
             'src="classic-python.js"', 'src="playground.js"',
         ):
             self.assertIn(required, playground)
         for page in ROOT.glob("*.html"):
-            self.assertIn('href="playground.html"', page.read_text(encoding="utf-8"), page.name)
+            page_text = page.read_text(encoding="utf-8")
+            self.assertIn('href="playground.html"', page_text, page.name)
+            self.assertIn('class="skip-link" href="#main-content"', page_text, page.name)
+            self.assertIn('id="main-content"', page_text, page.name)
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+        for required in (
+            'class="python-quicklinks"', 'id="latest-news-title"', 'id="events"',
+            'try / catch / finally', 'href="#main-content"',
+        ):
+            self.assertIn(required, home)
 
     def test_portfolio_starter_emits_projects_games_and_profile(self):
         script = (ROOT / "playground.js").read_text(encoding="utf-8")
@@ -84,6 +93,16 @@ class GamesSiteTests(unittest.TestCase):
         self.assertIn("Comet Notes v1.0.0", output)
         self.assertIn("Build the Windows EXE", output)
         self.assertIn("platform: embedded", output)
+
+        recovery = re.search(
+            r'"recovery-v2": \{[\s\S]*?source: `([\s\S]*?)`,\n    \},',
+            script,
+        )
+        self.assertIsNotNone(recovery)
+        output, error = run_capture(recovery.group(1))
+        self.assertIsNone(error)
+        self.assertIn("ConfigError: port is required", output)
+        self.assertIn('numbered: [[1, "red"], [2, "blue"]]', output)
 
     def test_classic_python_compatibility_smoke(self):
         completed = subprocess.run(
