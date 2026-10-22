@@ -19,7 +19,7 @@
       <a class="active" href="download.html">PyPI</a>
       <a href="games.html">Games</a>
       <a href="index.html#community">Community</a>
-    </nav>
+    <a href="playground.html">Playground</a></nav>
   </div>
 
   <!-- ============ masthead ============ -->
@@ -51,7 +51,7 @@
       <a href="tutorial.html">Tutorial</a>
       <a href="games.html">Games</a>
       <a href="index.html#community">Community</a>
-    </div>
+    <a href="playground.html">Playground</a></div>
   </nav>
 
   <!-- ============ page head ============ -->
@@ -70,29 +70,31 @@
     <div class="doc-section-inner">
 
       <!-- ==================== APP ==================== -->
-      <h2 id="app"><span class="badge">01</span> Python v2 App 1.1 “Sudbury”</h2>
-      <p><strong>The first Python v2 desktop app release.</strong> Sudbury gives
-        the language its own lightweight launcher—Code Studio, output console,
-        project wizard, offline website builder, Games/GPU library, docs hub,
-        and PyHope tools. It uses the Python standard library, not Electron.</p>
+      <h2 id="app"><span class="badge">01</span> Python v2 + PyHope App 1.1 “Sudbury”</h2>
+      <p><strong>A complete lightweight creative workspace.</strong> Sudbury now
+        includes Home, Code Studio, safe managed Files, New Project, packaged
+        Assets, Games/GPU, Connected Editors, Settings, and Docs tabs. It uses
+        the Python standard library—not Electron, pygame, or a cloud account.</p>
       <div class="launcher-showcase">
         <div class="launcher-mock" aria-label="Preview of the Python v2 Sudbury Launcher">
-          <div class="launcher-mock-top"><img src="favicon-v2.svg" alt="" width="34" height="34"><strong>PYTHON V2</strong><span>1.1 SUDBURY</span></div>
+          <div class="launcher-mock-top"><img src="favicon-v2.svg" alt="" width="34" height="34"><strong>PYTHON V2 + PYHOPE</strong><span>1.1 SUDBURY</span></div>
           <div class="launcher-mock-body">
-            <div class="launcher-mock-nav"><b>⌂ Home</b><span>&gt;_ Code Studio</span><span>＋ New Project</span><span>▦ Games &amp; GPU</span><span>? Docs &amp; Learn</span></div>
-            <div class="launcher-mock-main"><small>BUILD WITH PYTHON V2</small><h3>The snake, but better—now with its own app.</h3><div><i>CODE STUDIO</i><i>WEBSITE BUILDER</i><i>PYHOPE GAMES</i></div></div>
+            <div class="launcher-mock-nav"><b>⌂ Home</b><span>&gt;_ Code Studio</span><span>▤ Files</span><span>＋ New Project</span><span>◆ Assets</span><span>↗ Editors</span><span>⚙ Settings</span></div>
+            <div class="launcher-mock-main"><small>CREATIVE WORKSPACE</small><h3>Code, files, assets, editors, websites, and games.</h3><div><i>FILE SERVICE</i><i>CC0 ASSETS</i><i>CONNECTED EDITORS</i></div></div>
           </div>
         </div>
         <div class="launcher-copy">
           <p class="eyebrow">FIRST APP RELEASE</p>
           <h3>One installer. Your whole workspace.</h3>
           <ul class="checklist">
-            <li>Edit, save and run <code>.pyv2</code> with Ctrl+Enter</li>
-            <li>Create websites whose content runs through Python v2</li>
-            <li>Create CLI apps and playable game starters</li>
-            <li>Preview websites from a built-in local server</li>
-            <li>Open PyHope games, free sprites and 9M GPU tools</li>
-            <li>No pygame, Electron, or paid dependency</li>
+            <li>Edit, save, autosave, and run <code>.pyv2</code> with Ctrl+Enter</li>
+            <li>Manage workspace files with safe paths and atomic saves</li>
+            <li>Export eight original CC0 PyHope sprites offline</li>
+            <li>Detect and open VS Code, VSCodium, Zed, Sublime, or PyCharm</li>
+            <li>Create and preview complete Python v2 website projects</li>
+            <li>Configure workspace, editor, font, and autosave settings</li>
+            <li>Open the 10-game arcade and 9M GPU tools</li>
+            <li>No pygame, Electron, cloud account, or paid dependency</li>
           </ul>
           <div class="download-button-row">
             <a class="btn btn-blue" href="install.bat" download>Windows App • install.bat</a>
@@ -130,8 +132,9 @@
       </div>
       <div class="steps">
         <strong>What gets installed?</strong>
-        <code>pyv2</code> is the language, <code>pyv2-launcher</code> opens the
-        desktop workspace, and <code>pyhope</code> is our own dependency-free
+        <code>pyv2</code> is the language; <code>pyv2-launcher</code>,
+        <code>pyhope-studio</code>, or <code>pyhope --studio</code> opens the
+        desktop workspace; and <code>pyhope</code> is our own dependency-free
         game engine with vectors, sprites, tile maps, fixed-step
         scenes, DDA ray casting, terminal preview, and web Canvas/WebGL renderers.
         It does <strong>not</strong> install pygame.
@@ -165,14 +168,15 @@ cd pythonv2-main</code></pre>
       <table class="ref-table">
         <thead><tr><th>Component</th><th>Where</th><th>What it is</th></tr></thead>
         <tbody>
-          <tr><td>Sudbury Launcher</td><td><code>pyv2/launcher.py</code></td><td>Desktop editor, runner, project wizard and website builder</td></tr>
+          <tr><td>Sudbury Workspace</td><td><code>pyv2/launcher.py</code></td><td>Home, editor, file service, projects, assets, games, connected editors, settings, and docs</td></tr>
+          <tr><td>Browser Playground</td><td><code>playground.html</code></td><td>Python v2 + Classic compatibility, commands, errors, and website workshop</td></tr>
           <tr><td>Interpreter + CLI</td><td><code>pyv2/</code></td><td>The language runtime: <code>python3 -m pyv2</code></td></tr>
           <tr><td>PyHope engine</td><td><code>pyhope/</code></td><td>Dependency-free sprites, scenes, tile maps and ray casting</td></tr>
           <tr><td>Browser runtime</td><td><code>pyv2.js</code></td><td>The same language in JavaScript (this website's playground)</td></tr>
           <tr><td>Examples</td><td><code>examples/</code></td><td>hello, fib, fizzbuzz, terminal_raycast</td></tr>
           <tr><td>VS Code extension</td><td><code>editors/vscode/</code></td><td>Syntax highlighting + snippets</td></tr>
           <tr><td>Dev container</td><td><code>.devcontainer/</code></td><td>Ready environment for VS Code / Codespaces</td></tr>
-          <tr><td>Tests</td><td><code>tests/</code></td><td>83 tests: language + parity + PyHope + Launcher + arcade</td></tr>
+          <tr><td>Tests</td><td><code>tests/</code></td><td>90 tests: language + parity + PyHope + workspace + Playground + arcade</td></tr>
         </tbody>
       </table>
 

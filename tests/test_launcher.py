@@ -6,7 +6,14 @@ import tempfile
 import unittest
 
 from pyv2.interpreter import Interpreter
-from pyv2.launcher import create_project, safe_name
+from pyv2.launcher import (
+    SettingsStore,
+    WorkspaceFileService,
+    create_project,
+    detect_editors,
+    packaged_assets,
+    safe_name,
+)
 from pyv2.parser import parse
 
 
@@ -60,6 +67,57 @@ class TestLauncherProjects(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(ValueError):
                 create_project(tmp, "Nope", "spaceship")
+
+    def test_workspace_file_service_lifecycle(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            service = WorkspaceFileService(tmp)
+            service.create_folder("src")
+            path = service.write_text("src/main.pyv2", "print(42)\n")
+            self.assertEqual(path.read_text(), "print(42)\n")
+            self.assertEqual(service.read_text("src/main.pyv2"), "print(42)\n")
+            entries = {entry["path"]: entry for entry in service.list_entries()}
+            self.assertTrue(entries["src"]["directory"])
+            self.assertEqual(entries["src/main.pyv2"]["size"], 10)
+            renamed = service.rename("src/main.pyv2", "src/app.pyv2")
+            self.assertEqual(renamed.name, "app.pyv2")
+            service.delete("src/app.pyv2")
+            service.delete("src")
+            self.assertEqual(service.list_entries(), [])
+
+    def test_workspace_file_service_blocks_escape_and_recursive_delete(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            service = WorkspaceFileService(tmp)
+            with self.assertRaises(ValueError):
+                service.write_text("../escape.txt", "no")
+            with self.assertRaises(ValueError):
+                service.read_text(Path(tmp).parent / "outside.txt")
+            service.write_text("folder/file.txt", "safe")
+            with self.assertRaises(OSError):
+                service.delete("folder")
+
+    def test_settings_store_roundtrip_and_invalid_fallback(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "settings.json"
+            store = SettingsStore(path)
+            saved = store.load()
+            saved.update({"workspace": str(Path(tmp) / "work"), "editor": "Zed", "font_size": 15, "autosave": True})
+            store.save(saved)
+            self.assertEqual(store.load()["editor"], "Zed")
+            self.assertEqual(store.load()["font_size"], 15)
+            path.write_text("{not valid json")
+            self.assertEqual(store.load()["editor"], "Auto detect")
+
+    def test_connected_editor_detection(self):
+        found = detect_editors(lambda command: f"/tools/{command}" if command in {"code", "zed"} else None)
+        connected = {entry["name"] for entry in found if entry["connected"]}
+        self.assertEqual(connected, {"VS Code", "Zed"})
+        self.assertEqual(len(found), 5)
+
+    def test_packaged_pyhope_assets(self):
+        assets = packaged_assets()
+        self.assertEqual(len(assets), 8)
+        self.assertIn("comet-pilot.svg", assets)
+        self.assertIn("race-car.svg", assets)
 
 
 if __name__ == "__main__":

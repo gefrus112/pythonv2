@@ -21,9 +21,11 @@ classifiers = [
 pyv2 = "pyv2.cli:main"
 pyv2-launcher = "pyv2.launcher:main"
 pyhope = "pyhope.__main__:main"
+pyhope-studio = "pyv2.launcher:main"
 
 [tool.setuptools.packages.find]
 include = ["pyv2*", "pyhope*"]
 
 [tool.setuptools.package-data]
 pyv2 = ["assets/*.js", "assets/*.svg"]
+pyhope = ["assets/*.svg", "assets/*.md"]

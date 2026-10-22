@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <title>Byte Beast — original CC0 monster sprite</title>
+  <rect width="16" height="16" fill="none"/>
+  <path fill="#1b2733" d="M3 3h2V1h2v2h2V1h2v2h2v2h2v7h-2v2h-2v-2H9v2H7v-2H5v2H3v-2H1V5h2z"/>
+  <path fill="#d64541" d="M3 5h10v7h-2v-2H5v2H3z"/>
+  <path fill="#f16a62" d="M5 4h6v2H5z"/>
+  <path fill="#ffd343" d="M4 7h3v2H4zm5 0h3v2H9z"/>
+  <path fill="#25313d" d="M5 7h1v2H5zm5 0h1v2h-1zM6 10h4v1H6z"/>
+</svg>
