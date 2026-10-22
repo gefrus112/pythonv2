@@ -319,7 +319,7 @@ python3 -m pyv2.launcher</code></pre>
           <tr><td>Home</td><td>Workspace overview and shortcuts to every main tool</td></tr>
           <tr><td>Code Studio</td><td>Open, edit, save, and run <code>.pyv2</code>; output/errors stay in the app</td></tr>
           <tr><td>Files</td><td>Safe local workspace service: create, read, atomically save, rename, and delete files without path traversal</td></tr>
-          <tr><td>New Project</td><td>Create Website, CLI app, or Game starters without overwriting files</td></tr>
+          <tr><td>New Project</td><td>Create Website, Windows app, CLI app, or Game starters without overwriting files</td></tr>
           <tr><td>Assets</td><td>Browse and export eight packaged original CC0 PyHope SVGs offline</td></tr>
           <tr><td>Games &amp; GPU</td><td>Open the 10-game arcade, animated sprites, and 9M GPU Lab</td></tr>
           <tr><td>Connected Editors</td><td>Detect VS Code, VSCodium, Zed, Sublime Text, and PyCharm from PATH; no account or token</td></tr>
@@ -350,8 +350,71 @@ for skill in skills:
 end
 print("GAME|Comet Circuit|Racing|Three-lap AI racing.|games.html#comet-circuit")</code></pre>
 
+      <!-- ==================== WINDOWS APPS ==================== -->
+      <h2 id="windows-apps"><span class="badge">07</span> Production Apps &amp; Windows EXE Builder</h2>
+      <p>Sudbury Build Tools turn a <code>.pyv2</code> program into a validated,
+        inspectable application project and—when the native build runs on
+        Windows—a real one-file <code>.exe</code>. Python v2 does not rename a
+        Linux or macOS binary and pretend it is a Windows executable.</p>
+
+      <h3>Create, run, check, and build</h3>
+      <pre class="terminal"><code># Complete console application with JSON persistence
+pyv2 new windows-app "Comet Tasks"
+
+# Or create a dialog-based app with no terminal window
+pyv2 new windows-app "Hello Window" --windowed
+
+pyv2 Comet-Tasks/main.pyv2 --add "Ship the EXE"
+pyv2 check Comet-Tasks
+pyv2 build Comet-Tasks
+
+# Run this final command on Windows with PyInstaller installed.
+# The generated build-windows.bat handles that installation for you.
+pyv2 build Comet-Tasks --native</code></pre>
+
+      <table class="ref-table">
+        <thead><tr><th>Generated file</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>main.pyv2</code></td><td>Readable application source using arguments, strict JSON, and persistent app data</td></tr>
+          <tr><td><code>pyv2app.json</code></td><td>Name, stable app ID, version, publisher, console/windowed mode, icon, and assets</td></tr>
+          <tr><td><code>build-windows.bat</code></td><td>Validates and builds the real EXE on Windows without administrator access</td></tr>
+          <tr><td><code>.github/workflows/windows-exe.yml</code></td><td>Optional Windows CI build and downloadable executable artifact</td></tr>
+          <tr><td><code>build/windows/manifest.json</code></td><td>SHA-256 source and build-input integrity record</td></tr>
+          <tr><td><code>runtime/pyv2</code></td><td>Exact vendored language runtime used for the build—no moving runtime dependency</td></tr>
+          <tr><td><code>app.spec</code> + <code>launcher.py</code></td><td>Reviewable PyInstaller recipe and embedded Python v2 host</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Application APIs</h3>
+      <pre class="terminal"><code>info = app_info()                  # name, version, platform, safe data directory
+commands = args()                  # values after the .pyv2 filename / EXE
+settings = {theme: "night", zoom: 1.25}
+write_text("settings.json", json_encode(settings))
+loaded = json_decode(read_text("settings.json"))
+print(loaded.theme)
+
+# Other safe services:
+# append_text, file_exists, list_dir, make_dir, delete_file
+# read_asset, asset_exists, sleep_ms, ui_message, ui_ask</code></pre>
+      <p>During development, writable data stays in <code>.pyv2-data/</code>
+        beside the program. Packaged apps use
+        <code>%LOCALAPPDATA%\PythonV2Apps\APP-ID</code>. Paths are relative and
+        sandboxed; atomic writes, UTF-8 validation, an 8 MB text limit, asset
+        size validation, symlink-escape checks, and unmanaged-build-directory
+        protection are enabled by default.</p>
+
+      <div class="callout"><strong>Building from macOS or Linux:</strong>
+        <code>pyv2 build</code> still creates the complete Windows kit. Copy it
+        to Windows and run <code>build.bat</code>, or push the generated project
+        and run its GitHub Actions workflow on a Windows runner. PyInstaller
+        cannot cross-compile Windows PE files from another operating system.</div>
+      <p><strong>Signing note:</strong> generated executables are reproducible but
+        not Authenticode-signed automatically. Public distributors should add
+        their own protected code-signing certificate in Windows CI; never commit
+        a certificate or password to the project.</p>
+
       <!-- ==================== PYHOPE ==================== -->
-      <h2 id="pyhope"><span class="badge">07</span> PyHope Game Engine</h2>
+      <h2 id="pyhope"><span class="badge">08</span> PyHope Game Engine</h2>
       <p>PyHope is Python v2's own dependency-free game engine. It is not
         pygame and it installs no native libraries. The portable Python module
         handles game logic and terminal previews; the website adds Canvas and
@@ -403,7 +466,7 @@ print(engine.render_ascii())</code></pre>
         <code>assets/sprites/</code>.</p>
 
       <!-- ==================== LANGUAGE REFERENCE ==================== -->
-      <h2 id="language"><span class="badge">07</span> Language Quick Reference</h2>
+      <h2 id="language"><span class="badge">09</span> Language Quick Reference</h2>
       <p>The full spec (grammar, semantics, error kinds) lives in
         <a href="https://github.com/gefrus112/pythonv2/blob/main/docs/LANGUAGE.md">docs/LANGUAGE.md</a>.
         Here is the day-to-day core.</p>
@@ -464,12 +527,17 @@ print(engine.render_ascii())</code></pre>
           <tr><td><code>keys values has get</code></td><td>Map access</td></tr>
           <tr><td><code>sort sort_by join</code></td><td>Helpers</td></tr>
           <tr><td><code>assert(cond, msg?)</code></td><td>Raises <code>AssertionError</code> when falsy</td></tr>
-          <tr><td><code>chr ord clock input</code></td><td>Misc (<code>input</code> is CLI-only)</td></tr>
+          <tr><td><code>json_encode json_decode</code></td><td>Strict JSON for persistent application data</td></tr>
+          <tr><td><code>args app_info</code></td><td>Application arguments, identity, platform, and capability details</td></tr>
+          <tr><td><code>read_text write_text append_text</code></td><td>Sandboxed UTF-8 files with atomic replacement</td></tr>
+          <tr><td><code>file_exists list_dir make_dir delete_file</code></td><td>Safe app-data management</td></tr>
+          <tr><td><code>read_asset asset_exists ui_message ui_ask</code></td><td>Packaged assets and native dialogs</td></tr>
+          <tr><td><code>chr ord clock input sleep_ms</code></td><td>Characters, timing, and desktop input</td></tr>
         </tbody>
       </table>
 
       <!-- ==================== TRY IT ==================== -->
-      <h2 id="try"><span class="badge">08</span> Try It Right Here</h2>
+      <h2 id="try"><span class="badge">10</span> Try It Right Here</h2>
       <p>No install needed to experiment — this is the real interpreter,
         running in your browser. Edit and hit Run.</p>
       <div class="try-grid">
@@ -516,6 +584,7 @@ end</textarea>
         <a href="tutorial.html">Tutorial</a>
         <a href="guide.html">50-topic guide</a>
         <a href="#launcher">Sudbury Launcher</a>
+        <a href="#windows-apps">Windows EXE builder</a>
         <a href="#pyhope">PyHope engine</a>
         <a href="#install">Installation</a>
         <a href="#vscode">VS Code setup</a>

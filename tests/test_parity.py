@@ -71,6 +71,8 @@ print(sq(7))
 ''',
     "truthy": 'print(bool(0), bool(""), bool([]), bool({}), bool(nil), bool(false))\nprint(nil or "default", 1 and 2, 0 and 2, "" or 0 or "fb")\nprint(1 == 1.0, 1 == true, nil == nil, [1, [2]] == [1, [2]])',
     "builtins": 'print(abs(-5), min(3, 1, 2), max([3, 1, 2]))\nprint(floor(2.7), ceil(2.1), round(2.5), round(-2.5), sqrt(9))\nprint(int("42"), int(3.9), int(-3.9), float("2.5"), str(99))\nprint(type(1), type("a"), type([]), type({}), type(nil))\nprint(chr(65), ord("A"), sort([3, 1, 2]), join(["a", "b"], "-"))\nprint(len(range(10)), len(range(2, 10, 3)), repr("hi"), repr([1, "a"]))',
+    "json": 'data = {name: "Ada", active: true, scores: [1, 2.5, nil]}\nencoded = json_encode(data)\nprint(encoded)\ncopy = json_decode(encoded)\nprint(copy.name, copy.active, copy.scores)',
+    "app_basics": 'print(args())\ninfo = app_info()\nprint(info.name, info.version, info.has_assets, info.data_dir)',
     "errors": 'print(nope)',
     "errors2": 'xs = [1]\nprint(xs[5])',
     "errors3": 'print("a" - 1)',

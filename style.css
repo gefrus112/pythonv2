@@ -701,6 +701,17 @@ kbd {
   max-width: 52rem;
 }
 .steps strong { color: var(--blue-ink); }
+.callout {
+  max-width: 52rem;
+  margin: 18px 0;
+  padding: 17px 20px;
+  border: 1px solid #b9cee0;
+  border-left: 5px solid var(--blue-light);
+  border-radius: 10px;
+  color: #31516a;
+  background: #edf6fc;
+}
+.callout strong { color: var(--blue-ink); }
 
 .checklist {
   list-style: none; padding: 0; max-width: 52rem;

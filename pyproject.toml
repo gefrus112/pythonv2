@@ -10,12 +10,16 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Python v2 community" }]
-keywords = ["language", "interpreter", "game-engine", "raycaster", "pyhope"]
+keywords = ["language", "interpreter", "windows-exe", "app-builder", "game-engine", "raycaster", "pyhope"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
+  "Operating System :: Microsoft :: Windows",
 ]
+
+[project.optional-dependencies]
+windows-build = ["pyinstaller>=6.0; platform_system == 'Windows'"]
 
 [project.scripts]
 pyv2 = "pyv2.cli:main"

@@ -1,0 +1,27 @@
+# Comet Notes — production app APIs in one small program.
+# Run: pyv2 examples/software/comet_notes.pyv2 --add "My first note"
+# Then: pyv2 examples/software/comet_notes.pyv2 --list
+
+commands = args()
+notes = []
+if file_exists("notes.json"):
+    notes = json_decode(read_text("notes.json"))
+end
+
+if len(commands) >= 2 and commands[0] == "--add":
+    note = {text: commands[1], created_at: clock()}
+    notes.push(note)
+    write_text("notes.json", json_encode(notes))
+    print("Saved note", len(notes))
+elif len(commands) >= 1 and commands[0] == "--list":
+    if len(notes) == 0:
+        print("No notes yet.")
+    end
+    for note in notes:
+        print("•", note.text)
+    end
+else:
+    info = app_info()
+    print(info.name, "running on", info.platform)
+    print("Use --add followed by text, or --list.")
+end

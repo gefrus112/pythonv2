@@ -7,7 +7,8 @@ errors, real closures, `fn`/`end` blocks, a `?:` ternary).
 
 from .interpreter import Interpreter, Pyv2Error, run, run_capture
 from .parser import parse, ParseError
+from .runtime import AppRuntime, CapabilityError
 
 __version__ = "1.1.0"
 __all__ = ["Interpreter", "Pyv2Error", "run", "run_capture", "parse",
-           "ParseError", "__version__"]
+           "ParseError", "AppRuntime", "CapabilityError", "__version__"]

@@ -49,6 +49,22 @@
       "problemMatcher": []
     },
     {
+      "label": "Check current Python v2 app",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "pyv2", "check", "${file}"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build current app: Windows kit",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "pyv2", "build", "${file}", "--output", "${workspaceFolder}/build/windows"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
       "label": "Run Python v2 tests",
       "type": "shell",
       "command": "python3",

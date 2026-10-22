@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import json
 import math
 import time
 
 from .parser import parse, ParseError
+from .runtime import AppRuntime, CapabilityError
 
 
 # --------------------------------------------------------------------------
@@ -265,10 +267,11 @@ class Env:
 # Interpreter
 # --------------------------------------------------------------------------
 class Interpreter:
-    def __init__(self, output=None, read_input=None):
+    def __init__(self, output=None, read_input=None, app_runtime: AppRuntime | None = None):
         self.globals = Env(scope_root=True)
         self.output = output if output is not None else self._default_output
         self.read_input = read_input
+        self.app_runtime = app_runtime
         self.trace: list[str] = []
         self.builtins = self._make_builtins()
 
@@ -887,6 +890,177 @@ class Interpreter:
                 raise interp.error("RuntimeError", "input() is not available here", line)
             return interp.read_input(prompt)
 
+        def _runtime(interp, service, line):
+            if interp.app_runtime is None:
+                raise interp.error(
+                    "CapabilityError",
+                    f"{service} is unavailable; run this as a desktop app or CLI script",
+                    line,
+                )
+            return interp.app_runtime
+
+        def _string_arg(interp, value, who, line):
+            if not isinstance(value, str):
+                raise interp.error("TypeError", f"{who} needs a string", line)
+            return value
+
+        def _runtime_call(interp, service, line, operation):
+            runtime = _runtime(interp, service, line)
+            try:
+                return operation(runtime)
+            except CapabilityError as exc:
+                raise interp.error("CapabilityError", str(exc), line) from exc
+
+        def _args(interp, args, line):
+            return list(interp.app_runtime.argv) if interp.app_runtime is not None else []
+
+        def _app_info(interp, args, line):
+            if interp.app_runtime is not None:
+                return interp.app_runtime.info()
+            return {
+                "name": "Python v2 Program",
+                "version": "1.0.0",
+                "id": "python-v2-program",
+                "platform": "embedded",
+                "data_dir": None,
+                "has_assets": False,
+                "max_text_bytes": 0,
+            }
+
+        def _json_encode(interp, args, line):
+            def validate(value, active):
+                if value is None or isinstance(value, (bool, str)):
+                    return
+                if isinstance(value, int):
+                    if abs(value) > 9_007_199_254_740_991:
+                        raise ValueError("integer exceeds the cross-runtime safe range")
+                    return
+                if isinstance(value, float):
+                    if not math.isfinite(value):
+                        raise ValueError("non-finite numbers are not valid JSON")
+                    return
+                if isinstance(value, (list, dict)):
+                    marker = id(value)
+                    if marker in active:
+                        raise ValueError("circular data is not valid JSON")
+                    active.add(marker)
+                    if isinstance(value, dict):
+                        for key, item in value.items():
+                            if not isinstance(key, str):
+                                raise ValueError("JSON map keys must be strings")
+                            validate(item, active)
+                    else:
+                        for item in value:
+                            validate(item, active)
+                    active.remove(marker)
+                    return
+                raise ValueError(f"{type_name(value)} is not valid JSON")
+            try:
+                validate(args[0], set())
+                return json.dumps(args[0], ensure_ascii=False, separators=(",", ":"),
+                                  allow_nan=False)
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise interp.error("ValueError", f"json_encode(): {exc}", line) from exc
+
+        def _json_decode(interp, args, line):
+            source = _string_arg(interp, args[0], "json_decode()", line)
+            def reject_constant(value):
+                raise ValueError(f"non-standard number {value!r}")
+            def safe_integer(value):
+                parsed = int(value)
+                if abs(parsed) > 9_007_199_254_740_991:
+                    raise ValueError("integer exceeds the cross-runtime safe range")
+                return parsed
+            try:
+                value = json.loads(source, parse_constant=reject_constant, parse_int=safe_integer)
+            except (json.JSONDecodeError, RecursionError, ValueError) as exc:
+                if isinstance(exc, json.JSONDecodeError):
+                    message = exc.msg
+                elif isinstance(exc, RecursionError):
+                    message = "JSON is nested too deeply"
+                else:
+                    message = str(exc)
+                raise interp.error("ValueError", f"json_decode(): {message}", line) from exc
+            if not isinstance(value, (type(None), bool, int, float, str, list, dict)):
+                raise interp.error("ValueError", "json_decode(): unsupported JSON value", line)
+            return value
+
+        def _read_text(interp, args, line):
+            path = _string_arg(interp, args[0], "read_text()", line)
+            return _runtime_call(interp, "read_text()", line,
+                                 lambda runtime: runtime.read_text(path))
+
+        def _write_text(interp, args, line):
+            path = _string_arg(interp, args[0], "write_text()", line)
+            content = _string_arg(interp, args[1], "write_text()", line)
+            return _runtime_call(interp, "write_text()", line,
+                                 lambda runtime: runtime.write_text(path, content))
+
+        def _append_text(interp, args, line):
+            path = _string_arg(interp, args[0], "append_text()", line)
+            content = _string_arg(interp, args[1], "append_text()", line)
+            return _runtime_call(interp, "append_text()", line,
+                                 lambda runtime: runtime.write_text(path, content, append=True))
+
+        def _file_exists(interp, args, line):
+            path = _string_arg(interp, args[0], "file_exists()", line)
+            return _runtime_call(interp, "file_exists()", line,
+                                 lambda runtime: runtime.exists(path))
+
+        def _make_dir(interp, args, line):
+            path = _string_arg(interp, args[0], "make_dir()", line)
+            return _runtime_call(interp, "make_dir()", line,
+                                 lambda runtime: runtime.make_dir(path))
+
+        def _list_dir(interp, args, line):
+            if len(args) > 1:
+                raise interp.error("TypeError", "list_dir() expects zero or one argument", line)
+            path = _string_arg(interp, args[0], "list_dir()", line) if args else "."
+            return _runtime_call(interp, "list_dir()", line,
+                                 lambda runtime: runtime.list_dir(path))
+
+        def _delete_file(interp, args, line):
+            path = _string_arg(interp, args[0], "delete_file()", line)
+            return _runtime_call(interp, "delete_file()", line,
+                                 lambda runtime: runtime.delete_file(path))
+
+        def _read_asset(interp, args, line):
+            path = _string_arg(interp, args[0], "read_asset()", line)
+            return _runtime_call(interp, "read_asset()", line,
+                                 lambda runtime: runtime.read_text(path, asset=True))
+
+        def _asset_exists(interp, args, line):
+            path = _string_arg(interp, args[0], "asset_exists()", line)
+            return _runtime_call(interp, "asset_exists()", line,
+                                 lambda runtime: runtime.exists(path, asset=True))
+
+        def _sleep_ms(interp, args, line):
+            duration = _num_arg(interp, args[0], "sleep_ms()", line)
+            if duration < 0 or duration > 60_000:
+                raise interp.error("ValueError", "sleep_ms() must be between 0 and 60000", line)
+            time.sleep(duration / 1000)
+            return None
+
+        def _ui_message(interp, args, line):
+            title = _string_arg(interp, args[0], "ui_message()", line)
+            message = _string_arg(interp, args[1], "ui_message()", line)
+            runtime = _runtime(interp, "ui_message()", line)
+            if runtime.message_handler is None:
+                raise interp.error("CapabilityError", "native message dialogs are unavailable", line)
+            runtime.message_handler(title, message)
+            return None
+
+        def _ui_ask(interp, args, line):
+            if len(args) not in (2, 3):
+                raise interp.error("TypeError", "ui_ask() expects two or three arguments", line)
+            title = _string_arg(interp, args[0], "ui_ask()", line)
+            prompt = _string_arg(interp, args[1], "ui_ask()", line)
+            default = _string_arg(interp, args[2], "ui_ask()", line) if len(args) > 2 else ""
+            runtime = _runtime(interp, "ui_ask()", line)
+            if runtime.ask_handler is None:
+                raise interp.error("CapabilityError", "native input dialogs are unavailable", line)
+            return runtime.ask_handler(title, prompt, default)
+
         def _chr(interp, args, line):
             n = _int_arg(interp, args[0], "chr()", line)
             return chr(n)
@@ -945,6 +1119,22 @@ class Interpreter:
             "assert": Builtin("assert", _assert, None),
             "clock": Builtin("clock", _clock, 0),
             "input": Builtin("input", _input, None),
+            "args": Builtin("args", _args, 0),
+            "app_info": Builtin("app_info", _app_info, 0),
+            "json_encode": Builtin("json_encode", _json_encode, 1),
+            "json_decode": Builtin("json_decode", _json_decode, 1),
+            "read_text": Builtin("read_text", _read_text, 1),
+            "write_text": Builtin("write_text", _write_text, 2),
+            "append_text": Builtin("append_text", _append_text, 2),
+            "file_exists": Builtin("file_exists", _file_exists, 1),
+            "make_dir": Builtin("make_dir", _make_dir, 1),
+            "list_dir": Builtin("list_dir", _list_dir, None),
+            "delete_file": Builtin("delete_file", _delete_file, 1),
+            "read_asset": Builtin("read_asset", _read_asset, 1),
+            "asset_exists": Builtin("asset_exists", _asset_exists, 1),
+            "sleep_ms": Builtin("sleep_ms", _sleep_ms, 1),
+            "ui_message": Builtin("ui_message", _ui_message, 2),
+            "ui_ask": Builtin("ui_ask", _ui_ask, None),
             "chr": Builtin("chr", _chr, 1),
             "ord": Builtin("ord", _ord, 1),
         }
@@ -1224,21 +1414,24 @@ def type_name(value) -> str:
 # --------------------------------------------------------------------------
 # Convenience
 # --------------------------------------------------------------------------
-def run(source: str, output=None, read_input=None):
-    interp = Interpreter(output=output, read_input=read_input)
+def run(source: str, output=None, read_input=None, app_runtime: AppRuntime | None = None):
+    interp = Interpreter(output=output, read_input=read_input, app_runtime=app_runtime)
     interp.run(source)
     return interp
 
 
-def run_capture(source: str):
-    """Run source, returning (output_text, error_or_None)."""
+def run_capture(source: str, app_runtime: AppRuntime | None = None):
+    """Run source, returning ``(output_text, error_or_None)``.
+
+    Host capabilities remain disabled unless an :class:`AppRuntime` is passed.
+    """
     lines: list[str] = []
 
     def output(text: str) -> None:
         lines.append(text)
 
     try:
-        run(source, output=output)
+        run(source, output=output, app_runtime=app_runtime)
         return "\n".join(lines), None
     except Pyv2Error as exc:
         return "\n".join(lines), exc.format()

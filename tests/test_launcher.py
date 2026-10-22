@@ -59,6 +59,15 @@ class TestLauncherProjects(unittest.TestCase):
             self.assertIn('id="game-grid"', page)
             self.assertIn('id="contact"', page)
 
+    def test_create_windows_app_project(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            project = create_project(tmp, "Comet Desktop", "windows")
+            self.assertTrue((project / "main.pyv2").is_file())
+            self.assertTrue((project / "pyv2app.json").is_file())
+            self.assertTrue((project / "build-windows.bat").is_file())
+            self.assertTrue((project / ".github/workflows/windows-exe.yml").is_file())
+            parse((project / "main.pyv2").read_text())
+
     def test_existing_files_are_not_overwritten(self):
         with tempfile.TemporaryDirectory() as tmp:
             project = create_project(tmp, "Safe", "cli")

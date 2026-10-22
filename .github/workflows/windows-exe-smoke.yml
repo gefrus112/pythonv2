@@ -1,0 +1,49 @@
+name: Windows EXE builder
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "pyv2/**"
+      - "examples/software/**"
+      - "pyproject.toml"
+      - ".github/workflows/windows-exe-smoke.yml"
+  push:
+    branches: [main]
+    paths:
+      - "pyv2/**"
+      - "examples/software/**"
+      - "pyproject.toml"
+      - ".github/workflows/windows-exe-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-run:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python v2 and native builder
+        run: python -m pip install . pyinstaller
+      - name: Validate the production app example
+        run: python -m pyv2 check examples/software/comet_notes.pyv2
+      - name: Build a real one-file Windows executable
+        run: python -m pyv2 build examples/software/comet_notes.pyv2 --native --output build/windows-smoke
+      - name: Run the packaged executable
+        shell: pwsh
+        run: |
+          $output = & ".\build\windows-smoke\dist\Comet-Notes.exe"
+          $output | Write-Host
+          if ($LASTEXITCODE -ne 0) { throw "Packaged app exited with $LASTEXITCODE" }
+          if (($output -join "`n") -notmatch "Use --add") { throw "Packaged app smoke output was incomplete" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: comet-notes-windows-exe
+          path: build/windows-smoke/dist/Comet-Notes.exe
+          if-no-files-found: error

@@ -195,10 +195,28 @@ hero.scores.push(30)
 | `sort(list)` `sort_by(list, fn)` `join(list, sep)` | helpers |
 | `assert(cond, msg?)` | raise `AssertionError` when falsy |
 | `chr(n)` `ord(char)` | character codes |
-| `clock()` | seconds on the wall clock |
+| `clock()` | high-resolution elapsed seconds |
 | `input(prompt?)` | read a line (CLI only; browser raises a friendly error) |
+| `args()` | command-line arguments passed after the app filename |
+| `app_info()` | app name, version, ID, platform, data directory, and asset capability |
+| `json_encode(value)` / `json_decode(text)` | strict JSON serialization for maps and lists |
+| `read_text(path)` / `write_text(path, text)` / `append_text(path, text)` | UTF-8 app-data files; writes are atomic by default |
+| `file_exists(path)` / `list_dir(path?)` / `make_dir(path)` / `delete_file(path)` | sandboxed app-data management |
+| `read_asset(path)` / `asset_exists(path)` | read-only files bundled with a packaged app |
+| `sleep_ms(milliseconds)` | pause a desktop/CLI app for at most 60 seconds |
+| `ui_message(title, text)` / `ui_ask(title, prompt, default?)` | native dialogs in packaged/desktop apps |
 
-### 3.1 Methods
+### 3.1 App capability safety
+
+Desktop services are explicit capabilities. A CLI source file receives a
+writable `.pyv2-data/` directory beside the source and optional read-only
+`assets/`. A packaged Windows app stores data under
+`%LOCALAPPDATA%\\PythonV2Apps\\APP-ID`. Absolute paths, `..` traversal, symlink
+escapes, non-UTF-8 reads, and text larger than 8 MB are rejected with
+`CapabilityError`. Browser programs keep JSON, `args()`, and `app_info()` but
+cannot touch the visitor's filesystem.
+
+### 3.2 Methods
 
 **Strings:** `upper lower title trim chars reverse lines count slice(a, b?)
 to_number repeat(n) split(sep) join(list) contains starts_with ends_with
@@ -217,7 +235,7 @@ Errors are `Kind: message at line N` with an optional call trace:
 
 `SyntaxError`, `NameError`, `TypeError`, `IndexError`, `KeyError`,
 `ZeroDivisionError`, `ValueError`, `OverflowError`, `AssertionError`,
-`AttributeError`, `RuntimeError`.
+`AttributeError`, `CapabilityError`, `RuntimeError`.
 
 The CLI exits with status 1 on error; the playground prints the error in red
 and keeps your code.
@@ -269,16 +287,26 @@ fnexpr     := "fn" "(" params ")" ":" block "end"
 ## 7. CLI
 
 ```console
-$ python3 -m pyv2 script.pyv2     # run a file
-$ python3 -m pyv2 -c 'print(42)'  # run a snippet
-$ python3 -m pyv2                 # REPL (... continues blocks)
-$ python3 -m pyv2 --version
+$ pyv2 script.pyv2 --list              # run an app with arguments
+$ pyv2 -c 'print(42)'                   # run a snippet
+$ pyv2                                  # REPL (... continues blocks)
+$ pyv2 check MyApp                      # syntax + metadata + path audit
+$ pyv2 new windows-app "My App"         # complete EXE-ready project
+$ pyv2 build MyApp                      # build kit on any operating system
+$ pyv2 build MyApp --native             # real one-file .exe on Windows
+$ pyv2 doctor                           # show local build readiness
 ```
+
+A generated app contains readable source, `pyv2app.json`, VS Code tasks,
+sandboxed-data examples, `build-windows.bat`, and a Windows GitHub Actions
+workflow. PyInstaller must run on Windows to create a Windows PE executable;
+macOS/Linux builds produce the honest reproducible kit rather than relabeling a
+non-Windows binary.
 
 ## 8. Parity guarantee
 
-The suite runs **92 tests**: 63 language tests, 9 PyHope engine tests, 7 arcade/Playground site tests,
-12 workspace/Launcher tests, and one parity harness that sends 21 programs (including error paths) through
+The suite runs **108 tests**: 63 language tests, 9 PyHope engine tests, 14 production-app/build tests,
+8 arcade/Playground site tests, 13 workspace/Launcher tests, and one parity harness that sends 25 programs (including error paths) through
 **both** language runtimes and compares outputs byte for byte. If the twins
 ever disagree, the suite fails. That's the deal.
 

@@ -61,7 +61,8 @@
       <p>Get the Python v2 language on your machine. It is <strong>free</strong>,
         <strong>open source</strong>, and needs nothing but Python&nbsp;3.10+.
         Version 1.1 “Sudbury” includes our own <strong>desktop Launcher</strong>,
-        offline website builder, and dependency-free <strong>PyHope game engine</strong>—
+        offline website builder, production app APIs, a <strong>Windows EXE
+        builder</strong>, and dependency-free <strong>PyHope game engine</strong>—
         no pygame or Electron required.</p>
     </div>
   </section>
@@ -92,6 +93,7 @@
             <li>Export eight original CC0 PyHope sprites offline</li>
             <li>Detect and open VS Code, VSCodium, Zed, Sublime, or PyCharm</li>
             <li>Create and preview complete Python v2 website projects</li>
+            <li>Create validated Windows apps with JSON, safe data, dialogs, and EXE workflows</li>
             <li>Configure workspace, editor, font, and autosave settings</li>
             <li>Open the 10-game arcade and 9M GPU tools</li>
             <li>No pygame, Electron, cloud account, or paid dependency</li>
@@ -143,8 +145,41 @@
          <a href="games.html">Play the games</a> ·
          <a href="games.html#sprites">Get free CC0 sprites</a></p>
 
+      <!-- ==================== WINDOWS BUILDER ==================== -->
+      <h2 id="windows-builder"><span class="badge">03</span> Build Real Windows EXE Applications</h2>
+      <p><strong>Installed with the normal Python v2 installer.</strong> Sudbury
+        Build Tools create console or windowed applications with command-line
+        arguments, strict JSON, sandboxed persistent files, atomic saves,
+        bundled read-only assets, and native message/input dialogs.</p>
+      <div class="install-downloads">
+        <article class="install-download">
+          <h3>1. Create</h3>
+          <pre class="terminal"><code>pyv2 new windows-app "My App"
+# add --windowed for a dialog app</code></pre>
+        </article>
+        <article class="install-download">
+          <h3>2. Validate</h3>
+          <pre class="terminal"><code>pyv2 check My-App
+pyv2 doctor</code></pre>
+        </article>
+        <article class="install-download">
+          <h3>3. Build</h3>
+          <pre class="terminal"><code>pyv2 build My-App
+# Windows:
+pyv2 build My-App --native</code></pre>
+        </article>
+      </div>
+      <p>The project includes a readable <code>build-windows.bat</code>,
+        PowerShell script, PyInstaller recipe, SHA-256 manifest, VS Code tasks,
+        and Windows GitHub Actions workflow. Native <code>.exe</code> creation
+        installs PyInstaller into a build environment on Windows; normal Python
+        v2 apps and the language runtime remain dependency-free. Other systems
+        produce the complete kit rather than a mislabeled binary.
+        <a href="docs.html#windows-apps">Full app and
+        EXE guide →</a></p>
+
       <!-- ==================== GET IT ==================== -->
-      <h2 id="get"><span class="badge">03</span> Get the Language Manually</h2>
+      <h2 id="get"><span class="badge">04</span> Get the Language Manually</h2>
       <p>Pick your favorite flavor:</p>
 
       <div class="start-grid">
@@ -176,12 +211,12 @@ cd pythonv2-main</code></pre>
           <tr><td>Examples</td><td><code>examples/</code></td><td>hello, fib, fizzbuzz, terminal_raycast</td></tr>
           <tr><td>VS Code extension</td><td><code>editors/vscode/</code></td><td>Syntax highlighting + snippets</td></tr>
           <tr><td>Dev container</td><td><code>.devcontainer/</code></td><td>Ready environment for VS Code / Codespaces</td></tr>
-          <tr><td>Tests</td><td><code>tests/</code></td><td>92 tests: language + parity + PyHope + workspace + portfolio Playground + arcade</td></tr>
+          <tr><td>Tests</td><td><code>tests/</code></td><td>108 tests: language + app/EXE builder + parity + PyHope + workspace + Playground + arcade</td></tr>
         </tbody>
       </table>
 
       <!-- ==================== INSTALL ==================== -->
-      <h2 id="install"><span class="badge">04</span> Install on Your Machine</h2>
+      <h2 id="install"><span class="badge">05</span> Install on Your Machine</h2>
       <p>One requirement: <strong>Python 3.10 or newer</strong>
         (<a href="https://www.python.org/downloads/">python.org/downloads</a>).
         Python v2 itself has zero dependencies.</p>
@@ -229,7 +264,7 @@ pyv2                      # REPL!</code></pre>
       </div>
 
       <!-- ==================== EDITORS ==================== -->
-      <h2 id="editors"><span class="badge">05</span> Install in Your Editor</h2>
+      <h2 id="editors"><span class="badge">06</span> Install in Your Editor</h2>
       <p>Full step-by-step guides live in the
         <a href="docs.html#install">documentation</a>. The quick tour:</p>
 
@@ -263,7 +298,7 @@ pyv2                      # REPL!</code></pre>
       </table>
 
       <!-- ==================== NEXT ==================== -->
-      <h2 id="next"><span class="badge">06</span> Learn the Language</h2>
+      <h2 id="next"><span class="badge">07</span> Learn the Language</h2>
       <p>Installed? Nice. Next stop:</p>
       <ul class="checklist">
         <li><strong><a href="tutorial.html">The tutorial</a></strong> — 10 short
