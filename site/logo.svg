@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Python v2: two interlocking snakes — red & blue -->
+  <!-- red snake -->
+  <path d="M19 46 C 31 55, 48 51, 51 37 C 54 23, 42 12, 30 16"
+        fill="none" stroke="#a23230" stroke-width="13" stroke-linecap="round"/>
+  <path d="M19 46 C 31 55, 48 51, 51 37 C 54 23, 42 12, 30 16"
+        fill="none" stroke="#d64541" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="16.2" cy="48.8" r="2.1" fill="#ffffff"/>
+  <!-- blue snake (drawn last: passes over the red one) -->
+  <path d="M45 18 C 33 9, 16 13, 13 27 C 10 41, 22 52, 34 48"
+        fill="none" stroke="#1f4c85" stroke-width="13" stroke-linecap="round"/>
+  <path d="M45 18 C 33 9, 16 13, 13 27 C 10 41, 22 52, 34 48"
+        fill="none" stroke="#2f6fbd" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="47.8" cy="15.2" r="2.1" fill="#ffffff"/>
+</svg>

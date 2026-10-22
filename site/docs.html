@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation — Python v2</title>
+  <meta name="description" content="Install Python v2 in VS Code, dev containers, Codespaces, desktop terminals, or any code editor. Full language reference included.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ top utility bar ============ -->
+  <div class="topbar">
+    <nav class="topbar-inner" aria-label="Site">
+      <a href="index.html">Python</a>
+      <a href="index.html#community">PSF</a>
+      <a class="active" href="docs.html">Docs</a>
+      <a href="index.html#start">PyPI</a>
+      <a href="index.html#news">Jobs</a>
+      <a href="index.html#community">Community</a>
+    </nav>
+  </div>
+
+  <!-- ============ masthead ============ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="index.html">
+        <img src="logo.svg" alt="Python v2 logo — two snakes, red and blue" width="64" height="64">
+        <span class="brand-word">python<sup>™</sup><em>v2</em></span>
+      </a>
+      <div class="masthead-tools">
+        <a class="btn-donate" href="index.html#community">Donate</a>
+        <form class="searchbox" id="search-form" role="search">
+          <span class="search-mag" aria-hidden="true">⌕</span>
+          <label class="sr-only" for="search-input">Search</label>
+          <input type="search" id="search-input" placeholder="Search">
+          <button type="submit" class="btn-go">GO</button>
+        </form>
+        <button class="btn-social" id="social-btn" type="button">Socialize</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ main nav ============ -->
+  <nav class="mainnav" aria-label="Main">
+    <div class="mainnav-inner">
+      <a href="index.html#about">About</a>
+      <a href="index.html#start">Downloads</a>
+      <a href="docs.html">Documentation</a>
+      <a href="index.html#community">Community</a>
+      <a href="index.html#game">Success Stories</a>
+      <a href="index.html#news">News</a>
+      <a href="index.html#news">Events</a>
+    </div>
+  </nav>
+
+  <!-- ============ page head ============ -->
+  <section class="page-head">
+    <div class="page-head-inner">
+      <h1>Documentation</h1>
+      <p>Everything you need to get Python v2 running: on your desktop, in
+        VS Code, in a dev container or Codespaces, or in any code editor you
+        already love. Then the whole language, on one page.</p>
+    </div>
+  </section>
+
+  <main class="doc-section">
+    <div class="doc-section-inner">
+
+      <!-- ==================== INSTALL ==================== -->
+      <h2 id="install"><span class="badge">01</span> Install — Desktop</h2>
+      <p>Python v2 has <strong>no dependencies</strong> and <strong>no install step</strong>.
+        If you have Python 3.10+ and Git, you're done. Works on macOS, Linux,
+        Windows (native or WSL), and a fridge with a shell.</p>
+
+      <div class="steps">
+        <strong>Step 1 — check Python</strong>
+        <pre class="terminal"><code>python3 --version    # need 3.10 or newer
+git --version</code></pre>
+      </div>
+      <div class="steps">
+        <strong>Step 2 — get the runtime</strong>
+        <pre class="terminal"><code>git clone https://github.com/gefrus112/pythonv2
+cd pythonv2</code></pre>
+      </div>
+      <div class="steps">
+        <strong>Step 3 — verify it works</strong>
+        <pre class="terminal"><code>python3 -m pyv2 --version
+# Python v2 0.2.0
+
+python3 -m pyv2 examples/hello.pyv2
+# Hello, World!
+# 2 + 2 = 4</code></pre>
+      </div>
+      <div class="steps">
+        <strong>Step 4 — run the test suite (optional, 1 second)</strong>
+        <pre class="terminal"><code>python3 -m unittest discover -s tests -t .
+# ... OK</code></pre>
+      </div>
+
+      <h3>Command line</h3>
+      <table class="ref-table">
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>python3 -m pyv2 script.pyv2</code></td><td>Run a program</td></tr>
+          <tr><td><code>python3 -m pyv2 -c 'print(42)'</code></td><td>Run a one-liner</td></tr>
+          <tr><td><code>python3 -m pyv2</code></td><td>Start the REPL (<code>...</code> continues blocks)</td></tr>
+          <tr><td><code>python3 -m pyv2 --version</code></td><td>Print the version</td></tr>
+          <tr><td><code>python3 -m pyv2 --help</code></td><td>Show usage</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Windows notes</h3>
+      <ul>
+        <li>If <code>python3</code> is not found, try <code>py -m pyv2 script.pyv2</code>.</li>
+        <li>WSL is the smoothest path: install Ubuntu from the Microsoft Store,
+          then follow the three steps above.</li>
+      </ul>
+
+      <!-- ==================== VSCODE ==================== -->
+      <h2 id="vscode"><span class="badge">02</span> VS Code</h2>
+      <p>The repository ships ready-made VS Code config in <code>.vscode/</code>
+        and a language extension in <code>editors/vscode/</code> for
+        syntax highlighting of <code>.pyv2</code> files.</p>
+
+      <h3>Quick start (run &amp; debug your code)</h3>
+      <div class="steps">
+        <ol>
+          <li>Open the <code>pythonv2</code> folder in VS Code
+            (<strong>File → Open Folder…</strong>).</li>
+          <li>Open any <code>.pyv2</code> file, e.g. <code>examples/fib.pyv2</code>.</li>
+          <li>Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd>
+            (macOS: <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd>) — the default build task
+            runs <code>python3 -m pyv2</code> on the current file.</li>
+          <li>Output appears in the Terminal panel. That's it.</li>
+        </ol>
+      </div>
+      <p>The included <code>.vscode/tasks.json</code> defines two tasks:
+        <strong>Run Python v2 file</strong> (default build) and
+        <strong>Python v2 REPL</strong>. The included
+        <code>.vscode/settings.json</code> associates <code>*.pyv2</code> with
+        the <code>pyv2</code> language.</p>
+
+      <h3>Syntax highlighting (the bundled extension)</h3>
+      <div class="steps">
+        <ol>
+          <li>Copy the extension folder into your VS Code extensions directory:
+            <pre class="terminal"><code># macOS / Linux
+cp -r editors/vscode ~/.vscode/extensions/pyv2-0.1.0
+
+# Windows (PowerShell)
+Copy-Item -Recurse editors/vscode "$env:USERPROFILE\.vscode\extensions\pyv2-0.1.0"</code></pre>
+          </li>
+          <li>Restart VS Code (or run <strong>Developer: Reload Window</strong>).</li>
+          <li>Open any <code>.pyv2</code> file — keywords, strings, f-strings,
+            numbers and comments are now colored.</li>
+        </ol>
+      </div>
+      <p>Prefer the marketplace workflow? Pack it once with the
+        <code>vsce</code> tool and install the VSIX:</p>
+      <pre class="terminal"><code>cd editors/vscode
+npx @vscode/vsce package        # builds pyv2-0.1.0.vsix
+code --install-extension pyv2-0.1.0.vsix</code></pre>
+
+      <h3>Alternative: Code Runner</h3>
+      <p>If you use the popular <strong>Code Runner</strong> extension, add this to
+        your user <code>settings.json</code> and press
+        <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>N</kbd> to run:</p>
+      <pre class="terminal"><code>{
+  "code-runner.executorMap": {
+    "python": "python3 -m pyv2"
+  },
+  "code-runner.fileDirectoryAsCwd": true
+}</code></pre>
+
+      <!-- ==================== DEV CONTAINERS ==================== -->
+      <h2 id="devcontainer"><span class="badge">03</span> Dev Containers &amp; GitHub Codespaces</h2>
+      <p>Opening the repo in a <strong>dev container</strong> (VS Code or
+        Codespaces) gives you a ready environment in seconds — Python preinstalled,
+        tasks wired, tests passing. The config lives in
+        <code>.devcontainer/devcontainer.json</code> (that's the ".dev" part).</p>
+
+      <h3>VS Code Dev Containers</h3>
+      <div class="steps">
+        <ol>
+          <li>Install <strong>Docker</strong> and the
+            <strong>Dev Containers</strong> extension
+            (<code>ms-vscode-remote.remote-containers</code>).</li>
+          <li>Open the repo folder, then run
+            <strong>Dev Containers: Reopen in Container</strong>
+            from the Command Palette
+            (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).</li>
+          <li>First boot pulls the Python image; after that everything is instant.</li>
+          <li>Run <code>python3 -m pyv2 examples/hello.pyv2</code> — or just hit
+            <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd>.</li>
+        </ol>
+      </div>
+
+      <h3>GitHub Codespaces</h3>
+      <div class="steps">
+        <ol>
+          <li>On GitHub, open the repo → <strong>Code</strong> →
+            <strong>Codespaces</strong> → <strong>Create codespace on main</strong>.</li>
+          <li>VS Code opens in your browser with the dev container already built.</li>
+          <li>Everything from the desktop guide works identically inside it.</li>
+        </ol>
+      </div>
+      <p>The container runs <code>python3 -m unittest discover -s tests -t .</code>
+        at build time, so you always start from a green suite.</p>
+
+      <!-- ==================== ANY EDITOR ==================== -->
+      <h2 id="any-editor"><span class="badge">04</span> Any Other Code Editor</h2>
+      <p>Python v2 is just text plus a CLI. Any editor that can run a shell
+        command can run it. The universal recipe:</p>
+      <ul class="checklist">
+        <li><strong>Coloring</strong> — associate <code>*.pyv2</code> with Python
+          syntax. It's close enough (and free).</li>
+        <li><strong>Running</strong> — bind a build/run command to
+          <code>python3 -m pyv2 "$file"</code> with the working directory set to
+          your project.</li>
+        <li><strong>Formatting</strong> — 4 spaces, one statement per line, blocks
+          end with <code>end</code>. Your formatter can't break it. That's the point.</li>
+      </ul>
+
+      <h3>Sublime Text</h3>
+      <pre class="terminal"><code>Tools → Build System → New Build System…
+{
+    "cmd": ["python3", "-m", "pyv2", "$file"],
+    "selector": "source.python",
+    "working_dir": "$file_path"
+}</code></pre>
+
+      <h3>Vim / Neovim</h3>
+      <pre class="terminal"><code>" in init.vim / .vimrc
+autocmd BufNewFile,BufRead *.pyv2 set filetype=python
+autocmd FileType python nnoremap &lt;F5&gt; :w&lt;CR&gt;:!
+    \python3 -m pyv2 %&lt;CR&gt;</code></pre>
+
+      <h3>JetBrains (PyCharm, IntelliJ)</h3>
+      <ol>
+        <li><strong>Settings → Editor → File Types</strong> → add
+          <code>*.pyv2</code> to the <strong>Python</strong> type.</li>
+        <li><strong>Settings → Tools → External Tools</strong> → add a tool with
+          program <code>python3</code>, arguments
+          <code>-m pyv2 $FileName$</code>, working directory
+          <code>$FileDir$</code>.</li>
+        <li>Bind it to a shortcut under
+          <strong>Settings → Keymap</strong>.</li>
+      </ol>
+
+      <h3>Notepad++</h3>
+      <p><strong>Run → Run…</strong> (F5) with:</p>
+      <pre class="terminal"><code>cmd /c python3 -m pyv2 "$(FULL_CURRENT_PATH)"</code></pre>
+
+      <!-- ==================== LANGUAGE REFERENCE ==================== -->
+      <h2 id="language"><span class="badge">05</span> Language Quick Reference</h2>
+      <p>The full spec (grammar, semantics, error kinds) lives in
+        <a href="https://github.com/gefrus112/pythonv2/blob/main/docs/LANGUAGE.md">docs/LANGUAGE.md</a>.
+        Here is the day-to-day core.</p>
+
+      <h3>Values</h3>
+      <table class="ref-table">
+        <thead><tr><th>Type</th><th>Example</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>number</td><td><code>1</code>, <code>2.5</code>, <code>1e-3</code></td><td>Whole numbers print without <code>.0</code></td></tr>
+          <tr><td>string</td><td><code>"hi"</code>, <code>f"hi {x}"</code></td><td>Indexed <code>s[0]</code>, tons of methods</td></tr>
+          <tr><td>bool</td><td><code>true</code>, <code>false</code></td><td></td></tr>
+          <tr><td>nil</td><td><code>nil</code></td><td>Absence of a value</td></tr>
+          <tr><td>list</td><td><code>[1, 2, 3]</code></td><td>Mutable; negative indices work</td></tr>
+          <tr><td>map</td><td><code>{name: "Ada"}</code></td><td>Bare keys, dot access, <code>get(k, default)</code></td></tr>
+          <tr><td>fn</td><td><code>fn add(a, b): … end</code></td><td>First-class, real closures</td></tr>
+          <tr><td>range</td><td><code>range(10)</code></td><td>Lazy, from the <code>range</code> builtin</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Operators</h3>
+      <table class="ref-table">
+        <thead><tr><th>Kind</th><th>Operators</th></tr></thead>
+        <tbody>
+          <tr><td>Arithmetic</td><td><code>+ - * / // % **</code></td></tr>
+          <tr><td>Comparison</td><td><code>== != &lt; &lt;= &gt; &gt;=</code></td></tr>
+          <tr><td>Logic</td><td><code>and</code>, <code>or</code>, <code>not</code></td></tr>
+          <tr><td>Membership</td><td><code>x in list</code>, <code>k in map</code>, <code>s in string</code></td></tr>
+          <tr><td>Ternary</td><td><code>ok ? "yes" : "no"</code></td></tr>
+          <tr><td>Assignment</td><td><code>= += -= *= /= %=</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Statements</h3>
+      <table class="ref-table">
+        <thead><tr><th>Statement</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>function</td><td><code>fn add(a, b): return a + b end</code></td></tr>
+          <tr><td>branch</td><td><code>if x: … elif y: … else: … end</code></td></tr>
+          <tr><td>while</td><td><code>while running: step() end</code></td></tr>
+          <tr><td>for</td><td><code>for item in [1, 2, 3]: print(item) end</code></td></tr>
+          <tr><td>range loop</td><td><code>for i in range(1, 10, 2): print(i) end</code></td></tr>
+          <tr><td>jump</td><td><code>return</code>, <code>break</code>, <code>continue</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Builtins</h3>
+      <table class="ref-table">
+        <thead><tr><th>Function</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>print(...)</code></td><td>Print values, space-separated</td></tr>
+          <tr><td><code>len(x)</code></td><td>Length of string / list / map / range</td></tr>
+          <tr><td><code>range(stop)</code> · <code>range(a, b, step)</code></td><td>Integer range</td></tr>
+          <tr><td><code>str</code> <code>int</code> <code>float</code> <code>bool</code> <code>repr</code></td><td>Conversions</td></tr>
+          <tr><td><code>abs floor ceil round sqrt pow</code></td><td>Math</td></tr>
+          <tr><td><code>min</code> · <code>max</code></td><td>Over arguments or one list</td></tr>
+          <tr><td><code>type(x)</code></td><td><code>"number"</code>, <code>"string"</code>, <code>"list"</code>, <code>"map"</code>, …</td></tr>
+          <tr><td><code>push pop insert remove</code></td><td>List mutation</td></tr>
+          <tr><td><code>keys values has get</code></td><td>Map access</td></tr>
+          <tr><td><code>sort sort_by join</code></td><td>Helpers</td></tr>
+          <tr><td><code>assert(cond, msg?)</code></td><td>Raises <code>AssertionError</code> when falsy</td></tr>
+          <tr><td><code>chr ord clock input</code></td><td>Misc (<code>input</code> is CLI-only)</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ==================== TRY IT ==================== -->
+      <h2 id="try"><span class="badge">06</span> Try It Right Here</h2>
+      <p>No install needed to experiment — this is the real interpreter,
+        running in your browser. Edit and hit Run.</p>
+      <div class="try-grid">
+        <div class="try-editor">
+          <label class="sr-only" for="try-code">Python v2 source</label>
+          <textarea id="try-code" spellcheck="false">fn fib(n):
+    if n &lt; 2:
+        return n
+    end
+    return fib(n - 1) + fib(n - 2)
+end
+
+for i in range(10):
+    print(f"fib({i}) = {fib(i)}")
+end</textarea>
+          <button class="btn btn-blue btn-inline" id="try-run" type="button">▶ Run</button>
+        </div>
+        <div class="try-out" id="try-output" aria-live="polite"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ============ footer ============ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html#about">About</a>
+        <a href="index.html#start">Downloads</a>
+        <a href="docs.html">Documentation</a>
+        <a href="index.html#community">Community</a>
+        <a href="index.html#game">Success Stories</a>
+      </div>
+      <div class="footer-col">
+        <h4>Downloads</h4>
+        <a href="index.html#start">Runtime (source)</a>
+        <a href="index.html#start">JS playground</a>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub repo</a>
+        <a href="#install">Install guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Documentation</h4>
+        <a href="#install">Installation</a>
+        <a href="#vscode">VS Code setup</a>
+        <a href="#devcontainer">Dev containers</a>
+        <a href="#any-editor">Any editor</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+        <a href="https://github.com/gefrus112/pythonv2/issues">Issues</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#news">Events</a>
+      </div>
+      <div class="footer-col">
+        <h4>Success Stories</h4>
+        <a href="index.html#game">CPU raycaster</a>
+        <a href="index.html#start">Terminal raycast</a>
+        <a href="index.html#about">This very website</a>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <p>
+        <img src="favicon.svg" alt="" width="22" height="22">
+        © <span id="year">2026</span> Python v2 Software Foundation™ — a fan-made remake,
+        not affiliated with the Python Software Foundation. Powered by pure CPU rendering
+        and stubborn optimism.
+      </p>
+      <p class="footer-meta">
+        <a href="index.html#about">Privacy</a> · <a href="index.html#about">Terms</a> ·
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="pyv2.js"></script>
+  <script>
+    // docs page: mini playground + search-in-docs
+    (function () {
+      "use strict";
+      const out = document.getElementById("try-output");
+      document.getElementById("try-run").addEventListener("click", () => {
+        const src = document.getElementById("try-code").value;
+        const r = Pyv2.runCapture(src);
+        out.textContent = r.error ? (r.output ? r.output + "\n" : "") + r.error : r.output;
+        out.classList.toggle("error", !!r.error);
+      });
+
+      // search: filter the quick-reference rows, jump to first hit
+      const params = new URLSearchParams(window.location.search);
+      const q = (params.get("q") || "").trim().toLowerCase();
+      const input = document.getElementById("search-input");
+      if (q && input) {
+        input.value = params.get("q");
+        let firstHit = null;
+        document.querySelectorAll(".ref-table tr, .steps, .checklist li").forEach((row) => {
+          const hit = row.textContent.toLowerCase().includes(q);
+          if (hit && !firstHit) firstHit = row;
+          if (row.tagName === "TR" && row.querySelector("td")) {
+            row.style.display = hit ? "" : "none";
+          }
+        });
+        if (firstHit) {
+          const target = firstHit.closest("h2, h3, .doc-section") || firstHit;
+          (target.closest("h2") || target).scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+      document.getElementById("search-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const value = document.getElementById("search-input").value.trim();
+        window.location.href = "docs.html" + (value ? "?q=" + encodeURIComponent(value) : "") + "#language";
+      });
+      document.getElementById("social-btn").addEventListener("click", () => {
+        window.location.href = "index.html#community";
+      });
+      const y = document.getElementById("year");
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>

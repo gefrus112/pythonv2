@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Python v2 favicon: two interlocking snakes — red & blue -->
+  <path d="M19 46 C 31 55, 48 51, 51 37 C 54 23, 42 12, 30 16"
+        fill="none" stroke="#c53d3a" stroke-width="13" stroke-linecap="round"/>
+  <path d="M45 18 C 33 9, 16 13, 13 27 C 10 41, 22 52, 34 48"
+        fill="none" stroke="#2f6fbd" stroke-width="13" stroke-linecap="round"/>
+</svg>
