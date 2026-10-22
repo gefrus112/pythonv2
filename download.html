@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Downloads — Python v2</title>
+  <meta name="description" content="Download and install the Python v2 language on macOS, Linux, Windows, VS Code, or any editor. Free, open source, zero dependencies.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ top utility bar ============ -->
+  <div class="topbar">
+    <nav class="topbar-inner" aria-label="Site">
+      <a href="index.html">Python</a>
+      <a href="index.html#community">PSF</a>
+      <a href="docs.html">Docs</a>
+      <a class="active" href="download.html">PyPI</a>
+      <a href="index.html#news">Jobs</a>
+      <a href="index.html#community">Community</a>
+    </nav>
+  </div>
+
+  <!-- ============ masthead ============ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="index.html">
+        <img src="logo.svg" alt="Python v2 logo — two snakes, red and blue" width="64" height="64">
+        <span class="brand-word">python<sup>™</sup><em>v2</em></span>
+      </a>
+      <div class="masthead-tools">
+        <a class="btn-donate" href="index.html#community">Donate</a>
+        <form class="searchbox" id="search-form" role="search">
+          <span class="search-mag" aria-hidden="true">⌕</span>
+          <label class="sr-only" for="search-input">Search</label>
+          <input type="search" id="search-input" placeholder="Search">
+          <button type="submit" class="btn-go">GO</button>
+        </form>
+        <button class="btn-social" id="social-btn" type="button">Socialize</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ main nav ============ -->
+  <nav class="mainnav" aria-label="Main">
+    <div class="mainnav-inner">
+      <a href="index.html#about">About</a>
+      <a href="download.html">Downloads</a>
+      <a href="docs.html">Documentation</a>
+      <a href="index.html#community">Community</a>
+      <a href="index.html#game">Success Stories</a>
+      <a href="index.html#news">News</a>
+      <a href="index.html#news">Events</a>
+    </div>
+  </nav>
+
+  <!-- ============ page head ============ -->
+  <section class="page-head">
+    <div class="page-head-inner">
+      <h1>Downloads &amp; Installation</h1>
+      <p>Get the Python v2 language on your machine. It is <strong>free</strong>,
+        <strong>open source</strong>, and needs nothing but Python&nbsp;3.10+ —
+        no installer, no dependencies, no drama.</p>
+    </div>
+  </section>
+
+  <main class="doc-section">
+    <div class="doc-section-inner">
+
+      <!-- ==================== GET IT ==================== -->
+      <h2 id="get"><span class="badge">01</span> Get the Language</h2>
+      <p>Pick your favorite flavor:</p>
+
+      <div class="start-grid">
+        <div class="start-box">
+          <h3>Git clone (recommended)</h3>
+          <pre class="terminal"><code>git clone https://github.com/gefrus112/pythonv2
+cd pythonv2</code></pre>
+          <p>Updating later is one command: <code>git pull</code>.</p>
+          <a class="btn btn-blue btn-inline" href="https://github.com/gefrus112/pythonv2">Open the GitHub repo</a>
+        </div>
+        <div class="start-box">
+          <h3>Download ZIP</h3>
+          <pre class="terminal"><code># then unzip it and open a terminal inside
+cd pythonv2-main</code></pre>
+          <p>Everything is plain text — the language, the website, the docs.</p>
+          <a class="btn btn-blue btn-inline" href="https://github.com/gefrus112/pythonv2/archive/refs/heads/main.zip">Download pythonv2-main.zip</a>
+        </div>
+      </div>
+
+      <h3>What's in the box</h3>
+      <table class="ref-table">
+        <thead><tr><th>Component</th><th>Where</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td>Interpreter + CLI</td><td><code>pyv2/</code></td><td>The language runtime: <code>python3 -m pyv2</code></td></tr>
+          <tr><td>Browser runtime</td><td><code>pyv2.js</code></td><td>The same language in JavaScript (this website's playground)</td></tr>
+          <tr><td>Examples</td><td><code>examples/</code></td><td>hello, fib, fizzbuzz, terminal_raycast</td></tr>
+          <tr><td>VS Code extension</td><td><code>editors/vscode/</code></td><td>Syntax highlighting + snippets</td></tr>
+          <tr><td>Dev container</td><td><code>.devcontainer/</code></td><td>Ready environment for VS Code / Codespaces</td></tr>
+          <tr><td>Tests</td><td><code>tests/</code></td><td>62 tests incl. cross-runtime parity</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ==================== INSTALL ==================== -->
+      <h2 id="install"><span class="badge">02</span> Install on Your Machine</h2>
+      <p>One requirement: <strong>Python 3.10 or newer</strong>
+        (<a href="https://www.python.org/downloads/">python.org/downloads</a>).
+        Python v2 itself has zero dependencies.</p>
+
+      <h3>macOS &amp; Linux</h3>
+      <div class="steps">
+        <pre class="terminal"><code># 1. check your Python (macOS ships python3; Linux: apt/dnf install python3)
+python3 --version        # need 3.10+
+
+# 2. get the language
+git clone https://github.com/gefrus112/pythonv2
+cd pythonv2
+
+# 3. verify the install
+python3 -m pyv2 --version
+# Python v2 0.2.0
+
+# 4. run your first program
+python3 -m pyv2 examples/hello.pyv2
+# Hello, World!
+# 2 + 2 = 4</code></pre>
+      </div>
+
+      <h3>Windows</h3>
+      <div class="steps">
+        <pre class="terminal"><code># Option A — plain PowerShell / cmd
+py --version             # install from python.org if missing
+git clone https://github.com/gefrus112/pythonv2
+cd pythonv2
+py -m pyv2 examples/hello.pyv2
+
+# Option B — WSL (recommended): install Ubuntu from the
+# Microsoft Store, then follow the macOS &amp; Linux steps.</code></pre>
+      </div>
+
+      <h3>Make it your own</h3>
+      <div class="steps">
+        <p>Add a shell alias so you can just type <code>pyv2</code>:</p>
+        <pre class="terminal"><code># macOS / Linux — add to ~/.zshrc or ~/.bashrc
+alias pyv2='python3 -m pyv2'
+
+# now:
+pyv2 examples/fib.pyv2
+pyv2                      # REPL!</code></pre>
+      </div>
+
+      <!-- ==================== EDITORS ==================== -->
+      <h2 id="editors"><span class="badge">03</span> Install in Your Editor</h2>
+      <p>Full step-by-step guides live in the
+        <a href="docs.html#install">documentation</a>. The quick tour:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Editor</th><th>Setup</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>VS Code</strong></td>
+            <td>Open the repo folder → press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd>
+              to run the current file. Copy <code>editors/vscode</code> into
+              <code>~/.vscode/extensions</code> for highlighting.
+              <a href="docs.html#vscode">Full guide →</a></td>
+          </tr>
+          <tr>
+            <td><strong>Dev Containers / Codespaces</strong></td>
+            <td><strong>Dev Containers: Reopen in Container</strong> — or
+              create a codespace on GitHub. Everything preinstalled.
+              <a href="docs.html#devcontainer">Full guide →</a></td>
+          </tr>
+          <tr>
+            <td><strong>Sublime / Vim / JetBrains / Notepad++</strong></td>
+            <td>Any editor that can run a shell command works —
+              recipe included for each.
+              <a href="docs.html#any-editor">Full guide →</a></td>
+          </tr>
+          <tr>
+            <td><strong>Just a terminal</strong></td>
+            <td><code>python3 -m pyv2 file.pyv2</code> — that's the whole install.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ==================== NEXT ==================== -->
+      <h2 id="next"><span class="badge">04</span> Learn the Language</h2>
+      <p>Installed? Nice. Next stop:</p>
+      <ul class="checklist">
+        <li><strong><a href="tutorial.html">The tutorial</a></strong> — 10 short
+          lessons, every example runnable right here in your browser.</li>
+        <li><strong><a href="docs.html">The documentation</a></strong> —
+          language reference, editor setup, and a try-it sandbox.</li>
+        <li><strong><a href="index.html#game">The CPU raycaster</a></strong> —
+          proof that Python v2 people have too much fun.</li>
+      </ul>
+
+      <h3>FAQ</h3>
+      <table class="ref-table">
+        <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr><td>Is there a <code>pip install</code>?</td>
+            <td>Not yet — clone and run. There is literally nothing else to install.</td></tr>
+          <tr><td>Does it replace my Python?</td>
+            <td>Nope. Python v2 lives in its own folder and runs <em>on top of</em>
+              Python 3. Nothing to uninstall, nothing breaks.</td></tr>
+          <tr><td>Which platforms?</td>
+            <td>Anything with Python 3.10+: macOS, Linux, Windows, WSL,
+              Raspberry Pi, dev containers, Codespaces.</td></tr>
+          <tr><td>How do I update?</td>
+            <td><code>git pull</code> — then run the tests if you're curious:
+              <code>python3 -m unittest discover -s tests -t .</code></td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </main>
+
+  <!-- ============ footer ============ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html#about">About</a>
+        <a href="download.html">Downloads</a>
+        <a href="docs.html">Documentation</a>
+        <a href="index.html#community">Community</a>
+        <a href="index.html#game">Success Stories</a>
+      </div>
+      <div class="footer-col">
+        <h4>Downloads</h4>
+        <a href="download.html#get">Get the language</a>
+        <a href="https://github.com/gefrus112/pythonv2/archive/refs/heads/main.zip">Download ZIP</a>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub repo</a>
+        <a href="download.html#install">Install steps</a>
+      </div>
+      <div class="footer-col">
+        <h4>Documentation</h4>
+        <a href="tutorial.html">Tutorial</a>
+        <a href="docs.html#install">Installation</a>
+        <a href="docs.html#vscode">VS Code setup</a>
+        <a href="docs.html#any-editor">Any editor</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+        <a href="https://github.com/gefrus112/pythonv2/issues">Issues</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#news">Events</a>
+      </div>
+      <div class="footer-col">
+        <h4>Success Stories</h4>
+        <a href="index.html#game">CPU raycaster</a>
+        <a href="index.html#start">Terminal raycast</a>
+        <a href="index.html#about">This very website</a>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <p>
+        <img src="favicon.svg" alt="" width="22" height="22">
+        © <span id="year">2026</span> Python v2 Software Foundation™ — a fan-made remake,
+        not affiliated with the Python Software Foundation. Powered by pure CPU rendering
+        and stubborn optimism.
+      </p>
+      <p class="footer-meta">
+        <a href="index.html#about">Privacy</a> · <a href="index.html#about">Terms</a> ·
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+      document.getElementById("search-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const v = document.getElementById("search-input").value.trim();
+        window.location.href = "docs.html" + (v ? "?q=" + encodeURIComponent(v) : "") + "#language";
+      });
+      document.getElementById("social-btn").addEventListener("click", () => {
+        window.location.href = "index.html#community";
+      });
+      const y = document.getElementById("year");
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>

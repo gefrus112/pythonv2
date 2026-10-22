@@ -564,13 +564,26 @@
     function parseEmbedded(srcText, line) {
       try {
         const sub = parse(srcText + "\n");
-        if (sub.body.length === 1 && sub.body[0].t === "exprstmt") return sub.body[0].expr;
+        if (sub.body.length === 1 && sub.body[0].t === "exprstmt") {
+          return reline(sub.body[0].expr, line);
+        }
         throw new ParseError("Not an expression: " + srcText, line);
       } catch (e) {
         if (e instanceof ParseError && e.message2 === "Not an expression: " + srcText) throw e;
         if (e instanceof ParseError) throw new ParseError("in f-string expression {" + srcText + "}: " + e.message2, line);
         throw e;
       }
+    }
+
+    function reline(node, line) {
+      // Stamp the f-string's real line number onto embedded AST nodes.
+      if (Array.isArray(node)) {
+        node.forEach((item) => reline(item, line));
+      } else if (node && typeof node === "object") {
+        if ("line" in node) node.line = line;
+        Object.values(node).forEach((v) => reline(v, line));
+      }
+      return node;
     }
 
     return parseProgram();
@@ -740,7 +753,11 @@
   // Environments
   // ------------------------------------------------------------------
   class Env {
-    constructor(parent) { this.vars = new Map(); this.parent = parent || null; }
+    constructor(parent, scopeRoot) {
+      this.vars = new Map();
+      this.parent = parent || null;
+      this.scopeRoot = !!scopeRoot; // true for globals and function frames
+    }
     get(name) {
       let env = this;
       while (env) { if (env.vars.has(name)) return env.vars.get(name); env = env.parent; }
@@ -760,6 +777,13 @@
       return false;
     }
     define(name, value) { this.vars.set(name, value); }
+    defineInRoot(name, value) {
+      // First-time assignment binds in the nearest function scope (or
+      // global), never inside if/while/for blocks.
+      let env = this;
+      while (env && !env.scopeRoot) env = env.parent;
+      (env || this).vars.set(name, value);
+    }
   }
   class KeyError extends Error {
     constructor(name) { super(name); this.name2 = name; }
@@ -770,7 +794,7 @@
   // ------------------------------------------------------------------
   class Interpreter {
     constructor(output) {
-      this.globals = new Env();
+      this.globals = new Env(null, true);
       this.output = output || ((text) => { console.log(text); });
       this.trace = [];
       this.builtins = this.makeBuiltins();
@@ -820,7 +844,7 @@
         case "for": this.execFor(node, env); break;
         case "fn": {
           const fn = new Fn(node.name, node.params, node.body, env, node.line);
-          if (!env.setExisting(node.name, fn)) env.define(node.name, fn);
+          if (!env.setExisting(node.name, fn)) env.defineInRoot(node.name, fn);
           break;
         }
         case "return":
@@ -842,7 +866,7 @@
         value = this.binop(node.op[0], old, this.evalExpr(node.value, env), node.line);
       }
       if (target.t === "var") {
-        if (!env.setExisting(target.name, value)) env.define(target.name, value);
+        if (!env.setExisting(target.name, value)) env.defineInRoot(target.name, value);
       } else if (target.t === "index") {
         const obj = this.evalExpr(target.obj, env);
         const idx = this.evalExpr(target.idx, env);
@@ -1082,7 +1106,7 @@
           throw this.error("TypeError", "Function '" + callee.name + "' expects " + callee.params.length +
             " argument(s) but got " + args.length, line);
         }
-        const callEnv = new Env(callee.closure);
+        const callEnv = new Env(callee.closure, true);
         callee.params.forEach((p, i) => callEnv.define(p, args[i]));
         this.trace.push(callee.name + " (line " + callee.line + ")");
         try {

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorial — Learn Python v2</title>
+  <meta name="description" content="Learn Python v2 step by step: 10 short lessons with runnable examples. Print, variables, f-strings, lists, maps, loops, functions, closures and more.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ top utility bar ============ -->
+  <div class="topbar">
+    <nav class="topbar-inner" aria-label="Site">
+      <a href="index.html">Python</a>
+      <a href="index.html#community">PSF</a>
+      <a class="active" href="docs.html">Docs</a>
+      <a href="download.html">PyPI</a>
+      <a href="index.html#news">Jobs</a>
+      <a href="index.html#community">Community</a>
+    </nav>
+  </div>
+
+  <!-- ============ masthead ============ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="index.html">
+        <img src="logo.svg" alt="Python v2 logo — two snakes, red and blue" width="64" height="64">
+        <span class="brand-word">python<sup>™</sup><em>v2</em></span>
+      </a>
+      <div class="masthead-tools">
+        <a class="btn-donate" href="index.html#community">Donate</a>
+        <form class="searchbox" id="search-form" role="search">
+          <span class="search-mag" aria-hidden="true">⌕</span>
+          <label class="sr-only" for="search-input">Search</label>
+          <input type="search" id="search-input" placeholder="Search">
+          <button type="submit" class="btn-go">GO</button>
+        </form>
+        <button class="btn-social" id="social-btn" type="button">Socialize</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ main nav ============ -->
+  <nav class="mainnav" aria-label="Main">
+    <div class="mainnav-inner">
+      <a href="index.html#about">About</a>
+      <a href="download.html">Downloads</a>
+      <a href="docs.html">Documentation</a>
+      <a href="index.html#community">Community</a>
+      <a href="index.html#game">Success Stories</a>
+      <a href="index.html#news">News</a>
+      <a href="index.html#news">Events</a>
+    </div>
+  </nav>
+
+  <!-- ============ page head ============ -->
+  <section class="page-head">
+    <div class="page-head-inner">
+      <h1>The Python v2 Tutorial</h1>
+      <p>Ten short lessons from zero to writing real programs. Every example on
+        this page is <strong>runnable</strong> — press <strong>Load &amp; run</strong>
+        and watch the interpreter do its thing, right here in your browser.
+        Already know Python? You'll finish this in ten minutes.</p>
+    </div>
+  </section>
+
+  <!-- ============ sandbox ============ -->
+  <section class="doc-section" id="sandbox">
+    <div class="doc-section-inner">
+      <h2><span class="badge">▶</span> The Sandbox</h2>
+      <p>This is the real Python v2 interpreter running in your browser. Edit
+        anything and press Run (or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>). Every
+        “Load &amp; run” button below drops its example here.</p>
+      <div class="try-grid">
+        <div class="try-editor">
+          <label class="sr-only" for="sb-code">Python v2 source</label>
+          <textarea id="sb-code" spellcheck="false">print("Hello, World!")</textarea>
+          <button class="btn btn-blue btn-inline" id="sb-run" type="button">▶ Run</button>
+        </div>
+        <div class="try-out" id="sb-output" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ lessons ============ -->
+  <main class="doc-section">
+    <div class="doc-section-inner">
+
+      <!-- LESSON 1 -->
+      <h2 id="lesson-1"><span class="badge">01</span> Hello, World!</h2>
+      <p>Python v2 programs are plain text files ending in <code>.pyv2</code>.
+        The <code>print</code> function shows things on screen, and
+        <code>#</code> starts a comment.</p>
+      <pre class="terminal"><code># hello.pyv2
+print("Hello, World!")
+print("2 + 2 =", 2 + 2)</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='print("Hello, World!")
+print("2 + 2 =", 2 + 2)'>Load &amp; run ▶</button></p>
+      <p>On your computer, run it with
+        <code>python3 -m pyv2 hello.pyv2</code> —
+        <a href="download.html">get the language here</a>.</p>
+
+      <!-- LESSON 2 -->
+      <h2 id="lesson-2"><span class="badge">02</span> Variables &amp; Values</h2>
+      <p>Just write <code>name = value</code> — no declarations, no semicolons.
+        Python v2 has numbers, strings, booleans, and <code>nil</code>
+        (the “nothing” value). Ask <code>type(x)</code> whenever you're curious.</p>
+      <pre class="terminal"><code>name = "Ada"
+age = 36
+pi = 3.14
+coding = true
+gift = nil
+
+print(name, age, pi, coding, gift)
+print(type(name), type(age), type(coding), type(gift))</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='name = "Ada"
+age = 36
+pi = 3.14
+coding = true
+gift = nil
+
+print(name, age, pi, coding, gift)
+print(type(name), type(age), type(coding), type(gift))'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 3 -->
+      <h2 id="lesson-3"><span class="badge">03</span> Math</h2>
+      <p>All the usual operators, plus three you'll love:
+        <code>//</code> is floor division, <code>%</code> is remainder, and
+        <code>**</code> is power. Division always gives you a real number —
+        <code>10 / 4</code> is <code>2.5</code>, not <code>2</code>.</p>
+      <pre class="terminal"><code>print(10 / 4, 10 // 4, 7 % 3, 2 ** 10)
+print(-7 // 2, -7 % 3)        # floored, Python-style
+print("n=" + 42)              # strings + numbers just work</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='print(10 / 4, 10 // 4, 7 % 3, 2 ** 10)
+print(-7 // 2, -7 % 3)
+print("n=" + 42)'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 4 -->
+      <h2 id="lesson-4"><span class="badge">04</span> Strings &amp; F-Strings</h2>
+      <p>The star of the show: <strong>f-strings</strong>. Put
+        <code>f</code> before a string and <code>{anything}</code> inside it —
+        expressions included. Strings come with friendly methods:
+        <code>upper</code>, <code>split</code>, <code>contains</code>, …</p>
+      <pre class="terminal"><code>name = "python v2"
+print(f"Hello, {name}!")
+print(f"next year: {2026 + 1}, fast: {2 ** 8}")
+print(f"{{braces}} survive when doubled")
+
+print(name.upper(), name.title())
+print("a,b,c".split(",").join(" - "))
+print("hello".contains("ell"), "hello".slice(1, 3))</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='name = "python v2"
+print(f"Hello, {name}!")
+print(f"next year: {2026 + 1}, fast: {2 ** 8}")
+print(f"{{braces}} survive when doubled")
+
+print(name.upper(), name.title())
+print("a,b,c".split(",").join(" - "))
+print("hello".contains("ell"), "hello".slice(1, 3))'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 5 -->
+      <h2 id="lesson-5"><span class="badge">05</span> Lists</h2>
+      <p>Lists keep things in order. Index with <code>xs[0]</code>
+        (or <code>xs[-1]</code> for the last), and use the methods that spark
+        joy: <code>push</code>, <code>sort</code>, <code>join</code>, …</p>
+      <pre class="terminal"><code>xs = [3, 1, 2]
+xs.push(4)
+print(xs, xs.sort(), xs[-1])
+
+names = ["Ada", "Grace"]
+names.insert(0, "Edsger")
+print(names, names.join(", "), len(names))
+print([1, 2] + [3], [1, 2] * 2)</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='xs = [3, 1, 2]
+xs.push(4)
+print(xs, xs.sort(), xs[-1])
+
+names = ["Ada", "Grace"]
+names.insert(0, "Edsger")
+print(names, names.join(", "), len(names))
+print([1, 2] + [3], [1, 2] * 2)'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 6 -->
+      <h2 id="lesson-6"><span class="badge">06</span> Maps</h2>
+      <p>Maps hold labeled values. Bare keys become strings, dot access reads
+        them, and <code>get(key, default)</code> never explodes when the key is
+        missing.</p>
+      <pre class="terminal"><code>hero = {
+    name: "Ada",
+    scores: [10, 20, 30],
+}
+hero.city = "London"
+
+print(hero.name, hero["city"])
+print(hero.scores)
+hero.scores.push(40)
+print(hero.scores)
+print(hero.get("pet", "none"), hero.has("name"))</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='hero = {
+    name: "Ada",
+    scores: [10, 20, 30],
+}
+hero.city = "London"
+
+print(hero.name, hero["city"])
+print(hero.scores)
+hero.scores.push(40)
+print(hero.scores)
+print(hero.get("pet", "none"), hero.has("name"))'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 7 -->
+      <h2 id="lesson-7"><span class="badge">07</span> Decisions</h2>
+      <p><code>if</code> / <code>elif</code> / <code>else</code> blocks end
+        with <code>end</code> — no indentation errors, ever. And the ternary
+        reads like a question: <code>ok ? "yes" : "no"</code>.</p>
+      <pre class="terminal"><code>score = 87
+
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+else:
+    grade = "C"
+end
+
+print(f"score {score} → grade {grade}")
+print(score > 60 ? "passed" : "failed")</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='score = 87
+
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+else:
+    grade = "C"
+end
+
+print(f"score {score} -> grade {grade}")
+print(score > 60 ? "passed" : "failed")'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 8 -->
+      <h2 id="lesson-8"><span class="badge">08</span> Loops</h2>
+      <p><code>for x in …</code> walks lists, strings, maps and
+        <code>range()</code>. <code>while</code> repeats until you say stop —
+        with <code>break</code> and <code>continue</code> when you need them.</p>
+      <pre class="terminal"><code>for i in range(1, 6):
+    print(f"i is {i}")
+end
+
+total = 0
+for n in [1, 2, 3, 4, 5, 6]:
+    if n % 2 == 0:
+        continue        # skip evens
+    end
+    total += n
+end
+print("sum of odds:", total)
+
+for ch in "abc":
+    print(ch)
+end</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='for i in range(1, 6):
+    print(f"i is {i}")
+end
+
+total = 0
+for n in [1, 2, 3, 4, 5, 6]:
+    if n % 2 == 0:
+        continue
+    end
+    total += n
+end
+print("sum of odds:", total)
+
+for ch in "abc":
+    print(ch)
+end'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 9 -->
+      <h2 id="lesson-9"><span class="badge">09</span> Functions &amp; Closures</h2>
+      <p>Define functions with <code>fn</code>, give values back with
+        <code>return</code>. Functions are just values — pass them around. And
+        inner functions remember the world they were born in (real closures,
+        no <code>nonlocal</code> nonsense).</p>
+      <pre class="terminal"><code>fn greet(name):
+    return f"Hello, {name}!"
+end
+
+fn make_counter():
+    n = 0
+    fn bump():
+        n += 1
+        return n
+    end
+    return bump
+end
+
+print(greet("World"))
+
+counter = make_counter()
+counter()
+counter()
+print("count:", counter())
+
+sq = fn(x): return x * x end
+print("7² =", sq(7))</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='fn greet(name):
+    return f"Hello, {name}!"
+end
+
+fn make_counter():
+    n = 0
+    fn bump():
+        n += 1
+        return n
+    end
+    return bump
+end
+
+print(greet("World"))
+
+counter = make_counter()
+counter()
+counter()
+print("count:", counter())
+
+sq = fn(x): return x * x end
+print("7^2 =", sq(7))'>Load &amp; run ▶</button></p>
+
+      <!-- LESSON 10 -->
+      <h2 id="lesson-10"><span class="badge">10</span> Errors &amp; Checks</h2>
+      <p>When something goes wrong you get a clear message with the line
+        number. Use <code>assert</code> to check things you care about —
+        it's just a normal function.</p>
+      <pre class="terminal"><code>fn divide(a, b):
+    assert(b != 0, "b must not be zero")
+    return a / b
+end
+
+print(divide(10, 2))
+print(divide(1, 0))      # boom — read the error message!</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='fn divide(a, b):
+    assert(b != 0, "b must not be zero")
+    return a / b
+end
+
+print(divide(10, 2))
+print(divide(1, 0))'>Load &amp; run ▶</button></p>
+
+      <!-- FINAL -->
+      <h2 id="next"><span class="badge">★</span> What's Next</h2>
+      <p>You now know the whole language. Seriously — that was it. Go build
+        something:</p>
+      <ul class="checklist">
+        <li><strong><a href="download.html">Install it</a></strong> on your
+          machine and run <code>examples/fizzbuzz.pyv2</code>.</li>
+        <li><strong><a href="docs.html">Read the docs</a></strong> — full
+          builtin &amp; method reference, plus editor setup.</li>
+        <li><strong><a href="index.html#game">Play the CPU raycaster</a></strong>
+          and then read <code>examples/terminal_raycast.pyv2</code> —
+          the whole engine in one file.</li>
+        <li><strong><a href="https://github.com/gefrus112/pythonv2">Join the fun on GitHub</a></strong>
+          — stars, issues and pull requests all accepted.</li>
+      </ul>
+      <p>Graduation project: write FizzBuzz from memory, the Python v2 way —</p>
+      <pre class="terminal"><code>for i in range(1, 16):
+    if i % 15 == 0:
+        print("FizzBuzz")
+    elif i % 3 == 0:
+        print("Fizz")
+    elif i % 5 == 0:
+        print("Buzz")
+    else:
+        print(i)
+    end
+end</code></pre>
+      <p><button class="btn btn-blue btn-inline load-run" data-code='for i in range(1, 16):
+    if i % 15 == 0:
+        print("FizzBuzz")
+    elif i % 3 == 0:
+        print("Fizz")
+    elif i % 5 == 0:
+        print("Buzz")
+    else:
+        print(i)
+    end
+end'>Load &amp; run ▶</button></p>
+
+    </div>
+  </main>
+
+  <!-- ============ footer ============ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html#about">About</a>
+        <a href="download.html">Downloads</a>
+        <a href="docs.html">Documentation</a>
+        <a href="index.html#community">Community</a>
+        <a href="index.html#game">Success Stories</a>
+      </div>
+      <div class="footer-col">
+        <h4>Downloads</h4>
+        <a href="download.html#get">Get the language</a>
+        <a href="https://github.com/gefrus112/pythonv2/archive/refs/heads/main.zip">Download ZIP</a>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub repo</a>
+        <a href="download.html#install">Install steps</a>
+      </div>
+      <div class="footer-col">
+        <h4>Documentation</h4>
+        <a href="tutorial.html">Tutorial</a>
+        <a href="docs.html#install">Installation</a>
+        <a href="docs.html#vscode">VS Code setup</a>
+        <a href="docs.html#any-editor">Any editor</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+        <a href="https://github.com/gefrus112/pythonv2/issues">Issues</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#news">Events</a>
+      </div>
+      <div class="footer-col">
+        <h4>Success Stories</h4>
+        <a href="index.html#game">CPU raycaster</a>
+        <a href="index.html#start">Terminal raycast</a>
+        <a href="index.html#about">This very website</a>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <p>
+        <img src="favicon.svg" alt="" width="22" height="22">
+        © <span id="year">2026</span> Python v2 Software Foundation™ — a fan-made remake,
+        not affiliated with the Python Software Foundation. Powered by pure CPU rendering
+        and stubborn optimism.
+      </p>
+      <p class="footer-meta">
+        <a href="index.html#about">Privacy</a> · <a href="index.html#about">Terms</a> ·
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="pyv2.js"></script>
+  <script>
+    // tutorial: shared sandbox + load-and-run buttons
+    (function () {
+      "use strict";
+      const codeEl = document.getElementById("sb-code");
+      const outEl = document.getElementById("sb-output");
+
+      function runSandbox() {
+        const r = Pyv2.runCapture(codeEl.value);
+        outEl.textContent = r.error ? (r.output ? r.output + "\n" : "") + r.error : r.output;
+        outEl.classList.toggle("error", !!r.error);
+      }
+
+      document.getElementById("sb-run").addEventListener("click", runSandbox);
+      codeEl.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+          e.preventDefault();
+          runSandbox();
+        }
+      });
+
+      document.querySelectorAll(".load-run").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          codeEl.value = btn.getAttribute("data-code") || "";
+          runSandbox();
+          document.getElementById("sandbox").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      document.getElementById("search-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const v = document.getElementById("search-input").value.trim();
+        window.location.href = "docs.html" + (v ? "?q=" + encodeURIComponent(v) : "") + "#language";
+      });
+      document.getElementById("social-btn").addEventListener("click", () => {
+        window.location.href = "index.html#community";
+      });
+      const y = document.getElementById("year");
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>

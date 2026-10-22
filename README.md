@@ -65,28 +65,36 @@ No dependencies. No install step. Python 3.10+ for the reference runtime.
 
 ## 🌐 The website
 
-`site/` is the home website — styled after python.org, then pushed further:
+The website lives at the **repo root** (so GitHub Pages serves it directly
+at [gefrus112.github.io/pythonv2](https://gefrus112.github.io/pythonv2/)) —
+styled after python.org, then pushed further:
 
 * a **runnable playground** in the hero (the real interpreter,
-  `site/pyv2.js`, running in your browser — press the yellow `>_` badge)
+  `pyv2.js`, running in your browser — press the yellow `>_` badge)
+* a **Downloads page** (`download.html`) — install the language on
+  macOS / Linux / Windows / any editor
+* a **tutorial** (`tutorial.html`) — 10 runnable lessons, sandbox included
 * a **CPU-rendered game**: a software raycaster that computes all
   57,600 pixels per frame on the CPU into a plain framebuffer —
   no WebGL, no shaders, no GPU calls
-* the custom **two-snake icon** (`site/logo.svg`, `site/favicon.svg`) —
+* the custom **two-snake icon** (`logo.svg`, `favicon.svg`) —
   one red snake, one blue snake, interlocked
-* a full **documentation site** (`site/docs.html`) with install guides for
+* a full **documentation site** (`docs.html`) with install guides for
   every setup
 
 Serve it locally:
 
 ```console
-$ python3 -m http.server 8000 --directory site
+$ python3 -m http.server 8000
 # → http://localhost:8000
 ```
 
+**GitHub Pages** serves the same files from the repo root — push to `main`
+and the live site updates at https://gefrus112.github.io/pythonv2/
+
 ## 🧑‍💻 Editor setup
 
-Full guides live in [`site/docs.html`](site/docs.html) — VS Code, dev
+Full guides live in [`docs.html`](docs.html) and [`download.html`](download.html) — VS Code, dev
 containers / GitHub Codespaces, desktop terminals, and any other editor.
 The short version:
 
@@ -103,7 +111,7 @@ The short version:
 $ python3 -m unittest discover -s tests -t .
 ```
 
-62 tests: 61 unit tests over the reference interpreter **plus** a parity
+64 tests: 63 unit tests over the reference interpreter **plus** a parity
 suite that runs 20 programs (including error paths) through both the Python
 and JavaScript runtimes and demands byte-identical output.
 
@@ -111,10 +119,13 @@ and JavaScript runtimes and demands byte-identical output.
 
 ```
 pyv2/            reference interpreter (lexer, parser, tree-walking VM, CLI)
-site/            home website: playground, CPU raycaster, docs, logo & favicon
-  pyv2.js        the twin runtime in JavaScript
-  game.js        software raycaster (pure CPU rendering)
-  docs.html      full docs: install in VS Code / dev containers / desktop / any editor
+index.html       home website (GitHub Pages serves this) — playground, CPU raycaster
+download.html    install the language: desktop, VS Code, dev containers, any editor
+docs.html        documentation: install guides + language quick reference
+tutorial.html    the tutorial: 10 runnable lessons + browser sandbox
+pyv2.js          the twin runtime in JavaScript (playground + tutorial)
+game.js          software raycaster (pure CPU rendering)
+logo.svg         the two-snake icon (red & blue) — favicon.svg too
 editors/vscode/  VS Code extension: .pyv2 syntax highlighting + snippets
 .vscode/         tasks to run / test .pyv2 files with Ctrl+Shift+B
 .devcontainer/   dev container + Codespaces config

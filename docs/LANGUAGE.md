@@ -6,7 +6,7 @@ edges. It ships with two runtimes that produce byte-identical output:
 | Runtime | Location | Use |
 |---|---|---|
 | Reference interpreter | `pyv2/` (Python) | CLI, REPL, tests |
-| Browser/Node twin | `site/pyv2.js` | Playground on the website |
+| Browser/Node twin | `pyv2.js` | Playground on the website |
 
 File extension: `.pyv2` · CLI: `python3 -m pyv2` · Version: 0.2 "Sudbury"
 
@@ -94,9 +94,10 @@ fn make_counter():
 end
 ```
 
-If no binding exists, one is created in the current scope (function-local at
-top level of a function, global at top level). Assignment never touches
-builtins, so redefining `len` locally can't corrupt the runtime.
+If no binding exists, one is created in the nearest **function scope** (or
+global scope at top level) — never inside `if`/`while`/`for` blocks, so
+block-local temporaries don't vanish after the block. Assignment never
+touches builtins, so redefining `len` locally can't corrupt the runtime.
 
 ### 2.4 Control flow
 
@@ -276,7 +277,7 @@ $ python3 -m pyv2 --version
 
 ## 8. Parity guarantee
 
-`tests/test_pyv2.py` (61 unit tests) and `tests/test_parity.py` (20 shared
+`tests/test_pyv2.py` (63 unit tests) and `tests/test_parity.py` (21 shared
 programs, including error paths) run every program through **both** runtimes
 and compare outputs byte for byte. If the twins ever disagree, the test suite
 fails. That's the deal.
