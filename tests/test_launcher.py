@@ -45,6 +45,20 @@ class TestLauncherProjects(unittest.TestCase):
             self.assertIn('script src="pyv2.js"', (project / "index.html").read_text())
             parse((project / "app.pyv2").read_text())
 
+    def test_website_template_is_portfolio_and_game_showcase(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            project = create_project(tmp, "Alex Portfolio", "website")
+            source = (project / "app.pyv2").read_text()
+            output = []
+            Interpreter(output=output.append).run(source)
+            self.assertTrue(output[0].startswith("PROFILE|Alex Portfolio|"))
+            self.assertEqual(sum(line.startswith("PROJECT|") for line in output), 2)
+            self.assertEqual(sum(line.startswith("GAME|") for line in output), 2)
+            page = (project / "index.html").read_text()
+            self.assertIn('id="projects"', page)
+            self.assertIn('id="game-grid"', page)
+            self.assertIn('id="contact"', page)
+
     def test_existing_files_are_not_overwritten(self):
         with tempfile.TemporaryDirectory() as tmp:
             project = create_project(tmp, "Safe", "cli")

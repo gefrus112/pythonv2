@@ -46,11 +46,30 @@ class GamesSiteTests(unittest.TestCase):
         for required in (
             'data-runtime="pyv2"', 'data-runtime="classic"', 'id="play-output"',
             'id="play-errors"', 'id="command-input"', 'id="site-preview"',
+            'id="site-html-source"', 'id="copy-website-html"',
+            'data-site-view="preview"', 'data-site-view="html"',
+            'data-preview-size="mobile"', 'data-preview-size="desktop"',
             'src="classic-python.js"', 'src="playground.js"',
         ):
             self.assertIn(required, playground)
         for page in ROOT.glob("*.html"):
             self.assertIn('href="playground.html"', page.read_text(encoding="utf-8"), page.name)
+
+    def test_portfolio_starter_emits_projects_games_and_profile(self):
+        script = (ROOT / "playground.js").read_text(encoding="utf-8")
+        match = re.search(
+            r'"website-v2": \{[\s\S]*?source: `([\s\S]*?)`,\n    \},',
+            script,
+        )
+        self.assertIsNotNone(match)
+        output, error = run_capture(match.group(1))
+        self.assertIsNone(error)
+        lines = output.splitlines()
+        self.assertTrue(lines[0].startswith("PROFILE|"))
+        self.assertEqual(sum(line.startswith("PROJECT|") for line in lines), 3)
+        self.assertEqual(sum(line.startswith("GAME|") for line in lines), 3)
+        self.assertGreaterEqual(sum(line.startswith("SKILL|") for line in lines), 6)
+        self.assertIn("PythonV2PortfolioTemplate", script)
 
     def test_classic_python_compatibility_smoke(self):
         completed = subprocess.run(

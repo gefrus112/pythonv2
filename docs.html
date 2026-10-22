@@ -282,9 +282,12 @@ autocmd FileType python nnoremap &lt;F5&gt; :w&lt;CR&gt;:!
             <code>:mode classic</code> are built in.</li>
         </ol>
       </div>
-      <p>The Website Starter prints a title, tagline, and feature list into a
-        live preview. The resulting standalone HTML page can be downloaded from
-        the workshop. For a multi-file offline project, use New Project in the app.</p>
+      <p>The Portfolio Starter uses editable Python v2 maps and lists for your
+        profile, role, biography, skills, statistics, projects, games, location,
+        and contact details. Valid edits live-sync into a responsive preview.
+        Switch to <strong>HTML Code</strong> to inspect or copy the exact generated
+        document, then download it as a standalone page. The desktop New Project
+        tool creates the richer multi-file offline version.</p>
 
       <!-- ==================== LAUNCHER ==================== -->
       <h2 id="launcher"><span class="badge">06</span> Python v2 + PyHope Workspace</h2>
@@ -332,18 +335,20 @@ python3 -m pyv2.launcher</code></pre>
         <li>The Launcher creates <code>app.pyv2</code>, <code>index.html</code>,
           <code>runner.js</code>, an offline copy of <code>pyv2.js</code>, and
           ready-to-run <code>.vscode</code> tasks/settings.</li>
-        <li>Edit <code>app.pyv2</code>. Its output becomes the website title,
-          tagline, and feature list.</li>
+        <li>Edit <code>app.pyv2</code>. Its structured output fills the profile,
+          skills, project cards, featured games, and contact section.</li>
         <li>Choose local preview. The Launcher starts a safe local HTTP server
-          on an available port and opens your browser.</li>
+          on an available port and opens your responsive portfolio.</li>
       </ol>
-      <pre class="terminal"><code># app.pyv2
-site_name = "My first Python v2 website"
-print(site_name)
-print("Built from a real .pyv2 program")
-for feature in ["Fast", "Offline", "Mine"]:
-    print(feature)
-end</code></pre>
+      <pre class="terminal"><code># app.pyv2 — one record becomes one part of the page
+profile = {name: "Alex", role: "Creative developer"}
+skills = ["Python v2", "PyHope", "Web design"]
+print("PROFILE|" + profile.name + "|" + profile.role + "|I build playful tools.")
+print("ABOUT|My personal biography goes here.")
+for skill in skills:
+    print("SKILL|" + skill)
+end
+print("GAME|Comet Circuit|Racing|Three-lap AI racing.|games.html#comet-circuit")</code></pre>
 
       <!-- ==================== PYHOPE ==================== -->
       <h2 id="pyhope"><span class="badge">07</span> PyHope Game Engine</h2>

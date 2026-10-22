@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Playground — Python v2 + Classic Python</title>
-  <meta name="description" content="Run Python v2 and a documented Classic Python compatibility subset in your browser. Includes command terminal, error console, examples, and a downloadable website template.">
+  <meta name="description" content="Run Python v2 or Classic compatibility in a browser code editor, then build and preview a polished personal portfolio and game website with generated HTML.">
   <link rel="icon" type="image/svg+xml" href="favicon-v2.svg">
   <link rel="apple-touch-icon" href="logo-v2.svg">
   <link rel="stylesheet" href="style.css">
@@ -30,7 +30,8 @@
     <h1>Write it. Run it. Break it. Learn it.</h1>
     <p>Use the real Python v2 browser runtime or switch to Classic Python
       compatibility mode. Output and errors stay separate, commands have
-      history, and the website starter turns program output into a real page.</p>
+      history, and the portfolio starter turns Python v2 data into a polished
+      personal, project, and game website—with live preview and real HTML.</p>
     <div class="hero-actions"><a class="btn btn-yellow" href="#workspace">Open workspace</a><a class="btn btn-ghost" href="#website-workshop">Build a website</a></div>
   </div></section>
 
@@ -104,24 +105,42 @@
 
     <section class="website-workshop" id="website-workshop">
       <div class="workshop-copy">
-        <p class="eyebrow">PYTHON V2 WEBSITE TEMPLATE</p>
-        <h2>Turn program output into a website</h2>
-        <p>The starter prints a title, tagline, and feature list. The workshop
-          reads those values into the live preview. Change the data, run it, and
-          download a standalone HTML page when it looks right.</p>
-        <ol class="workshop-steps">
-          <li><span>1</span><div><strong>Load the template</strong><p>Start with valid Python v2 data and a loop.</p></div></li>
-          <li><span>2</span><div><strong>Edit and run</strong><p>Your output becomes the preview—errors stay in Problems.</p></div></li>
-          <li><span>3</span><div><strong>Download the page</strong><p>Export a clean HTML file or use the full desktop project builder.</p></div></li>
-        </ol>
-        <div class="hero-actions">
-          <button class="btn btn-blue" type="button" id="load-website-template">Load website template</button>
-          <button class="btn btn-yellow" type="button" id="download-website">Download website HTML</button>
+        <p class="eyebrow">PERSONAL + PORTFOLIO + GAME SHOWCASE</p>
+        <h2>Build a polished hybrid profile website</h2>
+        <p>Edit one Python v2 data file to create a responsive personal profile,
+          portfolio, project gallery, game showcase, skills section, and contact
+          call-to-action. Every run rebuilds both the live page and its real HTML.</p>
+        <div class="template-features" aria-label="Template features">
+          <span>Personal profile</span><span>Portfolio cards</span><span>PyHope games</span>
+          <span>Skills</span><span>Contact</span><span>Responsive HTML</span>
         </div>
+        <ol class="workshop-steps">
+          <li><span>1</span><div><strong>Load the starter</strong><p>Edit your name, role, bio, skills, projects, and featured games in Python v2.</p></div></li>
+          <li><span>2</span><div><strong>Run or type</strong><p>Ctrl+Enter rebuilds immediately; valid edits also live-sync after a short pause.</p></div></li>
+          <li><span>3</span><div><strong>Inspect the HTML</strong><p>Switch between browser preview and the exact generated HTML source.</p></div></li>
+          <li><span>4</span><div><strong>Publish it</strong><p>Download a standalone responsive page or continue in the desktop project builder.</p></div></li>
+        </ol>
+        <div class="hero-actions workshop-actions">
+          <button class="btn btn-blue" type="button" id="load-website-template">Edit portfolio template</button>
+          <button class="btn btn-yellow" type="button" id="download-website">Download HTML</button>
+          <button class="btn btn-ghost-dark" type="button" id="copy-website-html">Copy HTML</button>
+        </div>
+        <p class="template-sync-status" id="template-sync-status"><i></i> Preview ready • Python v2 controls the content</p>
       </div>
-      <div class="site-preview-window">
-        <div class="preview-browser"><span></span><span></span><span></span><div>preview://python-v2-site</div></div>
-        <iframe id="site-preview" title="Website template preview" sandbox=""></iframe>
+      <div class="site-preview-window" id="site-preview-window">
+        <div class="preview-browser"><span></span><span></span><span></span><div>preview://my-portfolio</div></div>
+        <div class="site-view-toolbar" role="group" aria-label="Website preview mode">
+          <button type="button" class="active" data-site-view="preview">◉ Live preview</button>
+          <button type="button" data-site-view="html">&lt;/&gt; HTML code</button>
+          <span></span>
+          <button type="button" data-preview-size="mobile" aria-label="Mobile preview">Mobile</button>
+          <button type="button" data-preview-size="tablet" aria-label="Tablet preview">Tablet</button>
+          <button type="button" class="active" data-preview-size="desktop" aria-label="Desktop preview">Desktop</button>
+        </div>
+        <div class="site-render-pane" id="site-render-pane">
+          <iframe id="site-preview" title="Personal portfolio website template preview" sandbox="allow-popups"></iframe>
+        </div>
+        <pre class="site-html-source" id="site-html-source" hidden><code></code></pre>
       </div>
     </section>
 

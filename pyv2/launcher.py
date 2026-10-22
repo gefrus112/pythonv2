@@ -54,19 +54,37 @@ ASSET_DESCRIPTIONS = {
 }
 
 
-WEB_APP_SOURCE = '''# app.pyv2 — this program builds the text on your website
-site_name = "{name}"
-tagline = "Built with Python v2 — the snake, but better."
-features = [
-    "No indentation wars",
-    "Runs in the browser",
-    "Powered by the Python v2 runtime",
+WEB_APP_SOURCE = '''# app.pyv2 — edit this file, then refresh the website preview
+profile = {
+    name: "__SITE_NAME__",
+    role: "Creative developer & game maker",
+    tagline: "I turn curious ideas into playful, useful digital experiences.",
+    bio: "I build expressive websites, lightweight tools, and original games with Python v2 and PyHope.",
+    location: "Your City",
+    email: "hello@example.com",
+    availability: "Available for select projects",
+}
+skills = ["Python v2", "PyHope", "Web design", "Creative coding"]
+projects = [
+    {title: "Featured Project", kind: "Web", description: "Describe the useful thing you made.", link: "#"},
+    {title: "Open Source Tool", kind: "Code", description: "Explain the problem your project solves.", link: "#"},
+]
+games = [
+    {title: "Neon Blaster", genre: "Shooter", description: "A bright PyHope arcade challenge.", link: "https://gefrus112.github.io/pythonv2/games.html#pocket-arcade"},
+    {title: "Comet Circuit", genre: "Racing", description: "A generated circuit with AI racers.", link: "https://gefrus112.github.io/pythonv2/games.html#comet-circuit"},
 ]
 
-print(site_name)
-print(tagline)
-for feature in features:
-    print(feature)
+print("PROFILE|" + profile.name + "|" + profile.role + "|" + profile.tagline)
+print("ABOUT|" + profile.bio)
+print("CONTACT|" + profile.location + "|" + profile.email + "|" + profile.availability)
+for skill in skills:
+    print("SKILL|" + skill)
+end
+for project in projects:
+    print("PROJECT|" + project.title + "|" + project.kind + "|" + project.description + "|" + project.link)
+end
+for game in games:
+    print("GAME|" + game.title + "|" + game.genre + "|" + game.description + "|" + game.link)
 end
 '''
 
@@ -75,41 +93,56 @@ WEB_INDEX = '''<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>{name} — built with Python v2</title>
+  <title>__SITE_NAME__ — Portfolio</title>
   <style>
-    *{{box-sizing:border-box}} body{{margin:0;min-height:100vh;display:grid;place-items:center;
-    font:16px system-ui;color:#eef6ff;background:linear-gradient(135deg,#182b40,#2f6fbd)}}
-    main{{width:min(760px,92vw);padding:48px;border:1px solid #ffffff30;border-radius:24px;
-    background:#152536dd;box-shadow:0 30px 80px #07101c88}} h1{{font-size:clamp(40px,8vw,72px);
-    margin:0;color:#ffd343}} #tagline{{font-size:20px;color:#bdd6e9}} li{{margin:10px 0}}
-    .brand{{font-weight:800;color:#65cbe4}} pre{{padding:16px;border-radius:10px;background:#0e1925;color:#dcecff}}
+    :root{--ink:#122334;--muted:#607486;--paper:#f7f8f5;--night:#101d2a;--blue:#2f6fbd;--cyan:#70d6ff;--red:#d64541;--yellow:#ffd343;--line:#dce3e7}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.6 system-ui,sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1080px,calc(100% - 40px));margin:auto}
+    nav{position:sticky;z-index:10;top:0;color:#fff;background:#101d2aee;backdrop-filter:blur(14px)}nav .wrap{display:flex;align-items:center;gap:22px;min-height:66px}.brand{margin-right:auto;font-weight:900}.brand span{display:inline-grid;place-items:center;width:34px;height:34px;margin-right:8px;border-radius:10px;color:var(--night);background:linear-gradient(135deg,var(--cyan),var(--yellow))}nav a:not(.brand){color:#bfd0dc;font-size:13px;font-weight:800}
+    .hero{color:#fff;background:radial-gradient(700px 420px at 82% 0,#2f6fbd88,transparent 65%),radial-gradient(430px 320px at 8% 100%,#d6454155,transparent 70%),var(--night)}.hero-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:55px;align-items:center;min-height:620px;padding:80px 0}.available{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid #ffffff30;border-radius:99px;color:#ccdae4;font-size:12px;font-weight:800}.available i{width:8px;height:8px;border-radius:50%;background:#50d682}.kicker{margin:26px 0 8px;color:var(--cyan);font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}h1{margin:0;font-size:clamp(50px,8vw,88px);line-height:.93;letter-spacing:-.05em}h1 em{color:var(--yellow);font-style:normal}.lead{max-width:680px;color:#c6d7e2;font-size:21px}.actions{display:flex;gap:10px;margin-top:28px}.button{padding:12px 18px;border:1px solid #ffffff35;border-radius:8px;font-weight:850}.button.primary{color:var(--night);border-color:var(--yellow);background:var(--yellow)}.profile-card{padding:23px;border:1px solid #ffffff25;border-radius:25px;background:#ffffff0c;box-shadow:0 30px 70px #050c1488}.avatar{display:grid;place-items:center;aspect-ratio:1;border-radius:20px;background:linear-gradient(145deg,var(--blue),#8f2c52);font-size:86px;font-weight:950}.profile-card p{color:#bfd0dc}.profile-card strong{display:block;color:var(--yellow)}
+    section{padding:82px 0}.eyebrow{color:var(--blue);font-size:11px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}h2{margin:5px 0 30px;font-size:clamp(34px,5vw,52px);line-height:1}.about{display:grid;grid-template-columns:1.1fr .9fr;gap:55px}.about>p{color:#43586a;font-size:20px}.skills{display:flex;align-content:flex-start;gap:8px;flex-wrap:wrap}.skill{padding:8px 12px;border:1px solid #cbd7df;border-radius:99px;background:#fff;font-size:13px;font-weight:800}.alt{background:#fff}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{min-height:240px;padding:23px;border:1px solid var(--line);border-top:5px solid var(--blue);border-radius:16px;background:var(--paper)}.card:nth-child(2n){border-top-color:var(--red)}.card small{color:var(--blue);font-weight:900;text-transform:uppercase}.card h3{margin:35px 0 7px;font-size:23px}.card p{color:var(--muted)}.card a{color:var(--blue);font-weight:900}.games{color:#fff;background:var(--night)}.games .eyebrow{color:var(--yellow)}.games .card{border-color:#ffffff25;background:#ffffff0b}.games .card p{color:#b8cad8}.games .card a{color:var(--yellow)}
+    .contact{padding:42px;border-radius:24px;color:#fff;background:linear-gradient(120deg,var(--blue),#8f2c52)}.contact h2{margin:0 0 8px}.contact a{display:inline-block;margin-top:15px;padding:11px 15px;border-radius:8px;color:var(--blue);background:#fff;font-weight:900}footer{padding:26px 0;color:#7d91a1;font-size:13px}
+    #console{position:fixed;right:12px;bottom:12px;z-index:20;padding:8px 11px;border-radius:7px;color:#aee7c2;background:#0b151ddd;font:11px ui-monospace,monospace}
+    @media(max-width:760px){.hero-grid,.about{grid-template-columns:1fr}.hero-grid{padding:60px 0}.profile-card{max-width:360px}.grid{grid-template-columns:1fr}nav a:not(.brand){display:none}}
   </style>
 </head>
-<body><main><div class="brand">PYTHON V2 WEBSITE</div><h1 id="title">Loading…</h1>
-<p id="tagline"></p><ul id="features"></ul><pre id="console">Running app.pyv2…</pre></main>
+<body>
+<nav><div class="wrap"><a class="brand" href="#top"><span id="initials">PV</span><b id="nav-name">__SITE_NAME__</b></a><a href="#about">About</a><a href="#work">Work</a><a href="#games">Games</a><a href="#contact">Contact</a></div></nav>
+<header class="hero" id="top"><div class="wrap hero-grid"><div><span class="available"><i></i><b id="availability">Loading…</b></span><p class="kicker" id="role"></p><h1>Hi, I’m <em id="name">__SITE_NAME__</em>.</h1><p class="lead" id="tagline"></p><div class="actions"><a class="button primary" href="#work">See my work</a><a class="button" href="#contact">Let’s talk</a></div></div><aside class="profile-card"><div class="avatar" id="avatar">PV</div><p><strong id="location"></strong><span id="profile-role"></span></p></aside></div></header>
+<main><section id="about"><div class="wrap"><span class="eyebrow">About me</span><h2>Design-minded code with a playful edge.</h2><div class="about"><p id="bio"></p><div class="skills" id="skills"></div></div></div></section><section class="alt" id="work"><div class="wrap"><span class="eyebrow">Selected work</span><h2>Useful, memorable projects.</h2><div class="grid" id="projects"></div></div></section><section class="games" id="games"><div class="wrap"><span class="eyebrow">Playable work</span><h2>Games built with PyHope.</h2><div class="grid" id="game-grid"></div></div></section><section id="contact"><div class="wrap contact"><span class="eyebrow">Start a conversation</span><h2>Have a project in mind?</h2><p id="contact-note"></p><a id="email" href="#">Email me</a></div></section></main>
+<footer><div class="wrap">Built with Python v2 • Edit app.pyv2 to make this portfolio yours.</div></footer><div id="console">Running app.pyv2…</div>
 <script src="pyv2.js"></script><script src="runner.js"></script></body>
 </html>
 '''
 
-WEB_RUNNER = '''fetch("app.pyv2")
-  .then((response) => response.text())
-  .then((source) => {
-    const result = Pyv2.runCapture(source);
-    const consoleEl = document.getElementById("console");
-    if (result.error) {
-      consoleEl.textContent = result.error;
-      consoleEl.style.color = "#ff8d87";
-      return;
-    }
-    const lines = result.output.split("\\n");
-    document.getElementById("title").textContent = lines.shift() || "Python v2 website";
-    document.getElementById("tagline").textContent = lines.shift() || "";
-    document.getElementById("features").innerHTML = lines.map(
-      (line) => "<li>" + line.replace(/[&<>]/g, (ch) => ({"&":"&amp;","<":"&lt;",">":"&gt;"})[ch]) + "</li>"
-    ).join("");
-    consoleEl.textContent = "✓ app.pyv2 ran successfully";
-  })
-  .catch((error) => { document.getElementById("console").textContent = "Preview error: " + error; });
+WEB_RUNNER = '''const text = (id, value) => { document.getElementById(id).textContent = value || ""; };
+const safeLink = (value) => /^(https?:\\/\\/|#)/.test(value) ? value : "#";
+const addCard = (root, values, game) => {
+  const [title, kind, description, link] = values;
+  const card = document.createElement("article"); card.className = "card";
+  const label = document.createElement("small"); label.textContent = kind;
+  const heading = document.createElement("h3"); heading.textContent = title;
+  const copy = document.createElement("p"); copy.textContent = description;
+  const anchor = document.createElement("a"); anchor.textContent = game ? "Play game →" : "View project →";
+  anchor.href = safeLink(link); anchor.target = "_blank"; anchor.rel = "noopener";
+  card.append(label, heading, copy, anchor); document.getElementById(root).appendChild(card);
+};
+fetch("app.pyv2").then((response) => response.text()).then((source) => {
+  const result = Pyv2.runCapture(source), consoleEl = document.getElementById("console");
+  if (result.error) { consoleEl.textContent = result.error; consoleEl.style.color = "#ff8d87"; return; }
+  result.output.split("\\n").filter(Boolean).forEach((line) => {
+    const values = line.split("|"), type = values.shift();
+    if (type === "PROFILE") {
+      const [name, role, tagline] = values, initials = name.split(/\\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
+      text("name", name); text("nav-name", name); text("role", role); text("profile-role", role); text("tagline", tagline); text("initials", initials); text("avatar", initials);
+      document.title = name + " — " + role;
+    } else if (type === "ABOUT") text("bio", values.join("|"));
+    else if (type === "CONTACT") { text("location", values[0]); text("availability", values[2]); text("contact-note", values[2] + " • " + values[0]); text("email", values[1]); document.getElementById("email").href = "mailto:" + values[1]; }
+    else if (type === "SKILL") { const item = document.createElement("span"); item.className = "skill"; item.textContent = values.join("|"); document.getElementById("skills").appendChild(item); }
+    else if (type === "PROJECT") addCard("projects", values, false);
+    else if (type === "GAME") addCard("game-grid", values, true);
+  });
+  consoleEl.textContent = "✓ app.pyv2 synced";
+}).catch((error) => { document.getElementById("console").textContent = "Preview error: " + error; });
 '''
 
 CLI_SOURCE = '''# main.pyv2 — {name}
@@ -205,13 +238,13 @@ def create_project(parent: str | Path, name: str, kind: str) -> Path:
 
     if kind == "website":
         files: dict[str, str | bytes] = {
-            "app.pyv2": WEB_APP_SOURCE.format(name=source_name),
-            "index.html": WEB_INDEX.format(name=html.escape(display_name, quote=True)),
+            "app.pyv2": WEB_APP_SOURCE.replace("__SITE_NAME__", source_name),
+            "index.html": WEB_INDEX.replace("__SITE_NAME__", html.escape(display_name, quote=True)),
             "runner.js": WEB_RUNNER,
             "pyv2.js": _runtime_bytes(),
             "README.md": (
-                f"# {display_name}\n\nA website powered by Python v2.\n\n"
-                "Edit `app.pyv2`, then use **Preview Website** in the launcher.\n"
+                f"# {display_name}\n\nA personal profile, project portfolio, and game showcase powered by Python v2.\n\n"
+                "Edit the profile, skills, projects, and games in `app.pyv2`, then use **Preview Website** in the workspace.\n"
             ),
         }
     elif kind == "game":
@@ -949,7 +982,7 @@ class Launcher:
         info = self.tk.Frame(self.content, bg=self.BG)
         info.pack(fill="x", padx=32, pady=22)
         descriptions = [
-            ("Website", "app.pyv2 generates the page content. Includes the browser runtime and a local preview."),
+            ("Website", "A polished personal profile, portfolio, and PyHope game showcase generated by app.pyv2, with an offline runtime and local preview."),
             ("CLI app", "A clean main.pyv2 starter that runs with pyv2 main.pyv2."),
             ("Game", "A complete terminal battle game ready to expand with PyHope sprites and maps."),
         ]
