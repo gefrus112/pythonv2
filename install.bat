@@ -5,7 +5,7 @@ title Python v2 + PyHope installer
 
 echo.
 echo  =============================================
-echo   Python v2 0.3 + PyHope Game Engine
+echo   Python v2 1.1 Sudbury + PyHope Engine
  echo  Windows installer - no pygame required
  echo  =============================================
 echo.
@@ -44,16 +44,20 @@ echo [3/4] Installing pyv2 and PyHope for this user...
 py -m pip install --user --upgrade "%INSTALL_DIR%"
 if errorlevel 1 goto :pip_error
 
-echo [4/4] Running engine checks...
+echo [4/4] Running checks and creating the Python v2 app shortcut...
 py -m pyv2 --version
 py -m pyhope --check
+py -c "from pyv2.launcher import safe_name; assert safe_name('Python v2') == 'Python-v2'"
 if errorlevel 1 goto :check_error
 
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "$desktop=[Environment]::GetFolderPath('Desktop'); $target=(Get-Command pyw.exe -ErrorAction SilentlyContinue).Source; if (-not $target) { $target=(Get-Command py.exe).Source }; $shell=New-Object -ComObject WScript.Shell; $shortcut=$shell.CreateShortcut((Join-Path $desktop 'Python v2 Sudbury.lnk')); $shortcut.TargetPath=$target; $shortcut.Arguments='-m pyv2.launcher'; $shortcut.WorkingDirectory='%INSTALL_DIR%'; $shortcut.Description='Python v2 1.1 Sudbury Launcher'; $shortcut.Save()"
+
 echo.
-echo  SUCCESS! Python v2 and PyHope are installed.
+echo  SUCCESS! Python v2 1.1, the Launcher, and PyHope are installed.
 echo.
-echo  Try these commands:
-echo    pyv2
+echo  Open "Python v2 Sudbury" from your Desktop, or try:
+echo    py -m pyv2.launcher
  echo    pyv2 "%INSTALL_DIR%\examples\hello.pyv2"
 echo    pyhope --demo
  echo.

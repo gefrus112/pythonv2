@@ -60,20 +60,57 @@
       <h1>Downloads &amp; Installation</h1>
       <p>Get the Python v2 language on your machine. It is <strong>free</strong>,
         <strong>open source</strong>, and needs nothing but Python&nbsp;3.10+.
-        Version 0.3 also includes the dependency-free <strong>PyHope game engine</strong>—
-        no pygame required.</p>
+        Version 1.1 “Sudbury” includes our own <strong>desktop Launcher</strong>,
+        offline website builder, and dependency-free <strong>PyHope game engine</strong>—
+        no pygame or Electron required.</p>
     </div>
   </section>
 
   <main class="doc-section">
     <div class="doc-section-inner">
 
+      <!-- ==================== APP ==================== -->
+      <h2 id="app"><span class="badge">01</span> Python v2 App 1.1 “Sudbury”</h2>
+      <p><strong>The first Python v2 desktop app release.</strong> Sudbury gives
+        the language its own lightweight launcher—Code Studio, output console,
+        project wizard, offline website builder, Games/GPU library, docs hub,
+        and PyHope tools. It uses the Python standard library, not Electron.</p>
+      <div class="launcher-showcase">
+        <div class="launcher-mock" aria-label="Preview of the Python v2 Sudbury Launcher">
+          <div class="launcher-mock-top"><img src="favicon.svg" alt="" width="34" height="34"><strong>PYTHON V2</strong><span>1.1 SUDBURY</span></div>
+          <div class="launcher-mock-body">
+            <div class="launcher-mock-nav"><b>⌂ Home</b><span>&gt;_ Code Studio</span><span>＋ New Project</span><span>▦ Games &amp; GPU</span><span>? Docs &amp; Learn</span></div>
+            <div class="launcher-mock-main"><small>BUILD WITH PYTHON V2</small><h3>The snake, but better—now with its own app.</h3><div><i>CODE STUDIO</i><i>WEBSITE BUILDER</i><i>PYHOPE GAMES</i></div></div>
+          </div>
+        </div>
+        <div class="launcher-copy">
+          <p class="eyebrow">FIRST APP RELEASE</p>
+          <h3>One installer. Your whole workspace.</h3>
+          <ul class="checklist">
+            <li>Edit, save and run <code>.pyv2</code> with Ctrl+Enter</li>
+            <li>Create websites whose content runs through Python v2</li>
+            <li>Create CLI apps and playable game starters</li>
+            <li>Preview websites from a built-in local server</li>
+            <li>Open PyHope games, free sprites and 9M GPU tools</li>
+            <li>No pygame, Electron, or paid dependency</li>
+          </ul>
+          <div class="download-button-row">
+            <a class="btn btn-blue" href="install.bat" download>Windows App • install.bat</a>
+            <a class="btn btn-yellow" href="install.sh" download>macOS / Linux App • install.sh</a>
+          </div>
+          <p class="download-note">Windows gets a Desktop shortcut. macOS gets
+            <code>Python v2 Sudbury.app</code> in <code>~/Applications</code>.
+            Linux gets an application-menu entry.</p>
+        </div>
+      </div>
+
       <!-- ==================== INSTALLERS ==================== -->
-      <h2 id="pyhope"><span class="badge">01</span> One-click Python v2 + PyHope Installers</h2>
-      <p>Install both the language and the new PyHope game engine. The scripts
-        download the latest stable release, install the <code>pyv2</code> and
-        <code>pyhope</code> commands for your user, and run a self-check. Readable
-        source—no mystery executable.</p>
+      <h2 id="pyhope"><span class="badge">02</span> One-click Python v2 + PyHope Installers</h2>
+      <p>Install the language, Sudbury Launcher, and PyHope game engine together.
+        The scripts download the latest stable release, install the
+        <code>pyv2</code>, <code>pyv2-launcher</code>, and <code>pyhope</code>
+        commands, create the desktop app/shortcut, and run a self-check.
+        Readable source—no mystery executable.</p>
       <div class="install-downloads">
         <article class="install-download">
           <h3>Windows</h3>
@@ -93,8 +130,9 @@
       </div>
       <div class="steps">
         <strong>What gets installed?</strong>
-        <code>pyv2</code> is the language. <code>pyhope</code> is our own
-        dependency-free game engine with vectors, sprites, tile maps, fixed-step
+        <code>pyv2</code> is the language, <code>pyv2-launcher</code> opens the
+        desktop workspace, and <code>pyhope</code> is our own dependency-free
+        game engine with vectors, sprites, tile maps, fixed-step
         scenes, DDA ray casting, terminal preview, and web Canvas/WebGL renderers.
         It does <strong>not</strong> install pygame.
       </div>
@@ -103,7 +141,7 @@
          <a href="games.html#sprites">Get free CC0 sprites</a></p>
 
       <!-- ==================== GET IT ==================== -->
-      <h2 id="get"><span class="badge">02</span> Get the Language Manually</h2>
+      <h2 id="get"><span class="badge">03</span> Get the Language Manually</h2>
       <p>Pick your favorite flavor:</p>
 
       <div class="start-grid">
@@ -127,18 +165,19 @@ cd pythonv2-main</code></pre>
       <table class="ref-table">
         <thead><tr><th>Component</th><th>Where</th><th>What it is</th></tr></thead>
         <tbody>
+          <tr><td>Sudbury Launcher</td><td><code>pyv2/launcher.py</code></td><td>Desktop editor, runner, project wizard and website builder</td></tr>
           <tr><td>Interpreter + CLI</td><td><code>pyv2/</code></td><td>The language runtime: <code>python3 -m pyv2</code></td></tr>
           <tr><td>PyHope engine</td><td><code>pyhope/</code></td><td>Dependency-free sprites, scenes, tile maps and ray casting</td></tr>
           <tr><td>Browser runtime</td><td><code>pyv2.js</code></td><td>The same language in JavaScript (this website's playground)</td></tr>
           <tr><td>Examples</td><td><code>examples/</code></td><td>hello, fib, fizzbuzz, terminal_raycast</td></tr>
           <tr><td>VS Code extension</td><td><code>editors/vscode/</code></td><td>Syntax highlighting + snippets</td></tr>
           <tr><td>Dev container</td><td><code>.devcontainer/</code></td><td>Ready environment for VS Code / Codespaces</td></tr>
-          <tr><td>Tests</td><td><code>tests/</code></td><td>73 tests: language parity + PyHope engine</td></tr>
+          <tr><td>Tests</td><td><code>tests/</code></td><td>79 tests: language + parity + PyHope + Launcher</td></tr>
         </tbody>
       </table>
 
       <!-- ==================== INSTALL ==================== -->
-      <h2 id="install"><span class="badge">03</span> Install on Your Machine</h2>
+      <h2 id="install"><span class="badge">04</span> Install on Your Machine</h2>
       <p>One requirement: <strong>Python 3.10 or newer</strong>
         (<a href="https://www.python.org/downloads/">python.org/downloads</a>).
         Python v2 itself has zero dependencies.</p>
@@ -154,7 +193,7 @@ cd pythonv2
 
 # 3. verify the install
 python3 -m pyv2 --version
-# Python v2 0.3.0
+# Python v2 1.1.0
 
 # 4. run your first program
 python3 -m pyv2 examples/hello.pyv2
@@ -186,7 +225,7 @@ pyv2                      # REPL!</code></pre>
       </div>
 
       <!-- ==================== EDITORS ==================== -->
-      <h2 id="editors"><span class="badge">04</span> Install in Your Editor</h2>
+      <h2 id="editors"><span class="badge">05</span> Install in Your Editor</h2>
       <p>Full step-by-step guides live in the
         <a href="docs.html#install">documentation</a>. The quick tour:</p>
 
@@ -220,7 +259,7 @@ pyv2                      # REPL!</code></pre>
       </table>
 
       <!-- ==================== NEXT ==================== -->
-      <h2 id="next"><span class="badge">05</span> Learn the Language</h2>
+      <h2 id="next"><span class="badge">06</span> Learn the Language</h2>
       <p>Installed? Nice. Next stop:</p>
       <ul class="checklist">
         <li><strong><a href="tutorial.html">The tutorial</a></strong> — 10 short
@@ -238,7 +277,12 @@ pyv2                      # REPL!</code></pre>
         <thead><tr><th>Question</th><th>Answer</th></tr></thead>
         <tbody>
           <tr><td>Is there a <code>pip install</code>?</td>
-            <td>Not yet — clone and run. There is literally nothing else to install.</td></tr>
+            <td>Yes—from the cloned folder: <code>python3 -m pip install --user .</code>.
+              The one-click scripts do this and create the app shortcut for you.</td></tr>
+          <tr><td>Can games use literally zero RAM?</td>
+            <td>No real app can. PyHope's 9M mode keeps ray work and the large
+              framebuffer on the GPU, avoiding a 9-million-item Python list while
+              still using normal system and GPU memory.</td></tr>
           <tr><td>Does it replace my Python?</td>
             <td>Nope. Python v2 lives in its own folder and runs <em>on top of</em>
               Python 3. Nothing to uninstall, nothing breaks.</td></tr>
@@ -267,7 +311,8 @@ pyv2                      # REPL!</code></pre>
       </div>
       <div class="footer-col">
         <h4>Downloads</h4>
-        <a href="download.html#pyhope">Install Python v2 + PyHope</a>
+        <a href="download.html#app">Python v2 1.1 Sudbury App</a>
+        <a href="download.html#pyhope">Install language + PyHope</a>
         <a href="https://github.com/gefrus112/pythonv2/archive/refs/heads/main.zip">Download ZIP</a>
         <a href="https://github.com/gefrus112/pythonv2">GitHub repo</a>
         <a href="download.html#install">Install steps</a>

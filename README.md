@@ -58,8 +58,10 @@ sh install.sh
 ```
 
 The readable installer scripts download the latest release, install the
-`pyv2` and `pyhope` commands for your user, and run a self-check. **No pygame,
-no native dependency.** Python 3.10+ is the only requirement.
+`pyv2`, `pyv2-launcher`, and `pyhope` commands, create a **Python v2 Sudbury**
+desktop app/shortcut, and run a self-check. **No pygame, Electron, or
+third-party runtime.** Python 3.10+ is the only requirement (some minimal Linux
+installs package tkinter separately as `python3-tk`).
 
 ### Or run straight from source
 
@@ -68,9 +70,17 @@ $ git clone https://github.com/gefrus112/pythonv2
 $ cd pythonv2
 $ python3 -m pyv2 examples/fib.pyv2
 $ python3 -m pyv2                         # REPL
+$ python3 -m pyv2.launcher                # desktop app
 $ python3 -m pyhope --demo                # engine demo
 $ python3 -m pyv2 examples/games/monster_arena.pyv2
 ```
+
+## 🖥️ Python v2 Sudbury Launcher
+
+Version 1.1 ships Python v2 as its own lightweight desktop application. The
+launcher provides a Code Studio for `.pyv2` files, output console, project
+wizard, offline Python v2 website template, local preview server, Games/GPU
+library, docs hub, and PyHope tools—all using the Python standard library.
 
 ## 🎮 PyHope game engine
 
@@ -142,21 +152,20 @@ The short version:
 $ python3 -m unittest discover -s tests -t .
 ```
 
-**73 tests pass:** 63 language unit tests, 9 PyHope engine tests, plus a
+**79 tests pass:** 63 language tests, 9 PyHope engine tests, 6 Launcher tests, plus a
 parity harness that runs 21 programs (including error paths) through both the
 Python and JavaScript runtimes and demands byte-identical output.
 
 ## 📦 Repo layout
 
 ```
-pyv2/            reference interpreter (lexer, parser, tree-walking VM, CLI)
 index.html       home website (GitHub Pages serves this) — playground + game
 download.html    one-click installers + desktop/editor setup
 docs.html        language reference + complete PyHope API guide
 tutorial.html    10 runnable language lessons + browser sandbox
 guide.html       50 concise language/engine learning topics
 games.html       Games tab: arena, platformer, GPU lab, sprites, source
-pyv2/            reference language interpreter + CLI
+pyv2/            interpreter, CLI, desktop Launcher, packaged browser runtime
 pyhope/          dependency-free game engine package + CLI
 pyv2.js          twin language runtime in JavaScript
 game.js          CPU sprite raycaster (monsters + weapon)

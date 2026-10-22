@@ -1,15 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <!-- Python v2: two interlocking snakes — red & blue -->
-  <!-- red snake -->
-  <path d="M19 46 C 31 55, 48 51, 51 37 C 54 23, 42 12, 30 16"
-        fill="none" stroke="#a23230" stroke-width="13" stroke-linecap="round"/>
-  <path d="M19 46 C 31 55, 48 51, 51 37 C 54 23, 42 12, 30 16"
-        fill="none" stroke="#d64541" stroke-width="11" stroke-linecap="round"/>
-  <circle cx="16.2" cy="48.8" r="2.1" fill="#ffffff"/>
-  <!-- blue snake (drawn last: passes over the red one) -->
-  <path d="M45 18 C 33 9, 16 13, 13 27 C 10 41, 22 52, 34 48"
-        fill="none" stroke="#1f4c85" stroke-width="13" stroke-linecap="round"/>
-  <path d="M45 18 C 33 9, 16 13, 13 27 C 10 41, 22 52, 34 48"
-        fill="none" stroke="#2f6fbd" stroke-width="11" stroke-linecap="round"/>
-  <circle cx="47.8" cy="15.2" r="2.1" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <title>Python v2 — intertwined blue and red snakes</title>
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5d9bd0"/>
+      <stop offset="0.48" stop-color="#2f6fbd"/>
+      <stop offset="1" stop-color="#1f4c85"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f07069"/>
+      <stop offset="0.5" stop-color="#d64541"/>
+      <stop offset="1" stop-color="#9e2f31"/>
+    </linearGradient>
+    <filter id="shadow" x="-25%" y="-20%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#101923" flood-opacity=".28"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)" stroke-linejoin="round">
+    <!-- Upper snake: a rounded, original take on the classic Python silhouette. -->
+    <path d="M61 7C43 7 34 14 34 27v14H22C10 41 4 51 4 65v18c0 13 7 21 20 21h16V86c0-14 10-24 25-24h28c13 0 21-9 21-22V27c0-13-9-20-22-20H61zm-9 15a5 5 0 1 1 0 10 5 5 0 0 1 0-10zM31 51h39v-9H45v-7h36v17H31z"
+          fill="url(#blue)" stroke="#173f66" stroke-width="4"/>
+    <path d="M39 25c5-9 14-11 27-11h25c8 0 14 3 17 8-13-5-28-4-42 0-11 3-20 7-31 10 0-3 1-5 4-7z"
+          fill="#ffffff" opacity=".16" stroke="none"/>
+
+    <!-- Lower snake: red, interlocked under and around the blue snake. -->
+    <path d="M67 121c18 0 27-7 27-20V87h12c12 0 18-10 18-24V45c0-13-7-21-20-21H88v18c0 14-10 24-25 24H35c-13 0-21 9-21 22v13c0 13 9 20 22 20h31zm9-15a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm21-29H58v9h25v7H47V76h50z"
+          fill="url(#red)" stroke="#86282b" stroke-width="4"/>
+    <path d="M89 43c0-6 1-10 0-14h15c8 0 13 4 15 11-10-4-20-3-30 3z"
+          fill="#ffffff" opacity=".17" stroke="none"/>
+
+    <!-- White eyes, matching the user's reference while keeping the artwork original. -->
+    <circle cx="52" cy="27" r="5" fill="#fff" stroke="none"/>
+    <circle cx="76" cy="101" r="5" fill="#fff" stroke="none"/>
+  </g>
 </svg>

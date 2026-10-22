@@ -21,6 +21,15 @@
       "problemMatcher": []
     },
     {
+      "label": "Open Python v2 Sudbury Launcher",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "pyv2.launcher"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
       "label": "Run PyHope engine demo",
       "type": "shell",
       "command": "python3",

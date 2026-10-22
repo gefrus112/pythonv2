@@ -41,6 +41,7 @@
     ".news-card", ".start-box", ".game-title-row", ".game-stage",
     ".sprite-card", ".doc-section-inner > h2", ".steps", ".ref-table",
     ".youtube-callout", ".youtube-bottom", ".source-split", ".benchmark-note",
+    ".launcher-showcase",
   ].join(","));
 
   if (reduceMotion || !("IntersectionObserver" in window)) {

@@ -9,4 +9,4 @@ renderers for full visual games.
 from .engine import Engine, RayHit, Sprite, TileMap, Vec2, raycast
 
 __all__ = ["Engine", "RayHit", "Sprite", "TileMap", "Vec2", "raycast"]
-__version__ = "0.3.0"
+__version__ = "1.1.0"

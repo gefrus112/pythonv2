@@ -781,7 +781,7 @@ table.ref-table {
 }
 
 /* ============================================================
-   Python v2 0.3 — motion, YouTube campaign, Games + PyHope
+   Python v2 1.1 — motion, YouTube campaign, Games + PyHope
    ============================================================ */
 
 /* --- shared motion layer --- */
@@ -1221,4 +1221,92 @@ table.ref-table {
   .guide-main { padding-inline: 12px; }
   .guide-card { padding-left: 66px; }
   .guide-number { left: 13px; }
+}
+
+/* ============================== Sudbury desktop Launcher ============================== */
+.launcher-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+  gap: 28px;
+  align-items: center;
+  margin: 20px 0 45px;
+  padding: 28px;
+  overflow: hidden;
+  border: 1px solid #324d65;
+  border-radius: 18px;
+  background:
+    radial-gradient(500px 220px at 15% 0%, rgba(75,139,190,.25), transparent 70%),
+    #111c27;
+  box-shadow: 0 28px 75px rgba(20,34,47,.24);
+}
+.launcher-mock {
+  overflow: hidden;
+  min-height: 390px;
+  border: 1px solid #496278;
+  border-radius: 13px;
+  background: #111c27;
+  box-shadow: 0 24px 55px rgba(0,0,0,.35);
+  transform: perspective(1100px) rotateY(3deg) rotateX(1deg);
+}
+.launcher-mock-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  color: #edf5fb;
+  background: #182838;
+  border-bottom: 1px solid #2e4559;
+}
+.launcher-mock-top img { width: 34px; height: 34px; }
+.launcher-mock-top strong { font-size: 14px; letter-spacing: .04em; }
+.launcher-mock-top span { margin-left: auto; color: var(--yellow); font: 800 10px var(--mono); }
+.launcher-mock-body { display: grid; grid-template-columns: 145px 1fr; min-height: 335px; }
+.launcher-mock-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 10px;
+  color: #91a8bb;
+  background: #0d1720;
+  font-size: 11px;
+}
+.launcher-mock-nav span, .launcher-mock-nav b { padding: 10px 9px; border-radius: 5px; }
+.launcher-mock-nav b { color: var(--yellow); background: #20364a; }
+.launcher-mock-main { padding: 32px 25px; color: #edf5fb; }
+.launcher-mock-main small { color: var(--yellow); font: 800 9px var(--mono); letter-spacing: .12em; }
+.launcher-mock-main h3 { max-width: 410px; margin: 10px 0 25px; color: #fff; font-size: clamp(20px,3vw,30px); line-height: 1.2; }
+.launcher-mock-main > div { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.launcher-mock-main i {
+  min-height: 85px;
+  padding: 12px 8px;
+  border-top: 4px solid var(--blue-btn);
+  border-radius: 6px;
+  color: #bdd0df;
+  background: #182838;
+  font: normal 800 9px var(--mono);
+}
+.launcher-mock-main i:nth-child(2) { border-color: var(--danger); }
+.launcher-mock-main i:nth-child(3) { border-color: #44a36f; }
+.launcher-copy h3 { margin: 4px 0 13px; color: #fff; font-size: 25px; }
+.launcher-copy .checklist { color: #c4d3df; }
+.download-button-row { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 20px; }
+.download-note { color: #91a8bb !important; font-size: 13px; }
+.download-note code { color: var(--yellow); background: rgba(255,211,67,.1); }
+.donation-coming-soon {
+  cursor: not-allowed;
+  opacity: .82;
+}
+.game-more { margin-top: 25px; }
+@media (max-width: 920px) {
+  .launcher-showcase { grid-template-columns: 1fr; }
+  .launcher-mock { transform: none; }
+}
+@media (max-width: 570px) {
+  .launcher-showcase { padding: 14px; }
+  .launcher-mock-body { grid-template-columns: 92px 1fr; }
+  .launcher-mock-nav { padding: 10px 5px; }
+  .launcher-mock-nav span, .launcher-mock-nav b { padding: 8px 5px; font-size: 9px; }
+  .launcher-mock-main { padding: 20px 12px; }
+  .launcher-mock-main > div { grid-template-columns: 1fr; }
+  .launcher-mock-main i { min-height: 45px; }
 }

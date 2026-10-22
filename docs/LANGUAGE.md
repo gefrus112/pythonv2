@@ -8,7 +8,7 @@ edges. It ships with two runtimes that produce byte-identical output:
 | Reference interpreter | `pyv2/` (Python) | CLI, REPL, tests |
 | Browser/Node twin | `pyv2.js` | Playground on the website |
 
-File extension: `.pyv2` · CLI: `python3 -m pyv2` · Version: 0.3 "Comet"
+File extension: `.pyv2` · CLI: `python3 -m pyv2` · Version: 1.1 "Sudbury"
 
 ---
 
@@ -277,8 +277,8 @@ $ python3 -m pyv2 --version
 
 ## 8. Parity guarantee
 
-The suite runs **73 tests**: 63 language unit tests, 9 PyHope engine tests,
-and one parity harness that sends 21 programs (including error paths) through
+The suite runs **79 tests**: 63 language tests, 9 PyHope engine tests,
+6 Launcher tests, and one parity harness that sends 21 programs (including error paths) through
 **both** language runtimes and compares outputs byte for byte. If the twins
 ever disagree, the suite fails. That's the deal.
 

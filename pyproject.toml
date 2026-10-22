@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pythonv2-pyhope"
-version = "0.3.0"
+version = "1.1.0"
 description = "Python v2 language and the dependency-free PyHope game engine"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,7 +19,11 @@ classifiers = [
 
 [project.scripts]
 pyv2 = "pyv2.cli:main"
+pyv2-launcher = "pyv2.launcher:main"
 pyhope = "pyhope.__main__:main"
 
 [tool.setuptools.packages.find]
 include = ["pyv2*", "pyhope*"]
+
+[tool.setuptools.package-data]
+pyv2 = ["assets/*.js", "assets/*.svg"]

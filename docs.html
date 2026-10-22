@@ -90,7 +90,7 @@ cd pythonv2</code></pre>
       <div class="steps">
         <strong>Step 3 — verify it works</strong>
         <pre class="terminal"><code>python3 -m pyv2 --version
-# Python v2 0.3.0
+# Python v2 1.1.0
 
 python3 -m pyv2 examples/hello.pyv2
 # Hello, World!
@@ -256,8 +256,59 @@ autocmd FileType python nnoremap &lt;F5&gt; :w&lt;CR&gt;:!
       <p><strong>Run → Run…</strong> (F5) with:</p>
       <pre class="terminal"><code>cmd /c python3 -m pyv2 "$(FULL_CURRENT_PATH)"</code></pre>
 
+      <!-- ==================== LAUNCHER ==================== -->
+      <h2 id="launcher"><span class="badge">05</span> Sudbury Desktop Launcher</h2>
+      <p>Python v2 1.1 ships with its own desktop workspace. It is implemented
+        with Python's standard-library <code>tkinter</code> toolkit—no Electron,
+        pygame, browser shell, subscription, or account.</p>
+
+      <h3>Open the app</h3>
+      <div class="steps">
+        <pre class="terminal"><code># after running install.bat or install.sh:
+pyv2-launcher
+
+# always works, even if the command folder is not on PATH:
+python3 -m pyv2.launcher</code></pre>
+        <p>Windows also gets a Desktop shortcut. macOS gets
+          <code>~/Applications/Python v2 Sudbury.app</code>. Linux gets an app
+          menu entry. If your Linux distribution separates tkinter, install its
+          <code>python3-tk</code> package; the language CLI still works without it.</p>
+      </div>
+
+      <h3>App layout</h3>
+      <table class="ref-table">
+        <thead><tr><th>Area</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Home</td><td>Release overview and shortcuts to your main tools</td></tr>
+          <tr><td>Code Studio</td><td>Open, edit, save, and run <code>.pyv2</code>; output/errors stay in the app</td></tr>
+          <tr><td>New Project</td><td>Create Website, CLI app, or Game starters without overwriting files</td></tr>
+          <tr><td>Games &amp; GPU</td><td>Open Byte Beast Arena, Comet Hopper, free sprites, and 9M GPU Lab</td></tr>
+          <tr><td>Docs &amp; Learn</td><td>Tutorial, 50-topic guide, reference, and CubeCometYT milestone</td></tr>
+          <tr><td>Donation</td><td><strong>Coming soon</strong>—the app does not collect money or payment data</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Build a website with Python v2</h3>
+      <ol class="checklist">
+        <li>Open <strong>New Project</strong> and choose <strong>Website</strong>.</li>
+        <li>The Launcher creates <code>app.pyv2</code>, <code>index.html</code>,
+          <code>runner.js</code>, an offline copy of <code>pyv2.js</code>, and
+          ready-to-run <code>.vscode</code> tasks/settings.</li>
+        <li>Edit <code>app.pyv2</code>. Its output becomes the website title,
+          tagline, and feature list.</li>
+        <li>Choose local preview. The Launcher starts a safe local HTTP server
+          on an available port and opens your browser.</li>
+      </ol>
+      <pre class="terminal"><code># app.pyv2
+site_name = "My first Python v2 website"
+print(site_name)
+print("Built from a real .pyv2 program")
+for feature in ["Fast", "Offline", "Mine"]:
+    print(feature)
+end</code></pre>
+
       <!-- ==================== PYHOPE ==================== -->
-      <h2 id="pyhope"><span class="badge">05</span> PyHope Game Engine</h2>
+      <h2 id="pyhope"><span class="badge">06</span> PyHope Game Engine</h2>
       <p>PyHope is Python v2's own dependency-free game engine. It is not
         pygame and it installs no native libraries. The portable Python module
         handles game logic and terminal previews; the website adds Canvas and
@@ -309,7 +360,7 @@ print(engine.render_ascii())</code></pre>
         <code>assets/sprites/</code>.</p>
 
       <!-- ==================== LANGUAGE REFERENCE ==================== -->
-      <h2 id="language"><span class="badge">06</span> Language Quick Reference</h2>
+      <h2 id="language"><span class="badge">07</span> Language Quick Reference</h2>
       <p>The full spec (grammar, semantics, error kinds) lives in
         <a href="https://github.com/gefrus112/pythonv2/blob/main/docs/LANGUAGE.md">docs/LANGUAGE.md</a>.
         Here is the day-to-day core.</p>
@@ -375,7 +426,7 @@ print(engine.render_ascii())</code></pre>
       </table>
 
       <!-- ==================== TRY IT ==================== -->
-      <h2 id="try"><span class="badge">07</span> Try It Right Here</h2>
+      <h2 id="try"><span class="badge">08</span> Try It Right Here</h2>
       <p>No install needed to experiment — this is the real interpreter,
         running in your browser. Edit and hit Run.</p>
       <div class="try-grid">
@@ -421,6 +472,7 @@ end</textarea>
         <h4>Documentation</h4>
         <a href="tutorial.html">Tutorial</a>
         <a href="guide.html">50-topic guide</a>
+        <a href="#launcher">Sudbury Launcher</a>
         <a href="#pyhope">PyHope engine</a>
         <a href="#install">Installation</a>
         <a href="#vscode">VS Code setup</a>

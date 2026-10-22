@@ -30,7 +30,7 @@
       </a>
       <div class="masthead-tools">
         <a class="btn-youtube" href="https://www.youtube.com/@CubeCometYT" target="_blank" rel="noopener">▶ Subscribe @CubeCometYT</a>
-        <a class="btn-social" href="download.html">Install v0.3</a>
+        <a class="btn-social" href="download.html">Install v1.1</a>
       </div>
     </div>
   </header>
@@ -156,7 +156,9 @@
       <div class="benchmark-note">
         <strong>Honest benchmark:</strong> this is not CSS upscaling. In 9M mode,
         <code>canvas.width × canvas.height</code> is exactly
-        <code>4096 × 2304</code>. Use Live mode again when you want movement.
+        <code>4096 × 2304</code>. Ray work and the large framebuffer stay on the
+        GPU instead of a 9-million-item Python list. It is memory-efficient—not
+        “zero RAM,” because every real browser and game needs memory.
       </div>
       <div class="game-stage gpu-stage">
         <canvas id="gpu-canvas" width="1280" height="720" aria-label="GPU raycaster. Start live mode, click the canvas, and use WASD and arrow keys."></canvas>
@@ -241,7 +243,7 @@ for row in level:
     print(row)
 end</code></pre>
         <div class="api-list">
-          <h3>PyHope 0.3 includes</h3>
+          <h3>PyHope 1.1 includes</h3>
           <ul class="checklist">
             <li><code>Vec2</code> math and movement</li>
             <li><code>Sprite</code> entities and tags</li>
