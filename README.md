@@ -65,14 +65,17 @@ No dependencies. No install step. Python 3.10+ for the reference runtime.
 
 ## 🌐 The website
 
-`site/` is the home website — a modern re-imagining of python.org with:
+`site/` is the home website — styled after python.org, then pushed further:
 
-* a **runnable playground** at the top of the page (the real interpreter,
-  `site/pyv2.js`, running in your browser — press ▶ Run)
+* a **runnable playground** in the hero (the real interpreter,
+  `site/pyv2.js`, running in your browser — press the yellow `>_` badge)
 * a **CPU-rendered game**: a software raycaster that computes all
   57,600 pixels per frame on the CPU into a plain framebuffer —
   no WebGL, no shaders, no GPU calls
-* the custom **hexagon prompt icon** (`site/logo.svg`, `site/favicon.svg`)
+* the custom **two-snake icon** (`site/logo.svg`, `site/favicon.svg`) —
+  one red snake, one blue snake, interlocked
+* a full **documentation site** (`site/docs.html`) with install guides for
+  every setup
 
 Serve it locally:
 
@@ -80,6 +83,19 @@ Serve it locally:
 $ python3 -m http.server 8000 --directory site
 # → http://localhost:8000
 ```
+
+## 🧑‍💻 Editor setup
+
+Full guides live in [`site/docs.html`](site/docs.html) — VS Code, dev
+containers / GitHub Codespaces, desktop terminals, and any other editor.
+The short version:
+
+| Where | How |
+|---|---|
+| **Desktop** | `python3 -m pyv2 file.pyv2` — nothing to install |
+| **VS Code** | open the repo, hit `Ctrl+Shift+B`; syntax highlighting from `editors/vscode` |
+| **Dev containers / Codespaces** | open in container via `.devcontainer/devcontainer.json` — everything preinstalled |
+| **Any editor** | associate `*.pyv2`, run `python3 -m pyv2 $file` |
 
 ## 🧪 Tests
 
@@ -95,9 +111,13 @@ and JavaScript runtimes and demands byte-identical output.
 
 ```
 pyv2/            reference interpreter (lexer, parser, tree-walking VM, CLI)
-site/            home website: playground, CPU raycaster, logo & favicon
+site/            home website: playground, CPU raycaster, docs, logo & favicon
   pyv2.js        the twin runtime in JavaScript
   game.js        software raycaster (pure CPU rendering)
+  docs.html      full docs: install in VS Code / dev containers / desktop / any editor
+editors/vscode/  VS Code extension: .pyv2 syntax highlighting + snippets
+.vscode/         tasks to run / test .pyv2 files with Ctrl+Shift+B
+.devcontainer/   dev container + Codespaces config
 examples/        hello, fib, fizzbuzz, terminal_raycast
 tests/           unit tests + cross-runtime parity harness
 docs/LANGUAGE.md full language reference & grammar

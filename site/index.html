@@ -13,11 +13,11 @@
 
   <!-- ============ top utility bar ============ -->
   <div class="topbar">
-    <nav class="topbar-inner">
-      <a class="topbar-brand" href="#">Python<sup>v2</sup></a>
-      <a href="#community">Foundation</a>
-      <a href="#docs">Docs</a>
-      <a href="#start">Packages</a>
+    <nav class="topbar-inner" aria-label="Site">
+      <a class="active" href="index.html">Python</a>
+      <a href="#community">PSF</a>
+      <a href="docs.html">Docs</a>
+      <a href="#start">PyPI</a>
       <a href="#news">Jobs</a>
       <a href="#community">Community</a>
     </nav>
@@ -26,18 +26,19 @@
   <!-- ============ masthead ============ -->
   <header class="masthead">
     <div class="masthead-inner">
-      <a class="brand" href="#">
-        <img src="logo.svg" alt="Python v2 logo" width="64" height="64">
+      <a class="brand" href="index.html">
+        <img src="logo.svg" alt="Python v2 logo — two snakes, red and blue" width="64" height="64">
         <span class="brand-word">python<sup>™</sup><em>v2</em></span>
       </a>
       <div class="masthead-tools">
-        <a class="btn btn-donate" href="#community">Donate</a>
-        <form class="search" id="search-form" role="search">
-          <span class="search-icon" aria-hidden="true">⌕</span>
-          <input type="search" id="search-input" placeholder="Search the docs…" aria-label="Search">
-          <button type="submit" class="btn btn-go">GO</button>
+        <a class="btn-donate" href="#community">Donate</a>
+        <form class="searchbox" id="search-form" role="search">
+          <span class="search-mag" aria-hidden="true">⌕</span>
+          <label class="sr-only" for="search-input">Search</label>
+          <input type="search" id="search-input" placeholder="Search">
+          <button type="submit" class="btn-go">GO</button>
         </form>
-        <button class="btn btn-social" id="social-btn" type="button">Socialize</button>
+        <button class="btn-social" id="social-btn" type="button">Socialize</button>
       </div>
     </div>
   </header>
@@ -47,7 +48,7 @@
     <div class="mainnav-inner">
       <a href="#about">About</a>
       <a href="#start">Downloads</a>
-      <a href="#docs">Documentation</a>
+      <a href="docs.html">Documentation</a>
       <a href="#community">Community</a>
       <a href="#game">Success Stories</a>
       <a href="#news">News</a>
@@ -56,45 +57,147 @@
   </nav>
 
   <main>
-    <!-- ============ hero: runnable console + carousel ============ -->
+    <!-- ============ hero: REPL panel + carousel ============ -->
     <section class="hero" id="about">
-      <div class="hero-inner">
-        <div class="console">
-          <div class="console-bar">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="console-title">pyv2 — playground</span>
-            <button class="btn btn-run" id="run-btn" title="Run this code">▶ Run</button>
+      <div class="hero-panel">
+        <div class="hero-code">
+          <button class="run-badge" id="run-btn" title="Run this code (Ctrl+Enter)" aria-label="Run this code">&gt;_</button>
+          <div class="editor">
+            <pre class="editor-highlight" aria-hidden="true"><code id="highlight"></code></pre>
+            <label class="sr-only" for="code">Python v2 source code</label>
+            <textarea id="code" spellcheck="false" autocomplete="off" wrap="soft"></textarea>
           </div>
-          <label class="sr-only" for="code">Python v2 source code</label>
-          <textarea id="code" spellcheck="false" autocomplete="off"></textarea>
-          <div class="console-out">
-            <div class="console-out-title">Output</div>
-            <pre id="output" aria-live="polite"></pre>
-          </div>
+          <div class="hero-out" id="output" aria-live="polite"></div>
         </div>
 
         <div class="hero-copy">
-          <h1 id="slide-title">All the Flow You'd Expect</h1>
+          <h2 id="slide-title">All the Flow You'd Expect</h2>
           <p id="slide-desc">Python v2 knows the usual control flow statements that other
             languages speak — <code>if</code>, <code>for</code>, <code>while</code> and
             <code>range</code> — with some of its own twists, of course.</p>
-          <p><a class="hero-link" id="slide-link" href="#docs">More control flow tools</a></p>
-          <div class="dots" id="slide-dots" role="tablist" aria-label="Examples"></div>
+          <p><a class="hero-link" id="slide-link" href="docs.html">More control flow tools</a></p>
+          <div class="pager" id="slide-dots" role="tablist" aria-label="Examples"></div>
+        </div>
+      </div>
+
+      <p class="hero-tagline">Python v2 is a programming language that lets you work quickly
+        and integrate systems more effectively.
+        <a href="#start"><span class="prompt">»»&gt;</span> Learn More</a></p>
+    </section>
+
+    <!-- ============ yellow band + release card ============ -->
+    <section class="band">
+      <div class="band-inner">
+        <div class="band-yellow">
+          <div>
+            <h2>The Python v2 Foundation needs your support</h2>
+            <p>Python v2 is free, open source, and developed entirely by people who
+              got tired of <code>TabError</code>. Help us keep the snake fed.</p>
+          </div>
+          <a class="btn-donate" href="#community">Donate</a>
+        </div>
+        <div class="band-card">
+          <div>
+            <strong>Python v2 0.2 “Sudbury” is out</strong><br>
+            <span>Trailing commas, multi-line calls, cross-runtime parity tests,
+              and a terminal raycaster.</span>
+          </div>
+          <a class="btn btn-blue" href="#start">Download v0.2</a>
         </div>
       </div>
     </section>
 
-    <!-- ============ tagline ============ -->
-    <section class="tagline">
-      <p>Python v2 is a programming language that lets you work quickly
-        and integrate systems more effectively.
-        <a href="#start"><span class="prompt">»»&gt;</span> Learn More</a></p>
+    <!-- ============ success stories ============ -->
+    <section class="section" id="success">
+      <div class="section-inner">
+        <h2><span class="prompt">»»&gt;</span>Success Stories</h2>
+        <p class="lede">Things people have already built with Python v2 — in a weekend,
+          with zero GPU calls.</p>
+        <div class="grid">
+          <article class="card">
+            <div class="card-icon">▶</div>
+            <h3>The CPU raycaster</h3>
+            <p>A Wolfenstein-style renderer that computes all 57,600 pixels per frame
+              on the CPU. It runs right on this page — scroll down to
+              <a href="#game">play it</a>.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">&gt;_</div>
+            <h3>The browser playground</h3>
+            <p>The reference interpreter ported 1:1 to JavaScript. The console at the
+              top of this page is the real thing — hit <strong>&gt;_</strong> and see.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">✓</div>
+            <h3>Two runtimes, one truth</h3>
+            <p>62 tests lock the Python and JS runtimes together, byte for byte —
+              including the error messages.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ downloads / get started ============ -->
+    <section class="section" id="start" style="background: var(--paper-2);">
+      <div class="section-inner">
+        <h2><span class="prompt">»»&gt;</span>Get Started</h2>
+        <p class="lede">Python v2 is free and open source. It runs anywhere Python 3
+          runs — no install step, no dependencies. Full setup guides for
+          <strong>VS Code</strong>, <strong>dev containers</strong>, <strong>desktop</strong>
+          and <strong>any editor</strong> are in the
+          <a href="docs.html#install">documentation</a>.</p>
+
+        <div class="start-grid">
+          <div class="start-box">
+            <h3>1. Grab the runtime</h3>
+            <pre class="terminal"><code>git clone https://github.com/gefrus112/pythonv2
+cd pythonv2</code></pre>
+            <h3>2. Run something</h3>
+            <pre class="terminal"><code>python3 -m pyv2 examples/hello.pyv2</code></pre>
+            <h3>3. Or just talk to it</h3>
+            <pre class="terminal"><code>python3 -m pyv2
+>>> print(f"{'2' * 3}")
+222</code></pre>
+            <a class="btn btn-blue btn-inline" href="docs.html#install">Installation &amp; editor setup</a>
+          </div>
+          <div class="start-box">
+            <h3>Your first program</h3>
+            <pre class="terminal"><code># hello.pyv2
+fn greet(name):
+    if name == "":
+        return "Hello, stranger!"
+    end
+    return f"Hello, {name}!"
+end
+
+for who in ["World", ""]:
+    print(greet(who))
+end</code></pre>
+            <button class="btn btn-blue btn-inline" id="try-btn" type="button">Try it in the playground</button>
+          </div>
+        </div>
+
+        <h2><span class="prompt">»»&gt;</span>Why v2 beats v1</h2>
+        <table class="compare">
+          <thead>
+            <tr><th>Old Python</th><th>Python v2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>def foo():</code> + invisible whitespace</td><td><code>fn foo():</code> … <code>end</code></td></tr>
+            <tr><td>TabError: inconsistent use of tabs</td><td>No such thing. Ever.</td></tr>
+            <tr><td><code>"n=" + str(n)</code></td><td><code>"n=" + n</code></td></tr>
+            <tr><td><code>x if ok else y</code> (backwards)</td><td><code>ok ? x : y</code></td></tr>
+            <tr><td><code>assert</code> statement</td><td><code>assert(cond, msg)</code> — a normal function</td></tr>
+            <tr><td>Surprising <code>nonlocal</code> rules</td><td>Closures just work</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- ============ features ============ -->
     <section class="section features" id="features">
       <div class="section-inner">
-        <h2>Better. By Design.</h2>
+        <h2><span class="prompt">»»&gt;</span>Better. By Design.</h2>
         <p class="lede">Everything you loved about Python — plus the fixes the old one
           never shipped.</p>
         <div class="grid">
@@ -114,19 +217,19 @@
             <div class="card-icon">“”</div>
             <h3>F-Strings, Solved Forever</h3>
             <p><code>f"Hello, {name}!"</code> — interpolation that just works,
-              expressions and all. The old way of concatenating strings is cancelled.</p>
+              expressions and all. String concatenation with numbers is legal too.</p>
           </article>
           <article class="card">
             <div class="card-icon">?</div>
             <h3>Forward Ternary</h3>
             <p><code>ok ? "yes" : "no"</code> reads left to right, like your eyes do.
-              Wild concept. Also: <code>+</code> joins strings and numbers without a lecture.</p>
+              Wild concept.</p>
           </article>
           <article class="card">
             <div class="card-icon">⚡</div>
             <h3>Runs In Your Browser</h3>
             <p>The same language runs in the terminal and on this very page —
-              the playground above is the real interpreter, not a screenshot.</p>
+              the playground is the real interpreter, not a screenshot.</p>
           </article>
           <article class="card">
             <div class="card-icon">♥</div>
@@ -178,66 +281,15 @@
       </div>
     </section>
 
-    <!-- ============ get started ============ -->
-    <section class="section start-section" id="start">
-      <div class="section-inner">
-        <h2>Get Started in 30 Seconds</h2>
-        <p class="lede">Python v2 is free, open source, and lives on GitHub.
-          Clone it and run — no install step, no virtualenv, no drama.</p>
-
-        <div class="start-grid">
-          <div class="start-box">
-            <h3>1. Grab the runtime</h3>
-            <pre class="terminal"><code>git clone https://github.com/gefrus112/pythonv2
-cd pythonv2</code></pre>
-            <h3>2. Run something</h3>
-            <pre class="terminal"><code>python3 -m pyv2 examples/hello.pyv2</code></pre>
-            <h3>3. Or just talk to it</h3>
-            <pre class="terminal"><code>python3 -m pyv2
->>> print(f"{'2' * 3}")
-222</code></pre>
-          </div>
-          <div class="start-box">
-            <h3>Your first program</h3>
-            <pre class="terminal"><code># hello.pyv2
-fn greet(name):
-    if name == "":
-        return "Hello, stranger!"
-    end
-    return f"Hello, {name}!"
-end
-
-for who in ["World", ""]:
-    print(greet(who))
-end</code></pre>
-            <button class="btn btn-run btn-inline" id="try-btn" type="button">▶ Try it in the playground</button>
-          </div>
-        </div>
-
-        <h2 class="compare-title">Why v2 beats v1</h2>
-        <table class="compare">
-          <thead>
-            <tr><th>Old Python</th><th>Python v2</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>def foo():</code> + invisible whitespace</td><td><code>fn foo():</code> … <code>end</code></td></tr>
-            <tr><td>TabError: inconsistent use of tabs</td><td>No such thing. Ever.</td></tr>
-            <tr><td><code>"n=" + str(n)</code></td><td><code>"n=" + n</code></td></tr>
-            <tr><td><code>x if ok else y</code> (backwards)</td><td><code>ok ? x : y</code></td></tr>
-            <tr><td><code>assert</code> statement</td><td><code>assert(cond, msg)</code> — a normal function</td></tr>
-            <tr><td>Surprising <code>nonlocal</code> rules</td><td>Closures just work</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
     <!-- ============ docs teaser ============ -->
-    <section class="section docs-section" id="docs">
+    <section class="section" id="docs">
       <div class="section-inner">
-        <h2>Documentation</h2>
-        <p class="lede">The whole language fits on one page. (The reference implementation
-          is <a href="https://github.com/gefrus112/pythonv2">on GitHub</a> — about 1,500 lines
-          of Python and its JavaScript twin.)</p>
+        <h2><span class="prompt">»»&gt;</span>Documentation</h2>
+        <p class="lede">The whole language fits on one page — but the docs cover
+          installation in <a href="docs.html#vscode">VS Code</a>,
+          <a href="docs.html#devcontainer">dev containers / Codespaces</a>,
+          <a href="docs.html#install">desktop</a> and
+          <a href="docs.html#any-editor">any code editor</a>.</p>
 
         <div class="docs-grid" id="docs-grid">
           <div class="doc-card" data-tags="print output">
@@ -303,15 +355,16 @@ end</code></pre>
             <code class="snippet">print(7 // 2, -7 % 3, 2 ** 10)</code>
           </div>
         </div>
-        <p class="docs-foot">Full spec, grammar and builtin reference:
+        <p class="docs-foot">Full install guides &amp; language reference:
+          <a href="docs.html">docs.html</a> · grammar:
           <a href="https://github.com/gefrus112/pythonv2/blob/main/docs/LANGUAGE.md">docs/LANGUAGE.md</a></p>
       </div>
     </section>
 
-    <!-- ============ news / community ============ -->
+    <!-- ============ news / events ============ -->
     <section class="section news-section" id="news">
       <div class="section-inner">
-        <h2>News &amp; Events</h2>
+        <h2><span class="prompt">»»&gt;</span>News &amp; Events</h2>
         <div class="news-grid">
           <article class="news-card">
             <div class="news-date">Oct 21, 2026</div>
@@ -340,7 +393,7 @@ end</code></pre>
 
     <section class="section community-section" id="community">
       <div class="section-inner">
-        <h2>The Community Runs On Snacks</h2>
+        <h2><span class="prompt">»»&gt;</span>The Community Runs On Snacks</h2>
         <p class="lede">Python v2 is built in the open on GitHub. Star the repo, file an
           issue, send a pull request, or just argue about <code>end</code> vs braces.</p>
         <div class="stat-row stat-row-big">
@@ -350,8 +403,8 @@ end</code></pre>
           <div class="stat"><strong>∞</strong><span>indentation saved</span></div>
         </div>
         <p class="community-cta">
-          <a class="btn btn-donate" href="https://github.com/gefrus112/pythonv2">Star on GitHub</a>
-          <a class="btn btn-social" href="https://github.com/gefrus112/pythonv2/issues">Open an issue</a>
+          <a class="btn-donate" href="https://github.com/gefrus112/pythonv2">Star on GitHub</a>
+          <a class="btn-social" href="https://github.com/gefrus112/pythonv2/issues">Open an issue</a>
         </p>
       </div>
     </section>
@@ -364,7 +417,7 @@ end</code></pre>
         <h4>Navigation</h4>
         <a href="#about">About</a>
         <a href="#start">Downloads</a>
-        <a href="#docs">Documentation</a>
+        <a href="docs.html">Documentation</a>
         <a href="#community">Community</a>
         <a href="#game">Success Stories</a>
       </div>
@@ -373,19 +426,19 @@ end</code></pre>
         <a href="#start">Runtime (source)</a>
         <a href="#start">JS playground</a>
         <a href="https://github.com/gefrus112/pythonv2">GitHub repo</a>
-        <a href="#docs">Language spec</a>
+        <a href="docs.html#install">Install guide</a>
       </div>
       <div class="footer-col">
         <h4>Documentation</h4>
-        <a href="#docs">Quick reference</a>
-        <a href="#docs">Builtins</a>
-        <a href="#docs">Examples</a>
-        <a href="#start">Tutorial</a>
+        <a href="docs.html#install">Installation</a>
+        <a href="docs.html#vscode">VS Code setup</a>
+        <a href="docs.html#devcontainer">Dev containers</a>
+        <a href="docs.html#any-editor">Any editor</a>
       </div>
       <div class="footer-col">
         <h4>Community</h4>
-        <a href="#community">GitHub</a>
-        <a href="#community">Issues</a>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+        <a href="https://github.com/gefrus112/pythonv2/issues">Issues</a>
         <a href="#news">News</a>
         <a href="#news">Events</a>
       </div>
@@ -398,7 +451,7 @@ end</code></pre>
     </div>
     <div class="footer-legal">
       <p>
-        <img src="favicon.svg" alt="" width="24" height="24">
+        <img src="favicon.svg" alt="" width="22" height="22">
         © <span id="year">2026</span> Python v2 Software Foundation™ — a fan-made remake,
         not affiliated with the Python Software Foundation. Powered by pure CPU rendering
         and stubborn optimism.

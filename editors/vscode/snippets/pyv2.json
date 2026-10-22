@@ -1,0 +1,89 @@
+{
+  "function": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:name}(${2:args}):",
+      "    ${3:body}",
+      "end"
+    ],
+    "description": "Function definition"
+  },
+  "if": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition}:",
+      "    ${2:body}",
+      "end"
+    ],
+    "description": "If block"
+  },
+  "if-else": {
+    "prefix": "ifelse",
+    "body": [
+      "if ${1:condition}:",
+      "    ${2:body}",
+      "else:",
+      "    ${3:else}",
+      "end"
+    ],
+    "description": "If / else block"
+  },
+  "while": {
+    "prefix": "while",
+    "body": [
+      "while ${1:condition}:",
+      "    ${2:body}",
+      "end"
+    ],
+    "description": "While loop"
+  },
+  "for": {
+    "prefix": "for",
+    "body": [
+      "for ${1:item} in ${2:iterable}:",
+      "    ${3:body}",
+      "end"
+    ],
+    "description": "For loop"
+  },
+  "for-range": {
+    "prefix": "forr",
+    "body": [
+      "for ${1:i} in range(${2:count}):",
+      "    ${3:body}",
+      "end"
+    ],
+    "description": "For loop over a range"
+  },
+  "f-string": {
+    "prefix": "fstr",
+    "body": "f\"${1:text} {${2:expr}}\"",
+    "description": "F-string"
+  },
+  "map": {
+    "prefix": "map",
+    "body": [
+      "${1:name} = {",
+      "    ${2:key}: ${3:value},",
+      "}"
+    ],
+    "description": "Map literal (multi-line, trailing comma)"
+  },
+  "print": {
+    "prefix": "print",
+    "body": "print(${1:value})",
+    "description": "print(...)"
+  },
+  "main": {
+    "prefix": "main",
+    "body": [
+      "# ${1:program}.pyv2",
+      "fn main():",
+      "    ${2:body}",
+      "end",
+      "",
+      "main()"
+    ],
+    "description": "Program skeleton"
+  }
+}

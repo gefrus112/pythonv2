@@ -1,0 +1,43 @@
+{
+  "name": "pyv2",
+  "displayName": "Python v2 Language",
+  "description": "Syntax highlighting and snippets for the Python v2 language (.pyv2)",
+  "version": "0.1.0",
+  "publisher": "pythonv2",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "pyv2",
+        "aliases": [
+          "Python v2",
+          "pyv2"
+        ],
+        "extensions": [
+          ".pyv2"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pyv2",
+        "scopeName": "source.pyv2",
+        "path": "./syntaxes/pyv2.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "pyv2",
+        "path": "./snippets/pyv2.json"
+      }
+    ]
+  }
+}

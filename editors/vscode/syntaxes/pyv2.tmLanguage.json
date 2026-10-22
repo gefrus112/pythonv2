@@ -1,0 +1,180 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Python v2",
+  "scopeName": "source.pyv2",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#fstrings" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#constants" },
+    { "include": "#function-calls" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.pyv2",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "fstrings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.fstring.pyv2",
+          "begin": "f\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "meta.interpolation.pyv2",
+              "begin": "\\{\\{",
+              "end": "\\}\\}",
+              "patterns": [
+                {
+                  "name": "constant.character.escape.braces.pyv2",
+                  "match": ".*"
+                }
+              ]
+            },
+            {
+              "name": "meta.interpolation.pyv2",
+              "begin": "\\{",
+              "end": "\\}",
+              "patterns": [
+                { "include": "$self" }
+              ]
+            },
+            {
+              "name": "constant.character.escape.pyv2",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fstring.pyv2",
+          "begin": "f'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "meta.interpolation.pyv2",
+              "begin": "\\{",
+              "end": "\\}",
+              "patterns": [
+                { "include": "$self" }
+              ]
+            },
+            {
+              "name": "constant.character.escape.pyv2",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.pyv2",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.pyv2",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.pyv2",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.pyv2",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.pyv2",
+          "match": "\\b\\d+(\\.\\d+)?([eE][+-]?\\d+)?\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.pyv2",
+          "match": "\\b(if|elif|else|while|for|in|return|break|continue)\\b"
+        },
+        {
+          "name": "storage.type.function.pyv2",
+          "match": "\\bfn\\b"
+        },
+        {
+          "name": "keyword.operator.logical.pyv2",
+          "match": "\\b(and|or|not)\\b"
+        },
+        {
+          "name": "keyword.other.block.end.pyv2",
+          "match": "\\bend\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.pyv2",
+          "match": "\\b(true|false|nil)\\b"
+        }
+      ]
+    },
+    "function-calls": {
+      "patterns": [
+        {
+          "name": "meta.function-call.pyv2",
+          "match": "\\b([A-Za-z_]\\w*)(?=\\()"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.pyv2",
+          "match": "(\\+=|-=|\\*=|/=|%=|=(?!=))"
+        },
+        {
+          "name": "keyword.operator.arithmetic.pyv2",
+          "match": "(\\*\\*|//|[-+*/%])"
+        },
+        {
+          "name": "keyword.operator.comparison.pyv2",
+          "match": "(==|!=|<=|>=|<|>)"
+        },
+        {
+          "name": "keyword.operator.ternary.pyv2",
+          "match": "\\?"
+        },
+        {
+          "name": "punctuation.separator.pyv2",
+          "match": "[,;]"
+        },
+        {
+          "name": "punctuation.section.pyv2",
+          "match": "[()\\[\\]{}]"
+        },
+        {
+          "name": "punctuation.accessor.pyv2",
+          "match": "[.:]"
+        }
+      ]
+    }
+  }
+}

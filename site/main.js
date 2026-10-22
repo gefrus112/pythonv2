@@ -1,12 +1,50 @@
 /*
- * main.js — site behavior: hero carousel + runnable playground,
- * docs quick-search, and booting the CPU raycaster.
+ * main.js — site behavior: syntax-highlighted REPL panel, example pager,
+ * playground runner, docs search, and the CPU raycaster boot.
  */
 (function () {
   "use strict";
 
   // ------------------------------------------------------------------
-  // Hero carousel (5 slides, python.org style)
+  // Syntax highlighting (text-preserving, for the REPL panel)
+  // ------------------------------------------------------------------
+  const TOKEN_RE = new RegExp(
+    [
+      "(#[^\\n]*)",                                                     // comment
+      "(f?\"(?:\\\\.|[^\"\\\\\\n])*\"|f?'(?:\\\\.|[^'\\\\\\n])*')",     // strings / f-strings
+      "\\b(\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)\\b",                     // numbers
+      "\\b(fn|if|elif|else|while|for|in|return|break|continue|and|or|not|true|false|nil|end)\\b",
+      "([+\\-*/%<>=!]+|[()\\[\\]{},.:?])",                               // operators / punctuation
+    ].join("|"),
+    "g"
+  );
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function highlight(src) {
+    let out = "";
+    let last = 0;
+    TOKEN_RE.lastIndex = 0;
+    let m;
+    while ((m = TOKEN_RE.exec(src)) !== null) {
+      out += escapeHtml(src.slice(last, m.index));
+      const text = escapeHtml(m[0]);
+      if (m[1]) out += '<span class="tok-com">' + text + "</span>";
+      else if (m[2]) out += '<span class="tok-str">' + text + "</span>";
+      else if (m[3]) out += '<span class="tok-num">' + text + "</span>";
+      else if (m[4]) out += '<span class="tok-key">' + text + "</span>";
+      else if (m[5]) out += '<span class="tok-pun">' + text + "</span>";
+      else out += text;
+      last = m.index + m[0].length;
+    }
+    out += escapeHtml(src.slice(last));
+    return out;
+  }
+
+  // ------------------------------------------------------------------
+  // Hero carousel (5 numbered pages, python.org style)
   // ------------------------------------------------------------------
   const slides = [
     {
@@ -15,7 +53,7 @@
             "speak — <code>if</code>, <code>for</code>, <code>while</code> and " +
             "<code>range</code> — with some of its own twists, of course.",
       link: "More control flow tools",
-      href: "#docs",
+      href: "docs.html",
       code:
 `# For loop on a list
 numbers = [2, 4, 6, 8]
@@ -31,7 +69,7 @@ print(f"The product is: {product}")`,
             "Not one <code>TabError</code> has ever been raised in the history " +
             "of Python v2. Neither has a <code>nonlocal</code>.",
       link: "More about functions",
-      href: "#docs",
+      href: "docs.html",
       code:
 `# Closures just work — no nonlocal required
 fn make_counter():
@@ -54,7 +92,7 @@ print(f"count = {c()}")`,
             "literal brace, <code>{{this}}</code> is how you write it. " +
             "String concatenation with numbers is legal too.",
       link: "More string tools",
-      href: "#docs",
+      href: "docs.html",
       code:
 `name = "Python v2"
 print(f"Hello, {name}!")
@@ -68,7 +106,7 @@ print("numbers join strings: " + 42)`,
             "access, and safe lookups when you need them. " +
             "<code>get(key, default)</code> included.",
       link: "More about maps",
-      href: "#docs",
+      href: "docs.html",
       code:
 `hero = {
     name: "Ada",
@@ -86,7 +124,7 @@ print("city:", hero.get("city", "unknown"))`,
       desc: "First-class functions, real closures, and a ternary that reads the way " +
             "you think: <code>ok ? \"yes\" : \"no\"</code>. The classics, fixed.",
       link: "More language tools",
-      href: "#docs",
+      href: "docs.html",
       code:
 `fn fib(n):
     if n < 2:
@@ -103,13 +141,21 @@ end`,
   ];
 
   const codeEl = document.getElementById("code");
+  const highlightEl = document.getElementById("highlight");
   const outputEl = document.getElementById("output");
   const titleEl = document.getElementById("slide-title");
   const descEl = document.getElementById("slide-desc");
   const linkEl = document.getElementById("slide-link");
-  const dotsEl = document.getElementById("slide-dots");
+  const pagerEl = document.getElementById("slide-dots");
   let current = 0;
   let timer = null;
+
+  function refreshHighlight() {
+    const src = codeEl.value;
+    highlightEl.innerHTML = highlight(src) + (src.endsWith("\n") ? " " : "");
+    codeEl.style.height = "auto";
+    codeEl.style.height = codeEl.scrollHeight + "px";
+  }
 
   function showSlide(i) {
     current = (i + slides.length) % slides.length;
@@ -121,7 +167,8 @@ end`,
     codeEl.value = s.code;
     outputEl.textContent = "";
     outputEl.classList.remove("error");
-    [...dotsEl.children].forEach((btn, k) => {
+    refreshHighlight();
+    [...pagerEl.children].forEach((btn, k) => {
       btn.setAttribute("aria-selected", k === current ? "true" : "false");
     });
   }
@@ -136,19 +183,20 @@ end`,
       showSlide(i);
       restartTimer();
     });
-    dotsEl.appendChild(btn);
+    pagerEl.appendChild(btn);
   });
 
   function restartTimer() {
     if (timer) clearInterval(timer);
-    timer = setInterval(() => showSlide(current + 1), 10000);
+    timer = setInterval(() => showSlide(current + 1), 12000);
   }
   restartTimer();
 
-  // pause auto-advance while the user is typing / running code
-  const consoleEl = document.querySelector(".console");
-  consoleEl.addEventListener("mouseenter", () => { if (timer) clearInterval(timer); });
-  consoleEl.addEventListener("mouseleave", restartTimer);
+  const panelEl = document.querySelector(".hero-code");
+  panelEl.addEventListener("mouseenter", () => { if (timer) clearInterval(timer); });
+  panelEl.addEventListener("mouseleave", restartTimer);
+
+  codeEl.addEventListener("input", refreshHighlight);
 
   // ------------------------------------------------------------------
   // Playground runner
@@ -178,7 +226,6 @@ end`,
     }
   });
 
-  // "Try it" button in Get Started
   const sampleCode =
 `# hello.pyv2
 fn greet(name):
@@ -193,19 +240,20 @@ for who in ["World", ""]:
 end`;
   document.getElementById("try-btn").addEventListener("click", () => {
     codeEl.value = sampleCode;
+    refreshHighlight();
     runCode();
     document.getElementById("about").scrollIntoView({ behavior: "smooth" });
   });
 
   // ------------------------------------------------------------------
-  // Docs quick-search
+  // Docs quick-search (live filter here, full search on docs.html)
   // ------------------------------------------------------------------
   const searchForm = document.getElementById("search-form");
   const searchInput = document.getElementById("search-input");
   searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    filterDocs(searchInput.value);
-    document.getElementById("docs").scrollIntoView({ behavior: "smooth" });
+    const q = searchInput.value.trim();
+    window.location.href = "docs.html" + (q ? "?q=" + encodeURIComponent(q) : "");
   });
   searchInput.addEventListener("input", () => filterDocs(searchInput.value));
 
@@ -219,16 +267,17 @@ end`;
       if (match) shown++;
     });
     const grid = document.getElementById("docs-grid");
+    if (!grid) return;
     let empty = document.getElementById("docs-empty");
     if (shown === 0 && q) {
       if (!empty) {
         empty = document.createElement("p");
         empty.id = "docs-empty";
         empty.style.color = "var(--muted)";
-        empty.textContent = "No docs match “" + query + "” — try “loop”, “string”, or “map”.";
+        empty.textContent = "No docs match “" + query + "” — press GO to search the full docs.";
         grid.parentNode.insertBefore(empty, grid.nextSibling);
       } else {
-        empty.textContent = "No docs match “" + query + "” — try “loop”, “string”, or “map”.";
+        empty.textContent = "No docs match “" + query + "” — press GO to search the full docs.";
       }
     } else if (empty) {
       empty.remove();
@@ -258,6 +307,6 @@ end`;
     game.start();
   }
 
-  // show the first slide's code but leave output empty until Run
+  // first slide on boot
   showSlide(0);
 })();
