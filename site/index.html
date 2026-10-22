@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python v2 — the snake, but better</title>
+  <meta name="description" content="Python v2 is a programming language that lets you work quickly and integrate systems more effectively. No indentation wars. Real closures. F-strings forever.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="logo.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ top utility bar ============ -->
+  <div class="topbar">
+    <nav class="topbar-inner">
+      <a class="topbar-brand" href="#">Python<sup>v2</sup></a>
+      <a href="#community">Foundation</a>
+      <a href="#docs">Docs</a>
+      <a href="#start">Packages</a>
+      <a href="#news">Jobs</a>
+      <a href="#community">Community</a>
+    </nav>
+  </div>
+
+  <!-- ============ masthead ============ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="#">
+        <img src="logo.svg" alt="Python v2 logo" width="64" height="64">
+        <span class="brand-word">python<sup>™</sup><em>v2</em></span>
+      </a>
+      <div class="masthead-tools">
+        <a class="btn btn-donate" href="#community">Donate</a>
+        <form class="search" id="search-form" role="search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input type="search" id="search-input" placeholder="Search the docs…" aria-label="Search">
+          <button type="submit" class="btn btn-go">GO</button>
+        </form>
+        <button class="btn btn-social" id="social-btn" type="button">Socialize</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ main nav ============ -->
+  <nav class="mainnav" aria-label="Main">
+    <div class="mainnav-inner">
+      <a href="#about">About</a>
+      <a href="#start">Downloads</a>
+      <a href="#docs">Documentation</a>
+      <a href="#community">Community</a>
+      <a href="#game">Success Stories</a>
+      <a href="#news">News</a>
+      <a href="#news">Events</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ============ hero: runnable console + carousel ============ -->
+    <section class="hero" id="about">
+      <div class="hero-inner">
+        <div class="console">
+          <div class="console-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="console-title">pyv2 — playground</span>
+            <button class="btn btn-run" id="run-btn" title="Run this code">▶ Run</button>
+          </div>
+          <label class="sr-only" for="code">Python v2 source code</label>
+          <textarea id="code" spellcheck="false" autocomplete="off"></textarea>
+          <div class="console-out">
+            <div class="console-out-title">Output</div>
+            <pre id="output" aria-live="polite"></pre>
+          </div>
+        </div>
+
+        <div class="hero-copy">
+          <h1 id="slide-title">All the Flow You'd Expect</h1>
+          <p id="slide-desc">Python v2 knows the usual control flow statements that other
+            languages speak — <code>if</code>, <code>for</code>, <code>while</code> and
+            <code>range</code> — with some of its own twists, of course.</p>
+          <p><a class="hero-link" id="slide-link" href="#docs">More control flow tools</a></p>
+          <div class="dots" id="slide-dots" role="tablist" aria-label="Examples"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ tagline ============ -->
+    <section class="tagline">
+      <p>Python v2 is a programming language that lets you work quickly
+        and integrate systems more effectively.
+        <a href="#start"><span class="prompt">»»&gt;</span> Learn More</a></p>
+    </section>
+
+    <!-- ============ features ============ -->
+    <section class="section features" id="features">
+      <div class="section-inner">
+        <h2>Better. By Design.</h2>
+        <p class="lede">Everything you loved about Python — plus the fixes the old one
+          never shipped.</p>
+        <div class="grid">
+          <article class="card">
+            <div class="card-icon">⏎</div>
+            <h3>No More Indentation Wars</h3>
+            <p>Blocks open with <code>:</code> and close with <code>end</code>.
+              Tabs, spaces — do whatever. The compiler doesn't care. Your team won't either.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">ƒ</div>
+            <h3>Real Closures</h3>
+            <p>Assignment finds the variable that already exists, wherever it lives.
+              Counters that count. No <code>nonlocal</code> incantations required.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">“”</div>
+            <h3>F-Strings, Solved Forever</h3>
+            <p><code>f"Hello, {name}!"</code> — interpolation that just works,
+              expressions and all. The old way of concatenating strings is cancelled.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">?</div>
+            <h3>Forward Ternary</h3>
+            <p><code>ok ? "yes" : "no"</code> reads left to right, like your eyes do.
+              Wild concept. Also: <code>+</code> joins strings and numbers without a lecture.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">⚡</div>
+            <h3>Runs In Your Browser</h3>
+            <p>The same language runs in the terminal and on this very page —
+              the playground above is the real interpreter, not a screenshot.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">♥</div>
+            <h3>Two Implementations, One Truth</h3>
+            <p>A Python reference runtime and a JavaScript twin, locked together by
+              parity tests. Byte-identical output or the build fails.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CPU rendering game ============ -->
+    <section class="section game-section" id="game">
+      <div class="section-inner">
+        <h2><span class="prompt">»»&gt;</span> CPU Rendering. No GPU Required.</h2>
+        <p class="lede">This level is drawn the hard way: a software raycaster computes every
+          single pixel on the CPU and writes it into a 320×180 framebuffer. No WebGL.
+          No shaders. 57,600 pixels per frame of pure <code>for</code> loops.</p>
+
+        <div class="game-wrap">
+          <div class="game-frame">
+            <canvas id="game-canvas" width="320" height="180" tabindex="0"
+                    aria-label="Raycasting game. Use W A S D to move and arrow keys to turn."></canvas>
+            <div class="game-hud">
+              <span id="hud-fps">– FPS</span>
+              <span id="hud-res">CPU • 320×180 • 0 GPU calls</span>
+              <span id="hud-pos">x 6.0  y 2.0</span>
+            </div>
+          </div>
+          <aside class="game-side">
+            <h3>Click the map, then move</h3>
+            <ul class="key-list">
+              <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move &amp; strafe</li>
+              <li><kbd>←</kbd><kbd>→</kbd> or <kbd>Q</kbd><kbd>E</kbd> turn</li>
+              <li><kbd>Shift</kbd> sprint</li>
+            </ul>
+            <p>Every wall is textured, fogged and lit in software — the "2" wall is
+              procedurally drawn pixel art. The mini-map is composed straight into the
+              framebuffer too.</p>
+            <p>Prefer your terminal? The same idea ships as a 100-line program in
+              Python v2: <a href="#start"><code>examples/terminal_raycast.pyv2</code></a>.</p>
+            <div class="stat-row">
+              <div class="stat"><strong>57,600</strong><span>pixels / frame</span></div>
+              <div class="stat"><strong>60</strong><span>frames / second</span></div>
+              <div class="stat"><strong>0</strong><span>GPU calls</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ get started ============ -->
+    <section class="section start-section" id="start">
+      <div class="section-inner">
+        <h2>Get Started in 30 Seconds</h2>
+        <p class="lede">Python v2 is free, open source, and lives on GitHub.
+          Clone it and run — no install step, no virtualenv, no drama.</p>
+
+        <div class="start-grid">
+          <div class="start-box">
+            <h3>1. Grab the runtime</h3>
+            <pre class="terminal"><code>git clone https://github.com/gefrus112/pythonv2
+cd pythonv2</code></pre>
+            <h3>2. Run something</h3>
+            <pre class="terminal"><code>python3 -m pyv2 examples/hello.pyv2</code></pre>
+            <h3>3. Or just talk to it</h3>
+            <pre class="terminal"><code>python3 -m pyv2
+>>> print(f"{'2' * 3}")
+222</code></pre>
+          </div>
+          <div class="start-box">
+            <h3>Your first program</h3>
+            <pre class="terminal"><code># hello.pyv2
+fn greet(name):
+    if name == "":
+        return "Hello, stranger!"
+    end
+    return f"Hello, {name}!"
+end
+
+for who in ["World", ""]:
+    print(greet(who))
+end</code></pre>
+            <button class="btn btn-run btn-inline" id="try-btn" type="button">▶ Try it in the playground</button>
+          </div>
+        </div>
+
+        <h2 class="compare-title">Why v2 beats v1</h2>
+        <table class="compare">
+          <thead>
+            <tr><th>Old Python</th><th>Python v2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>def foo():</code> + invisible whitespace</td><td><code>fn foo():</code> … <code>end</code></td></tr>
+            <tr><td>TabError: inconsistent use of tabs</td><td>No such thing. Ever.</td></tr>
+            <tr><td><code>"n=" + str(n)</code></td><td><code>"n=" + n</code></td></tr>
+            <tr><td><code>x if ok else y</code> (backwards)</td><td><code>ok ? x : y</code></td></tr>
+            <tr><td><code>assert</code> statement</td><td><code>assert(cond, msg)</code> — a normal function</td></tr>
+            <tr><td>Surprising <code>nonlocal</code> rules</td><td>Closures just work</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ docs teaser ============ -->
+    <section class="section docs-section" id="docs">
+      <div class="section-inner">
+        <h2>Documentation</h2>
+        <p class="lede">The whole language fits on one page. (The reference implementation
+          is <a href="https://github.com/gefrus112/pythonv2">on GitHub</a> — about 1,500 lines
+          of Python and its JavaScript twin.)</p>
+
+        <div class="docs-grid" id="docs-grid">
+          <div class="doc-card" data-tags="print output">
+            <h3>print(...)</h3>
+            <p>Print any number of values, space-separated.</p>
+            <code class="snippet">print("sum:", 1 + 2)</code>
+          </div>
+          <div class="doc-card" data-tags="fstring string interpolation">
+            <h3>f-strings</h3>
+            <p>Interpolate any expression with braces.</p>
+            <code class="snippet">f"{name} scored {score * 2}"</code>
+          </div>
+          <div class="doc-card" data-tags="fn function closure">
+            <h3>fn / end</h3>
+            <p>Functions are values. Closures capture properly.</p>
+            <code class="snippet">fn add(a, b): return a + b end</code>
+          </div>
+          <div class="doc-card" data-tags="if elif else end block">
+            <h3>if / elif / else</h3>
+            <p>Blocks end with <code>end</code>, not a column number.</p>
+            <code class="snippet">if x > 0: print("pos") end</code>
+          </div>
+          <div class="doc-card" data-tags="while loop break continue">
+            <h3>while / break / continue</h3>
+            <p>The usual loop verbs, no surprises.</p>
+            <code class="snippet">while true: break end</code>
+          </div>
+          <div class="doc-card" data-tags="for in range loop">
+            <h3>for … in</h3>
+            <p>Iterate lists, strings, maps and ranges.</p>
+            <code class="snippet">for i in range(1, 10, 2): print(i) end</code>
+          </div>
+          <div class="doc-card" data-tags="list array push sort">
+            <h3>lists</h3>
+            <p><code>[1, 2, 3]</code> with methods that spark joy.</p>
+            <code class="snippet">xs.push(4)  xs.sort()</code>
+          </div>
+          <div class="doc-card" data-tags="map dict dictionary">
+            <h3>maps</h3>
+            <p>Bare keys, dot access, safe <code>get</code>.</p>
+            <code class="snippet">hero = {name: "Ada"} → hero.name</code>
+          </div>
+          <div class="doc-card" data-tags="ternary conditional">
+            <h3>ternary</h3>
+            <p>Condition first, like a question should be.</p>
+            <code class="snippet">status = ok ? "yes" : "no"</code>
+          </div>
+          <div class="doc-card" data-tags="range len type">
+            <h3>builtins</h3>
+            <p><code>len</code>, <code>range</code>, <code>type</code>, <code>str</code>,
+              <code>int</code>, <code>sort</code>, <code>join</code>, <code>assert</code>, …</p>
+            <code class="snippet">print(type(2), len("abc"))</code>
+          </div>
+          <div class="doc-card" data-tags="method string upper split">
+            <h3>string methods</h3>
+            <p><code>upper</code>, <code>split</code>, <code>replace</code>,
+              <code>trim</code>, <code>contains</code>, <code>slice</code>, …</p>
+            <code class="snippet">"a,b".split(",").join("-")</code>
+          </div>
+          <div class="doc-card" data-tags="number math floor">
+            <h3>numbers</h3>
+            <p><code>+ − * / // % **</code>, floored mod, real division.</p>
+            <code class="snippet">print(7 // 2, -7 % 3, 2 ** 10)</code>
+          </div>
+        </div>
+        <p class="docs-foot">Full spec, grammar and builtin reference:
+          <a href="https://github.com/gefrus112/pythonv2/blob/main/docs/LANGUAGE.md">docs/LANGUAGE.md</a></p>
+      </div>
+    </section>
+
+    <!-- ============ news / community ============ -->
+    <section class="section news-section" id="news">
+      <div class="section-inner">
+        <h2>News &amp; Events</h2>
+        <div class="news-grid">
+          <article class="news-card">
+            <div class="news-date">Oct 21, 2026</div>
+            <h3>Python v2 0.2 "Sudbury" released</h3>
+            <p>Trailing commas everywhere, multi-line calls, parity-tested number
+              formatting, and a terminal raycaster example. Also: this website.</p>
+            <a href="#start">Read more →</a>
+          </article>
+          <article class="news-card">
+            <div class="news-date">Oct 21, 2026</div>
+            <h3>Playground goes live</h3>
+            <p>The interpreter now runs in your browser at 100% fidelity with the
+              reference runtime. Try the console at the top of this page.</p>
+            <a href="#about">Read more →</a>
+          </article>
+          <article class="news-card">
+            <div class="news-date">Coming soon</div>
+            <h3>Pyv2Conf 2027 — call for talks</h3>
+            <p>One track, one rule: every talk must demo something running in
+              the CPU renderer. Stickers included.</p>
+            <a href="#community">Read more →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section community-section" id="community">
+      <div class="section-inner">
+        <h2>The Community Runs On Snacks</h2>
+        <p class="lede">Python v2 is built in the open on GitHub. Star the repo, file an
+          issue, send a pull request, or just argue about <code>end</code> vs braces.</p>
+        <div class="stat-row stat-row-big">
+          <div class="stat"><strong>1</strong><span>language, zero config</span></div>
+          <div class="stat"><strong>2</strong><span>runtime twins</span></div>
+          <div class="stat"><strong>62</strong><span>passing tests</span></div>
+          <div class="stat"><strong>∞</strong><span>indentation saved</span></div>
+        </div>
+        <p class="community-cta">
+          <a class="btn btn-donate" href="https://github.com/gefrus112/pythonv2">Star on GitHub</a>
+          <a class="btn btn-social" href="https://github.com/gefrus112/pythonv2/issues">Open an issue</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ footer ============ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="#about">About</a>
+        <a href="#start">Downloads</a>
+        <a href="#docs">Documentation</a>
+        <a href="#community">Community</a>
+        <a href="#game">Success Stories</a>
+      </div>
+      <div class="footer-col">
+        <h4>Downloads</h4>
+        <a href="#start">Runtime (source)</a>
+        <a href="#start">JS playground</a>
+        <a href="https://github.com/gefrus112/pythonv2">GitHub repo</a>
+        <a href="#docs">Language spec</a>
+      </div>
+      <div class="footer-col">
+        <h4>Documentation</h4>
+        <a href="#docs">Quick reference</a>
+        <a href="#docs">Builtins</a>
+        <a href="#docs">Examples</a>
+        <a href="#start">Tutorial</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#community">GitHub</a>
+        <a href="#community">Issues</a>
+        <a href="#news">News</a>
+        <a href="#news">Events</a>
+      </div>
+      <div class="footer-col">
+        <h4>Success Stories</h4>
+        <a href="#game">CPU raycaster</a>
+        <a href="#start">Terminal raycast</a>
+        <a href="#about">This very website</a>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <p>
+        <img src="favicon.svg" alt="" width="24" height="24">
+        © <span id="year">2026</span> Python v2 Software Foundation™ — a fan-made remake,
+        not affiliated with the Python Software Foundation. Powered by pure CPU rendering
+        and stubborn optimism.
+      </p>
+      <p class="footer-meta">
+        <a href="#about">Privacy</a> · <a href="#about">Terms</a> ·
+        <a href="https://github.com/gefrus112/pythonv2">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="pyv2.js"></script>
+  <script src="game.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

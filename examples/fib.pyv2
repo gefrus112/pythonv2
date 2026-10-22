@@ -1,0 +1,11 @@
+# Classic fib, but with better plumbing
+fn fib(n):
+    if n < 2:
+        return n
+    end
+    return fib(n - 1) + fib(n - 2)
+end
+
+for i in range(10):
+    print(f"fib({i}) = {fib(i)}")
+end

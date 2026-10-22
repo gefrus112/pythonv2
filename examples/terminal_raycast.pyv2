@@ -1,0 +1,122 @@
+# CPU-only raycaster, straight to your terminal.
+# Every character is a pixel. No GPU was harmed.
+
+width = 64
+height = 22
+map = [
+    "########################",
+    "#......................#",
+    "#..####......####......#",
+    "#..#..........#........#",
+    "#..#....##....#....#...#",
+    "#.......##........##...#",
+    "#..#..........#........#",
+    "#..####......####......#",
+    "#......................#",
+    "########################",
+]
+
+px = 3.5
+py = 5.5
+angle = 0.0
+frame = 0
+
+fn cast_ray(ox, oy, dirx, diry):
+    dist = 0.0
+    while dist < 24.0:
+        x = int(ox + dirx * dist)
+        y = int(oy + diry * dist)
+        if y < 0 or y >= len(map) or x < 0 or x >= len(map[0]):
+            return 24.0
+        end
+        if map[y][x] == "#":
+            return dist
+        end
+        dist += 0.04
+    end
+    return 24.0
+end
+
+fn render(pxa, pya, ang):
+    out = ""
+    for col in range(width):
+        ray = ang - 0.6 + 1.2 * (col / width)
+        dirx = 1.0
+        diry = 0.0
+        # rotate (1,0) by ray angle via Taylor-ish sin/cos from math
+        dirx = math_cos(ray)
+        diry = math_sin(ray)
+        d = cast_ray(pxa, pya, dirx, diry)
+        wall_h = int(height / (d + 0.001))
+        if wall_h > height:
+            wall_h = height
+        end
+        col_str = ""
+        for row in range(height):
+            if row < (height - wall_h) / 2:
+                col_str += " "
+            elif row < height - (height - wall_h) / 2:
+                col_str += shade(d)
+            else:
+                col_str += "_"
+            end
+        end
+        out += col_str
+    end
+    return out
+end
+
+fn shade(d):
+    if d < 2.0:
+        return "#"
+    end
+    if d < 4.0:
+        return "%"
+    end
+    if d < 7.0:
+        return "+"
+    end
+    if d < 12.0:
+        return ":"
+    end
+    return "."
+end
+
+fn math_sin(x):
+    # Taylor series, plenty accurate for a terminal
+    term = x
+    sum = x
+    n = 1
+    while n < 6:
+        term = 0.0 - term * x * x / ((2 * n) * (2 * n + 1))
+        sum += term
+        n += 1
+    end
+    return sum
+end
+
+fn math_cos(x):
+    term = 1.0
+    sum = 1.0
+    n = 1
+    while n < 6:
+        term = 0.0 - term * x * x / ((2 * n - 1) * (2 * n))
+        sum += term
+        n += 1
+    end
+    return sum
+end
+
+# Spin the camera and render a few frames
+for f in range(3):
+    frame_str = render(px, py, angle)
+    print(f"--- frame {f}, angle {round(angle, 2)} ---")
+    for row in range(height):
+        line = ""
+        for col in range(width):
+            line += frame_str[col * height + row]
+        end
+        print(line)
+    end
+    angle += 0.35
+end

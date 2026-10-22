@@ -1,0 +1,3 @@
+# Hello, Python v2
+print("Hello, World!")
+print(f"2 + 2 = {2 + 2}")
