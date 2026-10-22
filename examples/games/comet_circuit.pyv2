@@ -1,0 +1,13 @@
+# Comet Circuit track data — executed by the Games page's browser runtime.
+# Every printed x,y pair becomes a PyHope racing waypoint.
+
+track = [
+    [280, 450], [350, 245], [560, 145], [825, 165], [1060, 290],
+    [1145, 500], [1035, 710], [790, 785], [515, 735], [300, 590],
+]
+
+print("COMET CIRCUIT — SUDBURY CUP")
+print("Waypoints:", len(track))
+for point in track:
+    print(point[0] + "," + point[1])
+end

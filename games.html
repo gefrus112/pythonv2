@@ -137,6 +137,32 @@
         <span><kbd>W</kbd> / <kbd>↑</kbd> / <kbd>Space</kbd> jump</span>
         <span>jump on Null Slimes • collect Hope Bits • reach the red flag</span>
       </div>
+
+      <div class="game-divider"></div>
+
+      <div class="game-title-row">
+        <div>
+          <p class="eyebrow">GAME 03 • TOP-DOWN RACING</p>
+          <h2>Comet Circuit</h2>
+          <p>Race three AI drivers around a Python v2-generated track. PyHope
+            handles acceleration, reverse, speed-sensitive steering, road grip,
+            grass drag, lap timing, camera tracking, and a best-time finish.</p>
+        </div>
+        <div class="engine-pill engine-pill-racing">PYTHON V2 TRACK</div>
+      </div>
+      <div class="game-stage racing-stage">
+        <canvas id="racing-canvas" width="800" height="450" aria-label="Comet Circuit racing game. Click, accelerate with W or Up, and steer with A D or arrow keys."></canvas>
+        <div class="game-hud">
+          <span id="racing-status">LAP 1/3 • 0 KM/H • Python v2 track</span>
+          <button id="racing-reset" type="button">Restart race</button>
+        </div>
+      </div>
+      <div class="control-strip">
+        <span><kbd>W</kbd> / <kbd>↑</kbd> accelerate</span>
+        <span><kbd>S</kbd> / <kbd>↓</kbd> brake &amp; reverse</span>
+        <span><kbd>A</kbd><kbd>D</kbd> or <kbd>←</kbd><kbd>→</kbd> steer</span>
+        <span><kbd>R</kbd> restart • complete 3 laps</span>
+      </div>
     </section>
 
     <!-- ==================== GPU ==================== -->
@@ -222,11 +248,11 @@
     <!-- ==================== Source ==================== -->
     <section data-game-panel="source" id="source" class="game-panel" hidden>
       <p class="eyebrow">READ IT • CHANGE IT • SHIP IT</p>
-      <h2>The level really comes from Python v2</h2>
+      <h2>The levels and race track really come from Python v2</h2>
       <p class="panel-lede">When this page starts, the browser interpreter runs
-        the script below. Its printed rows become Comet Hopper's level. That is
-        a deliberately small first bridge between the language and PyHope; the
-        engine APIs, physics, sprites, and renderers are all open source.</p>
+        Python v2 scripts. Printed rows become Comet Hopper's platform level;
+        printed coordinate pairs become Comet Circuit's closed race track.
+        PyHope supplies physics, sprites, cameras, AI, and renderers.</p>
       <div class="source-split">
         <pre class="terminal"><code>level = [
     "........................................",
@@ -252,6 +278,7 @@ end</code></pre>
             <li>DDA <code>raycast()</code></li>
             <li>ASCII terminal preview</li>
             <li>Canvas platform renderer</li>
+            <li>Top-down racing physics + AI</li>
             <li>CPU sprite raycaster</li>
             <li>WebGL2 9M renderer</li>
           </ul>
@@ -275,13 +302,24 @@ end</code></pre>
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-col"><h4>Python v2</h4><a href="index.html">Home</a><a href="download.html">Downloads</a><a href="tutorial.html">Tutorial</a></div>
-      <div class="footer-col"><h4>Games</h4><a href="games.html#play">Play</a><a href="games.html#gpu">9M GPU Lab</a><a href="games.html#sprites">Free sprites</a></div>
+      <div class="footer-col"><h4>Games</h4><a href="games.html#play">Monster arena</a><a href="games.html#play">Platformer</a><a href="games.html#play">Comet Circuit racing</a><a href="games.html#gpu">9M GPU Lab</a></div>
       <div class="footer-col"><h4>PyHope</h4><a href="download.html#pyhope">Install engine</a><a href="docs.html#pyhope">Engine docs</a><a href="games.html#source">Python v2 source</a></div>
       <div class="footer-col"><h4>Community</h4><a href="https://www.youtube.com/@CubeCometYT">YouTube</a><a href="https://github.com/gefrus112/pythonv2">GitHub</a><a href="https://github.com/gefrus112/pythonv2/issues">Issues</a></div>
       <div class="footer-col"><h4>Learn</h4><a href="guide.html">50 things to read</a><a href="docs.html">Reference</a><a href="assets/sprites/LICENSE.md">Sprite license</a></div>
     </div>
     <div class="footer-legal"><p><img src="favicon.svg" alt="" width="22" height="22">© <span id="year">2026</span> Python v2 + PyHope. Original game assets are CC0.</p></div>
   </footer>
+
+  <!-- Python v2 generates the racing circuit used by Comet Circuit. -->
+  <script id="racing-track" type="text/pyv2">
+track = [
+    [280, 450], [350, 245], [560, 145], [825, 165], [1060, 290],
+    [1145, 500], [1035, 710], [790, 785], [515, 735], [300, 590],
+]
+for point in track:
+    print(point[0] + "," + point[1])
+end
+  </script>
 
   <!-- This Python v2 program is executed by games.js to build the platform level. -->
   <script id="platform-level" type="text/pyv2">

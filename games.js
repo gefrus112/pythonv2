@@ -304,4 +304,235 @@
     const reset = document.getElementById("platform-reset");
     if (reset) reset.addEventListener("click", () => platformer.reset());
   }
+
+  // ------------------------------------------------------------------
+  // Comet Circuit — top-down racing with a Python v2 generated track.
+  // ------------------------------------------------------------------
+  function CometCircuit(canvas, status) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.status = status;
+    this.width = 800;
+    this.height = 450;
+    this.worldW = 1400;
+    this.worldH = 900;
+    canvas.width = this.width;
+    canvas.height = this.height;
+    this.track = this.loadTrack();
+    this.keys = new Set();
+    this.last = performance.now();
+    this.best = null;
+    this.bind();
+    this.reset();
+  }
+
+  CometCircuit.prototype.loadTrack = function () {
+    const fallback = [[280,450],[350,245],[560,145],[825,165],[1060,290],
+      [1145,500],[1035,710],[790,785],[515,735],[300,590]];
+    const script = document.getElementById("racing-track");
+    if (!script || typeof Pyv2 === "undefined") return fallback;
+    const result = Pyv2.runCapture(script.textContent);
+    if (result.error) return fallback;
+    const points = result.output.split("\n").map((line) => line.split(",").map(Number))
+      .filter((point) => point.length === 2 && point.every(Number.isFinite));
+    return points.length >= 6 ? points : fallback;
+  };
+
+  CometCircuit.prototype.bind = function () {
+    this._down = (event) => {
+      this.keys.add(event.code);
+      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Space"].includes(event.code) &&
+          document.activeElement === this.canvas) event.preventDefault();
+      if (event.code === "KeyR" && document.activeElement === this.canvas) this.reset();
+    };
+    this._up = (event) => this.keys.delete(event.code);
+    window.addEventListener("keydown", this._down);
+    window.addEventListener("keyup", this._up);
+    this.canvas.addEventListener("click", () => this.canvas.focus());
+    this.canvas.tabIndex = 0;
+  };
+
+  CometCircuit.prototype.reset = function () {
+    const start = this.track[0], next = this.track[1];
+    this.car = {
+      x: start[0], y: start[1],
+      angle: Math.atan2(next[1] - start[1], next[0] - start[0]),
+      speed: 0,
+    };
+    this.lap = 0;
+    this.maxProgress = 0;
+    this.lastTrackIndex = 0;
+    this.startedAt = performance.now();
+    this.finishedAt = 0;
+    this.finished = false;
+    this.opponents = [
+      { progress: 0.55, speed: 1.72, color: "#d64541", name: "BYTE" },
+      { progress: 2.15, speed: 1.61, color: "#ffd343", name: "NULL" },
+      { progress: 4.25, speed: 1.56, color: "#5fc4dc", name: "HOPE" },
+    ];
+  };
+
+  CometCircuit.prototype.nearestTrack = function (x, y) {
+    let best = { distance: Infinity, index: 0 };
+    for (let i = 0; i < this.track.length; i++) {
+      const a = this.track[i], b = this.track[(i + 1) % this.track.length];
+      const vx = b[0] - a[0], vy = b[1] - a[1];
+      const length2 = vx * vx + vy * vy;
+      const t = Math.max(0, Math.min(1, ((x - a[0]) * vx + (y - a[1]) * vy) / length2));
+      const px = a[0] + vx * t, py = a[1] + vy * t;
+      const distance = Math.hypot(x - px, y - py);
+      if (distance < best.distance) best = { distance, index: i, t };
+    }
+    return best;
+  };
+
+  CometCircuit.prototype.update = function (dt) {
+    if (this.finished) return;
+    const car = this.car, keys = this.keys;
+    const throttle = (keys.has("ArrowUp") || keys.has("KeyW") ? 1 : 0) -
+      (keys.has("ArrowDown") || keys.has("KeyS") ? 1 : 0);
+    const steering = (keys.has("ArrowRight") || keys.has("KeyD") ? 1 : 0) -
+      (keys.has("ArrowLeft") || keys.has("KeyA") ? 1 : 0);
+    const trackInfo = this.nearestTrack(car.x, car.y);
+    const onRoad = trackInfo.distance < 94;
+    car.speed += throttle * (onRoad ? 330 : 185) * dt;
+    car.speed *= Math.pow(onRoad ? 0.54 : 0.12, dt);
+    car.speed = Math.max(-105, Math.min(onRoad ? 310 : 125, car.speed));
+    if (Math.abs(car.speed) > 8) {
+      car.angle += steering * 2.05 * dt * Math.min(1, Math.abs(car.speed) / 110) * (car.speed < 0 ? -1 : 1);
+    }
+    car.x += Math.cos(car.angle) * car.speed * dt;
+    car.y += Math.sin(car.angle) * car.speed * dt;
+    car.x = Math.max(20, Math.min(this.worldW - 20, car.x));
+    car.y = Math.max(20, Math.min(this.worldH - 20, car.y));
+
+    const index = trackInfo.index;
+    this.maxProgress = Math.max(this.maxProgress, index + (trackInfo.t || 0));
+    if (this.lastTrackIndex >= this.track.length - 2 && index <= 1 && this.maxProgress > this.track.length - 2.2) {
+      this.lap++;
+      this.maxProgress = index;
+      if (this.lap >= 3) {
+        this.finished = true;
+        this.finishedAt = performance.now();
+        const elapsed = (this.finishedAt - this.startedAt) / 1000;
+        if (this.best === null || elapsed < this.best) this.best = elapsed;
+      }
+    }
+    this.lastTrackIndex = index;
+    for (const opponent of this.opponents) opponent.progress += opponent.speed * dt;
+  };
+
+  CometCircuit.prototype.pointAt = function (progress) {
+    const count = this.track.length;
+    const wrapped = ((progress % count) + count) % count;
+    const index = Math.floor(wrapped), t = wrapped - index;
+    const a = this.track[index], b = this.track[(index + 1) % count];
+    return {
+      x: a[0] + (b[0] - a[0]) * t,
+      y: a[1] + (b[1] - a[1]) * t,
+      angle: Math.atan2(b[1] - a[1], b[0] - a[0]),
+    };
+  };
+
+  CometCircuit.prototype.drawPath = function (ctx) {
+    ctx.beginPath();
+    this.track.forEach((point, i) => i ? ctx.lineTo(point[0], point[1]) : ctx.moveTo(point[0], point[1]));
+    ctx.closePath();
+  };
+
+  CometCircuit.prototype.drawCar = function (ctx, car, color, label) {
+    ctx.save();
+    ctx.translate(car.x, car.y);
+    ctx.rotate(car.angle);
+    ctx.fillStyle = "rgba(0,0,0,.3)";
+    ctx.fillRect(-15, -8, 34, 20);
+    ctx.fillStyle = color;
+    ctx.fillRect(-18, -10, 36, 20);
+    ctx.fillStyle = "#17242f";
+    ctx.fillRect(-7, -8, 15, 16);
+    ctx.fillStyle = "#dff6ff";
+    ctx.fillRect(9, -7, 6, 4);
+    ctx.fillRect(9, 3, 6, 4);
+    ctx.fillStyle = "#111";
+    ctx.fillRect(-13, -13, 9, 4); ctx.fillRect(7, -13, 9, 4);
+    ctx.fillRect(-13, 9, 9, 4); ctx.fillRect(7, 9, 9, 4);
+    ctx.restore();
+    if (label) {
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 10px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(label, car.x, car.y - 19);
+    }
+  };
+
+  CometCircuit.prototype.draw = function () {
+    const ctx = this.ctx;
+    const cameraX = Math.max(0, Math.min(this.worldW - this.width, this.car.x - this.width / 2));
+    const cameraY = Math.max(0, Math.min(this.worldH - this.height, this.car.y - this.height / 2));
+    ctx.fillStyle = "#34764f";
+    ctx.fillRect(0, 0, this.width, this.height);
+    ctx.save();
+    ctx.translate(-cameraX, -cameraY);
+
+    // grass stripes and original track art
+    ctx.fillStyle = "rgba(255,255,255,.035)";
+    for (let x = 0; x < this.worldW; x += 80) ctx.fillRect(x, 0, 38, this.worldH);
+    this.drawPath(ctx); ctx.lineJoin = "round"; ctx.lineCap = "round";
+    ctx.strokeStyle = "#1a2731"; ctx.lineWidth = 224; ctx.stroke();
+    this.drawPath(ctx); ctx.strokeStyle = "#f3eee0"; ctx.lineWidth = 208; ctx.stroke();
+    this.drawPath(ctx); ctx.strokeStyle = "#3c4650"; ctx.lineWidth = 184; ctx.stroke();
+    this.drawPath(ctx); ctx.setLineDash([24, 22]); ctx.strokeStyle = "rgba(255,211,67,.68)"; ctx.lineWidth = 4; ctx.stroke();
+    ctx.setLineDash([]);
+
+    // start / finish line
+    const a = this.track[0], b = this.track[1];
+    const angle = Math.atan2(b[1] - a[1], b[0] - a[0]);
+    ctx.save(); ctx.translate(a[0], a[1]); ctx.rotate(angle + Math.PI / 2);
+    for (let row = -4; row < 4; row++) for (let col = -1; col < 1; col++) {
+      ctx.fillStyle = (row + col) % 2 ? "#111" : "#fff";
+      ctx.fillRect(row * 12, col * 12, 12, 12);
+    }
+    ctx.restore();
+
+    for (const opponent of this.opponents) {
+      const point = this.pointAt(opponent.progress);
+      this.drawCar(ctx, point, opponent.color, opponent.name);
+    }
+    this.drawCar(ctx, this.car, "#2f6fbd", "YOU");
+    ctx.restore();
+
+    const elapsed = ((this.finished ? this.finishedAt : performance.now()) - this.startedAt) / 1000;
+    if (this.status) {
+      const road = this.nearestTrack(this.car.x, this.car.y).distance < 94 ? "TRACK" : "OFF ROAD";
+      this.status.textContent = "LAP " + Math.min(3, this.lap + 1) + "/3 • " +
+        Math.abs(this.car.speed).toFixed(0) + " KM/H • " + elapsed.toFixed(1) + "s • " + road;
+    }
+    if (this.finished) {
+      ctx.fillStyle = "rgba(10,19,28,.88)"; ctx.fillRect(190, 125, 420, 190);
+      ctx.fillStyle = "#ffd343"; ctx.font = "bold 36px sans-serif"; ctx.textAlign = "center";
+      ctx.fillText("RACE COMPLETE!", 400, 182);
+      ctx.fillStyle = "#fff"; ctx.font = "19px sans-serif";
+      ctx.fillText("Time " + elapsed.toFixed(2) + "s • Best " + this.best.toFixed(2) + "s", 400, 225);
+      ctx.fillText("Press R to race again", 400, 268); ctx.textAlign = "left";
+    }
+  };
+
+  CometCircuit.prototype.start = function () {
+    const loop = (time) => {
+      const dt = Math.min(.05, (time - this.last) / 1000);
+      this.last = time;
+      this.update(dt);
+      this.draw();
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  };
+
+  const racingCanvas = document.getElementById("racing-canvas");
+  if (racingCanvas) {
+    const racing = new CometCircuit(racingCanvas, document.getElementById("racing-status"));
+    racing.start();
+    const reset = document.getElementById("racing-reset");
+    if (reset) reset.addEventListener("click", () => racing.reset());
+  }
 })();
