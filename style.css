@@ -1634,3 +1634,123 @@ body::before {
 @media(max-width:920px){.website-workshop{grid-template-columns:1fr}.site-preview-window{transform:none}.play-tutorial-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.playground-main{padding-inline:10px}.play-toolbar{align-items:flex-start;flex-direction:column;padding:22px 17px}.runtime-switch{width:100%}.runtime-switch button{flex:1;justify-content:center}.play-controls .play-run{margin-left:0;width:100%}.play-editor-area{grid-template-columns:42px;height:390px}.play-terminal-grid{grid-template-columns:1fr}.play-terminal+.play-terminal{border-left:0;border-top:1px solid #2a3d4c}.website-workshop{padding:21px 15px}.play-tutorial-grid{grid-template-columns:1fr}#site-preview{height:390px}}
 @media(prefers-reduced-motion:reduce){.site-preview-window{transform:none}.play-tutorial-grid article:hover{transform:none}}
+
+/* ============================== Portfolio website studio ============================== */
+.template-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0 3px;
+}
+.template-features span {
+  padding: 6px 10px;
+  border: 1px solid #c7d7e3;
+  border-radius: 999px;
+  color: #315572;
+  background: #fff;
+  font: 800 11px var(--mono);
+}
+.workshop-actions { gap: 8px; }
+.workshop-actions .btn-ghost-dark { margin-left: 0; }
+.template-sync-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 16px 0 0 !important;
+  color: #527086 !important;
+  font: 800 11px var(--mono) !important;
+}
+.template-sync-status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #41b870;
+  box-shadow: 0 0 10px rgba(65,184,112,.55);
+}
+.template-sync-status i.sync-error { background: #d64541; box-shadow: 0 0 10px rgba(214,69,65,.5); }
+.site-view-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 9px;
+  overflow-x: auto;
+  border-bottom: 1px solid #ced8df;
+  background: #f5f7f9;
+}
+.site-view-toolbar > span { flex: 1; min-width: 8px; }
+.site-view-toolbar button {
+  flex: 0 0 auto;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #607486;
+  background: transparent;
+  font: 800 10px var(--mono);
+  cursor: pointer;
+}
+.site-view-toolbar button:hover { color: #254d70; background: #e7edf2; }
+.site-view-toolbar button.active { color: #fff; border-color: #2f6fbd; background: #2f6fbd; }
+.site-render-pane {
+  width: 100%;
+  margin: 0 auto;
+  background: #dce4e9;
+  transition: width .3s ease, padding .3s ease;
+}
+.site-render-pane.preview-mobile { width: min(390px, 100%); padding: 12px 0; }
+.site-render-pane.preview-tablet { width: min(700px, 100%); padding: 8px 0; }
+.site-render-pane.preview-desktop { width: 100%; }
+#site-preview { height: 610px; background: #f7f8f5; }
+.site-html-source {
+  height: 610px;
+  margin: 0;
+  padding: 20px;
+  overflow: auto;
+  color: #d9e8f2;
+  background: #0d1720;
+  font: 12px/1.55 var(--mono);
+  white-space: pre;
+  tab-size: 2;
+}
+.site-html-source code { color: inherit; background: transparent; }
+@media (max-width: 700px) {
+  #site-preview, .site-html-source { height: 520px; }
+  .site-view-toolbar > span { display: none; }
+  .site-view-toolbar button { font-size: 9px; }
+}
+
+/* Games-to-portfolio bridge */
+.game-portfolio-callout {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: center;
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid #314d65;
+  border-radius: 15px;
+  color: #d7e4ed;
+  background: radial-gradient(350px 150px at 0 0, rgba(112,214,255,.16), transparent 70%), #142432;
+  box-shadow: 0 18px 45px rgba(18,36,50,.14);
+}
+.game-portfolio-callout h3 { margin: 2px 0 4px; color: #fff; font-size: 20px; }
+.game-portfolio-callout p:not(.eyebrow) { max-width: 680px; margin: 0; color: #aebfcb; font-size: 13px; }
+.game-portfolio-callout .btn { white-space: nowrap; }
+.portfolio-mini-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 16px);
+  gap: 5px;
+  width: 82px;
+  height: 72px;
+  padding: 10px;
+  border: 1px solid #ffffff25;
+  border-radius: 10px;
+  background: #0d1821;
+}
+.portfolio-mini-preview span { grid-column: 1 / -1; color: #ffd343; font: 900 20px var(--mono); }
+.portfolio-mini-preview i { height: 18px; border-radius: 3px; background: #2f6fbd; }
+.portfolio-mini-preview i:nth-of-type(2) { background: #d64541; }
+.portfolio-mini-preview i:nth-of-type(3) { background: #44a36f; }
+@media (max-width: 780px) {
+  .game-portfolio-callout { grid-template-columns: auto 1fr; }
+  .game-portfolio-callout .btn { grid-column: 1 / -1; width: fit-content; }
+}

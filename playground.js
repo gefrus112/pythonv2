@@ -23,22 +23,50 @@ for score in scores:
 end`,
     },
     "website-v2": {
-      mode: "pyv2", file: "website.pyv2", website: true,
-      source: `# This Python v2 program becomes the website preview.
-site = {
-    title: "Comet Creative",
-    tagline: "A tiny website powered by Python v2 output.",
-    features: [
-        "Fast browser runtime",
-        "No indentation wars",
-        "Downloadable as real HTML",
-    ],
+      mode: "pyv2", file: "portfolio.pyv2", website: true,
+      source: `# Hybrid personal profile + portfolio website.
+# Edit this data, press Ctrl+Enter, then inspect Preview or HTML Code.
+profile = {
+    name: "Alex Comet",
+    role: "Creative developer & game maker",
+    tagline: "I turn curious ideas into playful, useful digital experiences.",
+    bio: "I build expressive websites, lightweight tools, and original games. My work mixes clean engineering with colorful interaction.",
+    location: "Massachusetts, USA",
+    email: "hello@example.com",
+    availability: "Available for select projects",
 }
 
-print(site.title)
-print(site.tagline)
-for feature in site.features:
-    print(feature)
+skills = ["Python v2", "PyHope", "Web design", "Canvas games", "Creative coding", "UI systems"]
+stats = [
+    {value: "10", label: "Playable games"},
+    {value: "8", label: "Open assets"},
+    {value: "92+", label: "Passing tests"},
+]
+projects = [
+    {title: "Python v2", kind: "Language", description: "A friendlier Python remake with browser and desktop runtimes.", link: "https://github.com/gefrus112/pythonv2"},
+    {title: "PyHope Arcade", kind: "Games", description: "Ten original shooters, platformers, racers, and arcade experiments.", link: "https://gefrus112.github.io/pythonv2/games.html"},
+    {title: "Sudbury Studio", kind: "Desktop", description: "A lightweight workspace for code, files, assets, editors, and previews.", link: "https://gefrus112.github.io/pythonv2/download.html#app"},
+]
+games = [
+    {title: "Neon Blaster", genre: "Wave shooter", description: "Pilot the Comet through a neon drone attack.", link: "https://gefrus112.github.io/pythonv2/games.html#pocket-arcade"},
+    {title: "Comet Hopper", genre: "Platformer", description: "Collect Hope Bits across a Python v2-generated level.", link: "https://gefrus112.github.io/pythonv2/games.html#comet-hopper"},
+    {title: "Comet Circuit", genre: "Racing", description: "Race AI drivers around a generated three-lap circuit.", link: "https://gefrus112.github.io/pythonv2/games.html#comet-circuit"},
+]
+
+print("PROFILE|" + profile.name + "|" + profile.role + "|" + profile.tagline)
+print("ABOUT|" + profile.bio)
+print("CONTACT|" + profile.location + "|" + profile.email + "|" + profile.availability)
+for skill in skills:
+    print("SKILL|" + skill)
+end
+for stat in stats:
+    print("STAT|" + stat.value + "|" + stat.label)
+end
+for project in projects:
+    print("PROJECT|" + project.title + "|" + project.kind + "|" + project.description + "|" + project.link)
+end
+for game in games:
+    print("GAME|" + game.title + "|" + game.genre + "|" + game.description + "|" + game.link)
 end`,
     },
     "game-v2": {
@@ -107,15 +135,37 @@ print("average:", divide(42, len(items)))`,
   const commandInput = document.getElementById("command-input");
   const commandPrompt = document.getElementById("command-prompt");
   const preview = document.getElementById("site-preview");
+  const previewPane = document.getElementById("site-render-pane");
+  const htmlSource = document.querySelector("#site-html-source code");
+  const htmlSourcePanel = document.getElementById("site-html-source");
+  const syncStatus = document.getElementById("template-sync-status");
   let mode = "pyv2";
   let commandHistory = [];
   let historyIndex = 0;
   let sessionSource = [];
   let sessionOutput = "";
+  let livePreviewTimer = null;
+  let generatedWebsiteHtml = "";
   let websiteData = {
-    title: "Comet Creative",
-    tagline: "A tiny website powered by Python v2 output.",
-    features: ["Fast browser runtime", "No indentation wars", "Downloadable as real HTML"],
+    name: "Alex Comet",
+    role: "Creative developer & game maker",
+    tagline: "I turn curious ideas into playful, useful digital experiences.",
+    bio: "I build expressive websites, lightweight tools, and original games. My work mixes clean engineering with colorful interaction.",
+    location: "Massachusetts, USA",
+    email: "hello@example.com",
+    availability: "Available for select projects",
+    skills: ["Python v2", "PyHope", "Web design", "Canvas games", "Creative coding", "UI systems"],
+    stats: [{ value: "10", label: "Playable games" }, { value: "8", label: "Open assets" }, { value: "92+", label: "Passing tests" }],
+    projects: [
+      { title: "Python v2", kind: "Language", description: "A friendlier Python remake with browser and desktop runtimes.", link: "https://github.com/gefrus112/pythonv2" },
+      { title: "PyHope Arcade", kind: "Games", description: "Ten original shooters, platformers, racers, and arcade experiments.", link: "https://gefrus112.github.io/pythonv2/games.html" },
+      { title: "Sudbury Studio", kind: "Desktop", description: "A lightweight workspace for code, files, assets, editors, and previews.", link: "https://gefrus112.github.io/pythonv2/download.html#app" },
+    ],
+    games: [
+      { title: "Neon Blaster", genre: "Wave shooter", description: "Pilot the Comet through a neon drone attack.", link: "https://gefrus112.github.io/pythonv2/games.html#pocket-arcade" },
+      { title: "Comet Hopper", genre: "Platformer", description: "Collect Hope Bits across a Python v2-generated level.", link: "https://gefrus112.github.io/pythonv2/games.html#comet-hopper" },
+      { title: "Comet Circuit", genre: "Racing", description: "Race AI drivers around a generated three-lap circuit.", link: "https://gefrus112.github.io/pythonv2/games.html#comet-circuit" },
+    ],
   };
 
   function escapeHtml(value) {
@@ -163,19 +213,65 @@ print("average:", divide(42, len(items)))`,
     return window.Pyv2.runCapture(source);
   }
 
+  function safeUrl(value) {
+    const url = String(value || "").trim();
+    return /^(https?:\/\/|mailto:|#|[./]?[A-Za-z0-9_-]+\.html(?:#[-\w]+)?)$/.test(url) ? escapeHtml(url) : "#";
+  }
+
   function previewHtml(data) {
-    return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
-      *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:36px;font:16px system-ui;color:#edf6ff;background:radial-gradient(circle at 80% 0,#315f92,#132538 62%)}
-      main{width:min(680px,100%);padding:44px;border:1px solid #ffffff2b;border-radius:25px;background:#102131db;box-shadow:0 30px 70px #07101d88}.tag{color:#70d6ff;font-size:12px;font-weight:900;letter-spacing:.13em}h1{margin:8px 0 7px;color:#ffd343;font-size:clamp(38px,8vw,67px);line-height:1}.lead{color:#c5d9e8;font-size:19px}.grid{display:grid;gap:10px;margin-top:25px}.item{padding:13px 16px;border-left:4px solid #d64541;border-radius:7px;background:#ffffff0c}
-    </style></head><body><main><div class="tag">BUILT WITH PYTHON V2</div><h1>${escapeHtml(data.title)}</h1><p class="lead">${escapeHtml(data.tagline)}</p><div class="grid">${data.features.map((item) => '<div class="item">' + escapeHtml(item) + '</div>').join("")}</div></main></body></html>`;
+    const initials = data.name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "PV";
+    const skills = data.skills.map((skill) => '<span class="skill">' + escapeHtml(skill) + '</span>').join("");
+    const stats = data.stats.map((stat) => '<div class="stat"><strong>' + escapeHtml(stat.value) + '</strong><span>' + escapeHtml(stat.label) + '</span></div>').join("");
+    const projects = data.projects.map((project, index) => `<article class="project p${index % 3}"><div class="project-top"><span>${escapeHtml(project.kind)}</span><b>0${index + 1}</b></div><h3>${escapeHtml(project.title)}</h3><p>${escapeHtml(project.description)}</p><a href="${safeUrl(project.link)}" target="_blank" rel="noopener">View project <i>↗</i></a></article>`).join("");
+    const games = data.games.map((game, index) => `<a class="game" href="${safeUrl(game.link)}" target="_blank" rel="noopener"><span class="game-icon">${["✦", "▲", "◆"][index % 3]}</span><small>${escapeHtml(game.genre)}</small><h3>${escapeHtml(game.title)}</h3><p>${escapeHtml(game.description)}</p><b>Play now →</b></a>`).join("");
+    return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="${escapeHtml(data.tagline)}">
+  <title>${escapeHtml(data.name)} — ${escapeHtml(data.role)}</title>
+  <style>
+    :root{--ink:#122334;--muted:#627486;--paper:#f7f8f5;--night:#101d2a;--blue:#2f6fbd;--cyan:#70d6ff;--red:#d64541;--yellow:#ffd343;--line:#dce3e7}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}.nav{position:sticky;z-index:10;top:0;border-bottom:1px solid #ffffff18;background:#101d2aee;backdrop-filter:blur(15px)}.nav .wrap{display:flex;align-items:center;gap:24px;min-height:68px}.brand{display:flex;align-items:center;gap:10px;margin-right:auto;color:#fff;font-weight:900}.brand i{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;color:var(--night);background:linear-gradient(135deg,var(--cyan),var(--yellow));font-style:normal}.nav a:not(.brand){color:#b9cad7;font-size:13px;font-weight:750}.nav a:hover{color:#fff}.hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(700px 430px at 85% 8%,#2f6fbd88,transparent 64%),radial-gradient(440px 330px at 10% 95%,#d6454155,transparent 70%),var(--night)}.hero:after{content:"";position:absolute;inset:0;opacity:.12;background-image:linear-gradient(#ffffff22 1px,transparent 1px),linear-gradient(90deg,#ffffff22 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(to bottom,#000,transparent)}.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.35fr .65fr;gap:60px;align-items:center;min-height:650px;padding:88px 0}.available{display:inline-flex;align-items:center;gap:9px;padding:7px 11px;border:1px solid #ffffff2b;border-radius:99px;color:#c9d9e5;background:#ffffff0b;font-size:12px;font-weight:800}.available i{width:8px;height:8px;border-radius:50%;background:#54da84;box-shadow:0 0 12px #54da84}.kicker{margin:27px 0 7px;color:var(--cyan);font-size:12px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.hero h1{max-width:760px;margin:0;font-size:clamp(52px,8vw,92px);line-height:.92;letter-spacing:-.055em}.hero h1 em{color:var(--yellow);font-style:normal}.lead{max-width:700px;margin:25px 0;color:#c4d5e1;font-size:clamp(18px,2.3vw,23px)}.actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:30px}.button{padding:13px 19px;border:1px solid #ffffff2e;border-radius:9px;color:#fff;background:#ffffff0b;font-weight:850}.button.primary{color:var(--night);border-color:var(--yellow);background:var(--yellow)}.profile-card{position:relative;padding:24px;border:1px solid #ffffff22;border-radius:28px;background:#ffffff0b;box-shadow:0 32px 70px #050c1488;transform:rotate(2deg)}.avatar{display:grid;place-items:center;aspect-ratio:1;border-radius:22px;color:#fff;background:linear-gradient(145deg,var(--blue),#8f2c52);font-size:clamp(64px,9vw,108px);font-weight:950;letter-spacing:-.08em}.profile-card p{margin:17px 0 0;color:#bcd0df}.profile-card strong{display:block;color:var(--yellow)}.stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);margin-top:-1px;border-bottom:1px solid var(--line);background:#fff}.stat{padding:28px;text-align:center;border-right:1px solid var(--line)}.stat:last-child{border:0}.stat strong{display:block;color:var(--blue);font-size:30px}.stat span{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.section{padding:90px 0}.section.alt{background:#fff}.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}.eyebrow{color:var(--blue);font-size:11px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}.section h2{max-width:700px;margin:5px 0 0;font-size:clamp(34px,5vw,54px);line-height:1;letter-spacing:-.035em}.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px}.about-copy{color:#44586a;font-size:20px}.skills{display:flex;align-content:flex-start;gap:9px;flex-wrap:wrap}.skill{padding:9px 13px;border:1px solid #cbd7df;border-radius:99px;color:#31516b;background:#fff;font-size:13px;font-weight:800}.project-grid,.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.project{min-height:285px;padding:25px;border:1px solid var(--line);border-radius:18px;background:var(--paper);transition:.25s}.project:hover,.game:hover{transform:translateY(-6px);box-shadow:0 18px 45px #172d3e1c}.project-top{display:flex;justify-content:space-between;color:var(--blue);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}.project-top b{color:#a9b6c0;font:900 22px ui-monospace}.project h3,.game h3{margin:45px 0 8px;font-size:24px}.project p,.game p{color:var(--muted)}.project a{display:inline-block;margin-top:15px;color:var(--blue);font-weight:900}.p0{border-top:5px solid var(--blue)}.p1{border-top:5px solid var(--red)}.p2{border-top:5px solid #44a36f}.games{color:#fff;background:var(--night)}.games .eyebrow{color:var(--yellow)}.game{position:relative;overflow:hidden;min-height:295px;padding:25px;border:1px solid #ffffff20;border-radius:18px;background:linear-gradient(145deg,#ffffff10,#ffffff05);transition:.25s}.game:after{content:"";position:absolute;right:-35px;bottom:-55px;width:140px;height:140px;border-radius:50%;background:var(--blue);filter:blur(8px);opacity:.2}.game-icon{display:grid;place-items:center;width:53px;height:53px;border-radius:14px;color:var(--night);background:var(--yellow);font-size:22px}.game small{display:block;margin-top:20px;color:var(--cyan);font-weight:900;text-transform:uppercase;letter-spacing:.1em}.game h3{margin:3px 0 7px}.game p{color:#b8cad8}.game b{position:absolute;z-index:1;bottom:23px;color:var(--yellow)}.contact{padding:90px 0}.contact-card{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;padding:45px;border-radius:25px;color:#fff;background:linear-gradient(120deg,var(--blue),#234d76 55%,#8f2c52);box-shadow:0 25px 60px #183b5c33}.contact-card h2{margin:0 0 8px;font-size:clamp(31px,5vw,52px)}.contact-card p{margin:0;color:#d8e5ef}.contact-card .button{white-space:nowrap;background:#fff;color:var(--blue)}footer{padding:25px 0;color:#8093a3;border-top:1px solid var(--line);font-size:13px}footer .wrap{display:flex;justify-content:space-between;gap:20px}@media(max-width:800px){.hero-grid,.about-grid{grid-template-columns:1fr}.hero-grid{padding:65px 0}.profile-card{max-width:390px;transform:none}.project-grid,.game-grid{grid-template-columns:1fr}.section-head{display:block}.contact-card{grid-template-columns:1fr}.nav a:not(.brand){display:none}}@media(max-width:520px){.wrap{width:min(100% - 24px,1120px)}.hero h1{font-size:48px}.stats{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--line)}.section{padding:65px 0}.contact-card{padding:28px}}@media(prefers-reduced-motion:no-preference){.hero-copy{animation:rise .7s ease both}.profile-card{animation:rise .8s .12s ease both}.project,.game{animation:rise .55s ease both}@keyframes rise{from{opacity:0;transform:translateY(22px)}}}
+  </style>
+</head>
+<body>
+  <nav class="nav"><div class="wrap"><a class="brand" href="#top"><i>${escapeHtml(initials)}</i>${escapeHtml(data.name)}</a><a href="#about">About</a><a href="#work">Work</a><a href="#games">Games</a><a href="#contact">Contact</a></div></nav>
+  <header class="hero" id="top"><div class="wrap hero-grid"><div class="hero-copy"><span class="available"><i></i>${escapeHtml(data.availability)}</span><p class="kicker">${escapeHtml(data.role)}</p><h1>Hi, I’m <em>${escapeHtml(data.name)}</em>.</h1><p class="lead">${escapeHtml(data.tagline)}</p><div class="actions"><a class="button primary" href="#work">See my work</a><a class="button" href="#contact">Let’s talk</a></div></div><aside class="profile-card"><div class="avatar">${escapeHtml(initials)}</div><p><strong>${escapeHtml(data.location)}</strong>${escapeHtml(data.role)}</p></aside></div></header>
+  <div class="stats">${stats}</div>
+  <main>
+    <section class="section" id="about"><div class="wrap"><div class="section-head"><div><span class="eyebrow">About me</span><h2>Design-minded code with a playful edge.</h2></div></div><div class="about-grid"><p class="about-copy">${escapeHtml(data.bio)}</p><div class="skills">${skills}</div></div></div></section>
+    <section class="section alt" id="work"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Selected work</span><h2>Projects built to be useful and memorable.</h2></div><p>Personal work, open source, and creative experiments.</p></div><div class="project-grid">${projects}</div></div></section>
+    <section class="section games" id="games"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Playable work</span><h2>Games I designed and shipped.</h2></div><p>Built with Python v2 and the PyHope engine.</p></div><div class="game-grid">${games}</div></div></section>
+    <section class="contact" id="contact"><div class="wrap"><div class="contact-card"><div><span class="eyebrow">Start a conversation</span><h2>Have a project in mind?</h2><p>${escapeHtml(data.availability)} • ${escapeHtml(data.location)}</p></div><a class="button" href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></div></div></section>
+  </main>
+  <footer><div class="wrap"><span>© ${new Date().getFullYear()} ${escapeHtml(data.name)}</span><span>Built from a Python v2 starter template.</span></div></footer>
+</body>
+</html>`;
+  }
+
+  function parseWebsiteOutput(resultOutput) {
+    const next = { ...websiteData, skills: [], stats: [], projects: [], games: [] };
+    resultOutput.split("\n").filter(Boolean).forEach((line) => {
+      const parts = line.split("|");
+      const type = parts.shift();
+      if (type === "PROFILE" && parts.length >= 3) [next.name, next.role, next.tagline] = parts;
+      else if (type === "ABOUT") next.bio = parts.join("|");
+      else if (type === "CONTACT" && parts.length >= 3) [next.location, next.email, next.availability] = parts;
+      else if (type === "SKILL") next.skills.push(parts.join("|"));
+      else if (type === "STAT" && parts.length >= 2) next.stats.push({ value: parts[0], label: parts.slice(1).join("|") });
+      else if (type === "PROJECT" && parts.length >= 4) next.projects.push({ title: parts[0], kind: parts[1], description: parts[2], link: parts.slice(3).join("|") });
+      else if (type === "GAME" && parts.length >= 4) next.games.push({ title: parts[0], genre: parts[1], description: parts[2], link: parts.slice(3).join("|") });
+    });
+    return next;
   }
 
   function updateWebsitePreview(resultOutput) {
-    const values = resultOutput.split("\n").filter((line) => line.trim() !== "");
-    if (values.length >= 2) {
-      websiteData = { title: values[0], tagline: values[1], features: values.slice(2) };
-    }
-    preview.srcdoc = previewHtml(websiteData);
+    websiteData = parseWebsiteOutput(resultOutput);
+    generatedWebsiteHtml = previewHtml(websiteData);
+    preview.srcdoc = generatedWebsiteHtml;
+    htmlSource.textContent = generatedWebsiteHtml;
+    syncStatus.innerHTML = "<i></i> Preview synced • " + websiteData.projects.length + " projects • " + websiteData.games.length + " games";
   }
 
   function runProgram() {
@@ -185,6 +281,9 @@ print("average:", divide(42, len(items)))`,
     if (result.error) {
       output.textContent = result.output || "Program stopped before producing output.";
       setProblems(result.error);
+      if (examples[exampleSelect.value] && examples[exampleSelect.value].website) {
+        syncStatus.innerHTML = "<i class=\"sync-error\"></i> Preview paused • fix the Problems terminal";
+      }
     } else {
       output.textContent = result.output || "✓ Program finished with no output.";
       output.textContent += "\n\n— finished in " + took + " ms • " + (mode === "pyv2" ? "Python v2" : "Classic compatibility");
@@ -202,7 +301,10 @@ print("average:", divide(42, len(items)))`,
     refreshEditor();
     output.textContent = "Loaded " + example.file + ". Press Run when ready.";
     setProblems(null);
-    if (example.website) updateWebsitePreview("Comet Creative\nA tiny website powered by Python v2 output.\nFast browser runtime\nNo indentation wars\nDownloadable as real HTML");
+    if (example.website) {
+      const result = execute(example.source);
+      if (!result.error) updateWebsitePreview(result.output);
+    }
     if (focus) { code.focus(); code.setSelectionRange(0, 0); }
   }
 
@@ -273,9 +375,41 @@ print("average:", divide(42, len(items)))`,
     loadExample("website-v2", true);
     document.getElementById("workspace").scrollIntoView({ behavior: "smooth" });
   });
-  document.getElementById("download-website").addEventListener("click", () => download("python-v2-website.html", previewHtml(websiteData), "text/html;charset=utf-8"));
+  document.getElementById("download-website").addEventListener("click", () => download("personal-portfolio.html", generatedWebsiteHtml || previewHtml(websiteData), "text/html;charset=utf-8"));
+  document.getElementById("copy-website-html").addEventListener("click", async () => {
+    const text = generatedWebsiteHtml || previewHtml(websiteData);
+    try {
+      await navigator.clipboard.writeText(text);
+      syncStatus.innerHTML = "<i></i> HTML copied to clipboard";
+    } catch (_error) {
+      const helper = document.createElement("textarea");
+      helper.value = text; helper.style.position = "fixed"; helper.style.opacity = "0";
+      document.body.appendChild(helper); helper.select(); document.execCommand("copy"); helper.remove();
+      syncStatus.innerHTML = "<i></i> HTML copied to clipboard";
+    }
+  });
+  document.querySelectorAll("[data-site-view]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const showHtml = button.dataset.siteView === "html";
+      previewPane.hidden = showHtml;
+      htmlSourcePanel.hidden = !showHtml;
+      document.querySelectorAll("[data-site-view]").forEach((item) => item.classList.toggle("active", item === button));
+    });
+  });
+  document.querySelectorAll("[data-preview-size]").forEach((button) => {
+    button.addEventListener("click", () => {
+      previewPane.className = "site-render-pane preview-" + button.dataset.previewSize;
+      document.querySelectorAll("[data-preview-size]").forEach((item) => item.classList.toggle("active", item === button));
+    });
+  });
 
-  code.addEventListener("input", refreshEditor);
+  code.addEventListener("input", () => {
+    refreshEditor();
+    if (exampleSelect.value !== "website-v2" || mode !== "pyv2") return;
+    clearTimeout(livePreviewTimer);
+    syncStatus.innerHTML = "<i></i> Waiting for a valid edit…";
+    livePreviewTimer = setTimeout(runProgram, 550);
+  });
   code.addEventListener("click", refreshEditor);
   code.addEventListener("keyup", refreshEditor);
   code.addEventListener("scroll", () => { lines.scrollTop = code.scrollTop; });
@@ -303,6 +437,10 @@ print("average:", divide(42, len(items)))`,
     }
   });
 
-  preview.srcdoc = previewHtml(websiteData);
+  generatedWebsiteHtml = previewHtml(websiteData);
+  preview.srcdoc = generatedWebsiteHtml;
+  htmlSource.textContent = generatedWebsiteHtml;
   loadExample("hello-v2", false);
+
+  window.PythonV2PortfolioTemplate = { previewHtml, parseWebsiteOutput };
 })();

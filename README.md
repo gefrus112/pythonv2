@@ -84,8 +84,8 @@ $ python3 -m pyv2 examples/games/monster_arena.pyv2
 Version 1.1 ships Python v2 as its own lightweight desktop application. The
 workspace provides Home, Code Studio, a path-safe atomic file service, project
 wizard, eight packaged CC0 assets, Games/GPU, detected editor connections,
-local settings, docs, an offline website template, and a preview server—all
-using the Python standard library. Open it with `pyv2-launcher`,
+local settings, docs, a polished offline personal/portfolio/game website
+starter, and a preview server—all using the Python standard library. Open it with `pyv2-launcher`,
 `pyhope-studio`, or `pyhope --studio`.
 
 ## 🎮 PyHope game engine
@@ -122,7 +122,8 @@ styled after python.org, then pushed further:
   macOS / Linux / Windows / any editor
 * a **dual-runtime Playground** (`playground.html`) — Python v2, an honestly
   labeled Classic Python compatibility subset, command history, separate error
-  terminal, downloadable source, and a live website workshop
+  terminal, downloadable source, and a live personal/portfolio/game website
+  studio with generated HTML inspection
 * a **tutorial** (`tutorial.html`) — 10 runnable lessons, sandbox included
 * a **10-game arcade** (`games.html`) with shooters, platformers, racing,
   Snake Byte, Orb Breaker, animated sprites, Python v2 source, and the 9M GPU lab
@@ -166,8 +167,8 @@ The short version:
 $ python3 -m unittest discover -s tests -t .
 ```
 
-**90 tests pass:** 63 language tests, 9 PyHope engine tests, 11 workspace/Launcher tests,
-6 arcade/Playground site tests, plus a parity harness that runs 21 programs (including error paths) through both the
+**92 tests pass:** 63 language tests, 9 PyHope engine tests, 12 workspace/Launcher tests,
+7 arcade/Playground site tests, plus a parity harness that runs 21 programs (including error paths) through both the
 Python and JavaScript runtimes and demands byte-identical output.
 
 ## 📦 Repo layout
